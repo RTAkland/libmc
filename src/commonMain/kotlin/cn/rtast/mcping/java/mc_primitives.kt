@@ -4,10 +4,10 @@
  * Date: 2026/9/3
  */
 
-package cn.rtast.mcping
+package cn.rtast.mcping.java
 
 import cn.rtast.mcping.platform.PlatformBuffer
-import cn.rtast.mcping.platform.PlatformReadChannel
+import cn.rtast.mcping.platform.ReadChannel
 
 
 internal fun PlatformBuffer.writeVarInt(value: Int) {
@@ -22,7 +22,7 @@ internal fun PlatformBuffer.writeVarInt(value: Int) {
     }
 }
 
-internal fun PlatformReadChannel.readVarInt(): Int {
+internal fun ReadChannel.readVarInt(): Int {
     var value = 0
     var position = 0
     while (true) {
@@ -41,7 +41,7 @@ internal fun PlatformBuffer.writeMcString(value: String) {
     this.writeBytes(bytes)
 }
 
-internal fun PlatformReadChannel.readMcString(): String {
+internal fun ReadChannel.readMcString(): String {
     val length = this.readVarInt()
     val bytes = this.readBytes(length)
     return bytes.decodeToString()

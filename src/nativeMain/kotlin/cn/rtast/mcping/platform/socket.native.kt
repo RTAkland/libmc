@@ -6,23 +6,40 @@
 
 package cn.rtast.mcping.platform
 
-import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import io.ktor.utils.io.core.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.io.readByteArray
 
-internal actual class PlatformSocket internal actual constructor(host: String, port: Int) {
+internal actual class Socket internal actual constructor(host: String, port: Int, context: PingContext) {
+    private val ctx = context
+    private val socket = runBlocking { aSocket(ctx._selectorManager).tcp().connect(host, port) }
 
-    private val sm = SelectorManager(Dispatchers.IO)
-    private val socket = runBlocking { aSocket(sm).tcp().connect(host, port) }
-
-    actual fun openReadChannel(): PlatformReadChannel = PlatformReadChannel(socket.openReadChannel())
-    actual fun openWriteChannel(): PlatformWriteChannel =
-        PlatformWriteChannel(socket.openWriteChannel(autoFlush = true))
+    actual fun openReadChannel(): ReadChannel = ReadChannel(socket.openReadChannel())
+    actual fun openWriteChannel(): WriteChannel =
+        WriteChannel(socket.openWriteChannel(autoFlush = true))
 
     actual fun close() {
         socket.close()
-        sm.close()
+        if (ctx._autoCloseSelectorManager) ctx._selectorManager.close()
+    }
+}
+
+internal actual class UdpSocket internal actual constructor(host: String, port: Int, context: PingContext) {
+    private val ctx = context
+
+    // use bind to create an unconnected socket
+    private val socket = runBlocking { aSocket(ctx._selectorManager).udp().bind() }
+    private val remoteAddress = InetSocketAddress(host, port)
+
+    actual fun sendAndReceive(data: ByteArray): ByteArray = runBlocking {
+        val packet = buildPacket { writeFully(data) }
+        socket.send(Datagram(packet, remoteAddress))
+        socket.receive().packet.readByteArray()
+    }
+
+    actual fun close() {
+        socket.close()
+        if (ctx._autoCloseSelectorManager) ctx._selectorManager.close()
     }
 }

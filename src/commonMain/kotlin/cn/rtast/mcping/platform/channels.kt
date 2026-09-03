@@ -7,13 +7,14 @@
 
 package cn.rtast.mcping.platform
 
-internal expect class PlatformReadChannel {
+internal expect class ReadChannel {
     fun readByte(): Byte
     fun readBytes(length: Int): ByteArray
     fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size)
+    fun readLong(): Long
 }
 
-internal expect class PlatformWriteChannel {
+internal expect class WriteChannel {
     fun writeFully(value: ByteArray, startIndex: Int = 0, endIndex: Int = value.size)
     fun flush()
 }

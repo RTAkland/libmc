@@ -7,8 +7,13 @@
 
 package cn.rtast.mcping.platform
 
-internal expect class PlatformSocket internal constructor(host: String, port: Int){
-    fun openReadChannel(): PlatformReadChannel
-    fun openWriteChannel(): PlatformWriteChannel
+internal expect class Socket internal constructor(host: String, port: Int, context: PingContext) {
+    fun openReadChannel(): ReadChannel
+    fun openWriteChannel(): WriteChannel
+    fun close()
+}
+
+internal expect class UdpSocket internal constructor(host: String, port: Int, context: PingContext) {
+    fun sendAndReceive(data: ByteArray): ByteArray
     fun close()
 }

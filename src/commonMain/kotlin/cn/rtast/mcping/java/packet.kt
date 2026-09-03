@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.mcping
+package cn.rtast.mcping.java
 
 import cn.rtast.mcping.platform.PlatformBuffer
 
@@ -40,4 +40,9 @@ internal data class HandshakePacket(
 internal data object StatusRequestPacket : MinecraftPacket {
     override val packetId: Int = 0x00
     override fun writePayload(buffer: PlatformBuffer) {}
+}
+
+internal data class PingPacket(val currentTime: Long) : MinecraftPacket {
+    override val packetId: Int = 0x01
+    override fun writePayload(buffer: PlatformBuffer) = buffer.writeLong(currentTime)
 }

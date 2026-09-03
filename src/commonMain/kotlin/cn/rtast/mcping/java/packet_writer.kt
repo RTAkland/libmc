@@ -5,12 +5,12 @@
  */
 
 
-package cn.rtast.mcping
+package cn.rtast.mcping.java
 
 import cn.rtast.mcping.platform.PlatformBuffer
-import cn.rtast.mcping.platform.PlatformWriteChannel
+import cn.rtast.mcping.platform.WriteChannel
 
-internal fun PlatformWriteChannel.sendPacket(packet: MinecraftPacket) {
+internal fun WriteChannel.sendPacket(packet: MinecraftPacket) {
     val bodyBuffer = PlatformBuffer()
     bodyBuffer.writeVarInt(packet.packetId)
     packet.writePayload(bodyBuffer)

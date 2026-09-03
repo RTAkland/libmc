@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "cn.rtast.mcping"
-version = "0.0.1"
+version = providers.gradleProperty("libVersion").get()
 
 repositories {
     mavenCentral()
