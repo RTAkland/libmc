@@ -1,12 +1,12 @@
 /*
  * Copyright © 2026 RTAkland
  * Author: RTAkland
- * Date: 2026/9/3
+ * Date: 2026/9/4
  */
+
 
 package cn.rtast.mcping.platform
 
-/**
- * No Context for jvm targets
- */
-public actual class MCPingContext
+public enum class ByteOrder {
+    BIG_ENDIAN, LITTLE_ENDIAN
+}

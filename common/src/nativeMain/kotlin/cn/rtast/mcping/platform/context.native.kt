@@ -12,7 +12,7 @@ import io.ktor.network.selector.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
-public actual class PingContext actual constructor() {
+public actual class MCPingContext actual constructor() {
     internal var _selectorManager: SelectorManager = SelectorManager(Dispatchers.IO)
     internal var _autoCloseSelectorManager: Boolean = false
 

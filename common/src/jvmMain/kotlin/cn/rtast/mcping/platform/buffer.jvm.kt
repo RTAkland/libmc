@@ -24,21 +24,37 @@ public actual class _Buffer {
         outStream.write(value.toInt())
     }
 
-    public actual fun writeShort(value: Short) {
+    public actual fun writeShort(value: Short, endian: ByteOrder) {
         val v = value.toInt()
-        outStream.write(v shr 8)
-        outStream.write(v)
+        if (endian == ByteOrder.BIG_ENDIAN) {
+            outStream.write(v shr 8)
+            outStream.write(v)
+        } else {
+            outStream.write(v)
+            outStream.write(v shr 8)
+        }
     }
 
-    public actual fun writeLong(value: Long) {
-        outStream.write((value shr 56).toInt())
-        outStream.write((value shr 48).toInt())
-        outStream.write((value shr 40).toInt())
-        outStream.write((value shr 32).toInt())
-        outStream.write((value shr 24).toInt())
-        outStream.write((value shr 16).toInt())
-        outStream.write((value shr 8).toInt())
-        outStream.write(value.toInt())
+    public actual fun writeInt(value: Int, endian: ByteOrder) {
+        if (endian == ByteOrder.BIG_ENDIAN) {
+            outStream.write(value shr 24)
+            outStream.write(value shr 16)
+            outStream.write(value shr 8)
+            outStream.write(value)
+        } else {
+            outStream.write(value)
+            outStream.write(value shr 8)
+            outStream.write(value shr 16)
+            outStream.write(value shr 24)
+        }
+    }
+
+    public actual fun writeLong(value: Long, endian: ByteOrder) {
+        if (endian == ByteOrder.BIG_ENDIAN) {
+            for (i in 56 downTo 0 step 8) outStream.write((value shr i).toInt())
+        } else {
+            for (i in 0..56 step 8) outStream.write((value shr i).toInt())
+        }
     }
 
     public actual fun writeBytes(bytes: ByteArray) {
@@ -60,23 +76,9 @@ public actual class _Buffer {
         return array[readOffset++]
     }
 
-    public actual fun readShort(): Short {
-        val b1 = readByte().toInt() and 0xFF
-        val b2 = readByte().toInt() and 0xFF
-        return ((b1 shl 8) or b2).toShort()
-    }
-
-    public actual fun readLong(): Long {
-        return (readByte().toLong() and 0xFF shl 56) or
-                (readByte().toLong() and 0xFF shl 48) or
-                (readByte().toLong() and 0xFF shl 40) or
-                (readByte().toLong() and 0xFF shl 32) or
-                (readByte().toLong() and 0xFF shl 24) or
-                (readByte().toLong() and 0xFF shl 16) or
-                (readByte().toLong() and 0xFF shl 8) or
-                (readByte().toLong() and 0xFF)
-    }
-
+    public actual fun readShort(endian: ByteOrder): Short = readBytes(2).toShort(endian)
+    public actual fun readInt(endian: ByteOrder): Int = readBytes(4).toInt(endian)
+    public actual fun readLong(endian: ByteOrder): Long = readBytes(8).toLong(endian)
     public actual fun readBytes(length: Int): ByteArray {
         val array = ensureReadArray()
         if (readOffset + length > array.size) throw IndexOutOfBoundsException("Buffer underflow")
@@ -87,6 +89,6 @@ public actual class _Buffer {
 
     public actual fun toByteArray(): ByteArray = outStream.toByteArray()
 
-    public actual val size: Int
-        get() = outStream.size()
+    public actual fun close(): Unit = outStream.close()
+    public actual val size: Int get() = outStream.size()
 }

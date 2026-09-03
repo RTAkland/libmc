@@ -10,9 +10,11 @@ package cn.rtast.mcping.platform
 @Suppress("CLASSNAME")
 public expect class _ReadChannel {
     public fun readByte(): Byte
+    public fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
+    public fun readInt(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Int
+    public fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long
     public fun readBytes(length: Int): ByteArray
     public fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size)
-    public fun readLong(): Long
 }
 
 @Suppress("CLASSNAME")

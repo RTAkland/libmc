@@ -11,4 +11,4 @@ package cn.rtast.mcping.platform
  * An object class used to pass some parameters
  * that exists only on native targets
  */
-public expect class PingContext()
+public expect class MCPingContext()

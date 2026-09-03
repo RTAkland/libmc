@@ -9,7 +9,7 @@ package test
 
 import cn.rtast.mcping.ServerType
 import cn.rtast.mcping.mcping
-import cn.rtast.mcping.platform.PingContext
+import cn.rtast.mcping.platform.MCPingContext
 import io.ktor.network.selector.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -22,7 +22,7 @@ class TestMingwPing {
     fun `test ping java on mingw with selectorManager`() = runTest {
         val sm = SelectorManager(Dispatchers.IO)
         val response =
-            mcping(host = "org.mc-complex.com", port = 25565, type = ServerType.Java, context = PingContext(sm))
+            mcping(host = "org.mc-complex.com", port = 25565, type = ServerType.Java, context = MCPingContext(sm))
         println(response)
     }
 
@@ -30,7 +30,7 @@ class TestMingwPing {
     fun `test ping bedrock on mingw with selectorManager`() = runTest {
         val sm = SelectorManager(Dispatchers.IO)
         val response =
-            mcping(host = "play.wildnetwork.net", port = 19132, type = ServerType.Bedrock, context = PingContext(sm))
+            mcping(host = "play.wildnetwork.net", port = 19132, type = ServerType.Bedrock, context = MCPingContext(sm))
         println(response)
         println(response.toBedrockResponse())
     }

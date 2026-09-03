@@ -1,6 +1,6 @@
 # mcping
 
-A lightweight motd ping library for kotlin multiplatform and java,
+A lightweight motd ping / rcon client library for kotlin multiplatform and java,
 no dependencies in `jvm` target except `kotlin-stdlib`
 
 native platforms required `ktor-network` and `kotlinx-io`
@@ -23,11 +23,14 @@ repositories {
 }
 
 dependencies {
-    implementation("cn.rtast.mcping:mcping:0.0.2")
+    implementation("cn.rtast.mcping:mcping:0.0.3")
+    implementation("cn.rtast.mcping:rconlib:0.0.3")
 }
 ```
 
 > Get latest version at https://repo.rtast.cn/packages/-/cn.rtast.mcping:mcping/ 
+
+# MC Ping
 
 ## Kotlin example
 
@@ -68,6 +71,36 @@ void main() {
 
 > An example of java ping json response can be found at [ping-response-example](example/java-ping-response.json) (Formatted),
 > a raw response of bedrock ping response can be found at [bedrock-pinng-raw-response](example/bedrock-pinng-raw-response.txt)
+
+
+# rcon client
+
+```kotlin
+fun main() {
+    val host = "127.0.0.1"
+    val port = 25575
+    val client = rconClient(host, port)
+    val authed = client.connect("123456")
+    if (authed) println(client.command("list")) else throw IllegalArgumentException("incorrect password")
+}
+```
+
+> also supports java
+
+```java
+void main() {
+    String host = "127.0.0.1";
+    int port = 25575;
+    String password = "123456";
+    RCONClient rconClient = Rconlib.rconClient(host, port);
+    boolean authed = rconClient.connect(password);
+    if (authed) {
+        System.out.println(rconClient.command("list"));
+    } else {
+        throw new IllegalStateException("incorrect password");
+    }
+}
+```
 
 # Open Source
 

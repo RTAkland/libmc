@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.io.readByteArray
 
 @Suppress("CLASSNAME")
-public actual class _Socket public actual constructor(host: String, port: Int, context: PingContext) {
+public actual class _Socket public actual constructor(host: String, port: Int, context: MCPingContext) {
     private val ctx = context
     private val socket = runBlocking { aSocket(ctx._selectorManager).tcp().connect(host, port) }
 
@@ -27,7 +27,7 @@ public actual class _Socket public actual constructor(host: String, port: Int, c
 }
 
 @Suppress("CLASSNAME")
-public actual class _UdpSocket public actual constructor(host: String, port: Int, context: PingContext) {
+public actual class _UdpSocket public actual constructor(host: String, port: Int, context: MCPingContext) {
     private val ctx = context
 
     // use bind to create an unconnected socket

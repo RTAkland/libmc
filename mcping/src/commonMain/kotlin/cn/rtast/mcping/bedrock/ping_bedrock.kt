@@ -8,12 +8,12 @@
 package cn.rtast.mcping.bedrock
 
 import cn.rtast.mcping.PingResponse
-import cn.rtast.mcping.platform.PingContext
+import cn.rtast.mcping.platform.MCPingContext
 import cn.rtast.mcping.platform._UdpSocket
 import cn.rtast.mcping.platform.wrap
 import kotlin.time.Clock
 
-internal fun pingBedrockServer(host: String, port: Int, context: PingContext): PingResponse {
+internal fun pingBedrockServer(host: String, port: Int, context: MCPingContext): PingResponse {
     val socket = _UdpSocket(host, port, context)
     return try {
         val sendTime = Clock.System.now().toEpochMilliseconds()

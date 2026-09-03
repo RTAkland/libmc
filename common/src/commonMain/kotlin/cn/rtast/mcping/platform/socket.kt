@@ -8,14 +8,14 @@
 package cn.rtast.mcping.platform
 
 @Suppress("CLASSNAME")
-public expect class _Socket public constructor(host: String, port: Int, context: PingContext) {
+public expect class _Socket public constructor(host: String, port: Int, context: MCPingContext) {
     public fun openReadChannel(): _ReadChannel
     public fun openWriteChannel(): _WriteChannel
     public fun close()
 }
 
 @Suppress("CLASSNAME")
-public expect class _UdpSocket public constructor(host: String, port: Int, context: PingContext) {
+public expect class _UdpSocket public constructor(host: String, port: Int, context: MCPingContext) {
     public fun sendAndReceive(data: ByteArray): ByteArray
     public fun close()
 }

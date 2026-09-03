@@ -12,15 +12,11 @@ import java.io.InputStream
 import java.io.OutputStream
 
 @Suppress("CLASSNAME")
-public actual class _ReadChannel {
-    private val _inputStream: InputStream
-
-    public constructor(inputStream: InputStream) {
-        _inputStream = inputStream
-    }
+public actual class _ReadChannel(private val _inputStream: InputStream) {
 
     public actual fun readByte(): Byte = _inputStream.read().toByte()
     public actual fun readBytes(length: Int): ByteArray = _inputStream.readNBytes(length)
+
     public actual fun readFully(out: ByteArray, start: Int, end: Int) {
         var bytesRead = 0
         val length = end - start
@@ -31,23 +27,9 @@ public actual class _ReadChannel {
         }
     }
 
-    public actual fun readLong(): Long {
-        val bytes = ByteArray(8)
-        var read = 0
-        while (read < 8) {
-            val count = _inputStream.read(bytes, read, 8 - read)
-            if (count == -1) throw EOFException()
-            read += count
-        }
-        return ((bytes[0].toLong() and 0xFF shl 56) or
-                (bytes[1].toLong() and 0xFF shl 48) or
-                (bytes[2].toLong() and 0xFF shl 40) or
-                (bytes[3].toLong() and 0xFF shl 32) or
-                (bytes[4].toLong() and 0xFF shl 24) or
-                (bytes[5].toLong() and 0xFF shl 16) or
-                (bytes[6].toLong() and 0xFF shl 8) or
-                (bytes[7].toLong() and 0xFF))
-    }
+    public actual fun readShort(endian: ByteOrder): Short = readBytes(2).toShort(endian)
+    public actual fun readInt(endian: ByteOrder): Int = readBytes(4).toInt(endian)
+    public actual fun readLong(endian: ByteOrder): Long = readBytes(8).toLong(endian)
 }
 
 @Suppress("CLASSNAME")

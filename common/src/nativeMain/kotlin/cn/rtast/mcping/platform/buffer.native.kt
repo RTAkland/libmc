@@ -6,6 +6,7 @@
 
 package cn.rtast.mcping.platform
 
+import io.ktor.utils.io.bits.*
 import kotlinx.io.Buffer
 import kotlinx.io.readByteArray
 
@@ -22,16 +23,41 @@ public actual class _Buffer {
     }
 
     public actual fun writeByte(value: Byte): Unit = _delegateBuf.writeByte(value)
-    public actual fun writeShort(value: Short): Unit = _delegateBuf.writeShort(value)
-    public actual fun writeLong(value: Long): Unit = _delegateBuf.writeLong(value)
+    public actual fun writeShort(value: Short, endian: ByteOrder) {
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeShort(value)
+        else _delegateBuf.writeShort(value.reverseByteOrder())
+    }
+
+    public actual fun writeInt(value: Int, endian: ByteOrder) {
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeInt(value)
+        else _delegateBuf.writeInt(value.reverseByteOrder())
+    }
+
+    public actual fun writeLong(value: Long, endian: ByteOrder) {
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeLong(value)
+        else _delegateBuf.writeLong(value.reverseByteOrder())
+    }
+
     public actual fun writeBytes(bytes: ByteArray): Unit = _delegateBuf.write(bytes)
-
     public actual fun readByte(): Byte = _delegateBuf.readByte()
-    public actual fun readShort(): Short = _delegateBuf.readShort()
-    public actual fun readLong(): Long = _delegateBuf.readLong()
-    public actual fun readBytes(length: Int): ByteArray = _delegateBuf.readByteArray(length)
+    public actual fun readShort(endian: ByteOrder): Short {
+        val v = _delegateBuf.readShort()
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    }
 
+    public actual fun readInt(endian: ByteOrder): Int {
+        val v = _delegateBuf.readInt()
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    }
+
+    public actual fun readLong(endian: ByteOrder): Long {
+        val v = _delegateBuf.readLong()
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    }
+
+    public actual fun readBytes(length: Int): ByteArray = _delegateBuf.readByteArray(length)
     public actual fun toByteArray(): ByteArray = _delegateBuf.peek().readByteArray()
+    public actual fun close(): Unit = _delegateBuf.close()
 
     public actual val size: Int
         get() = _delegateBuf.size.toInt()

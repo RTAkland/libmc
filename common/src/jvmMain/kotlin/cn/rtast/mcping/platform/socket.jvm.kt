@@ -12,7 +12,7 @@ import java.net.InetSocketAddress
 import java.net.Socket as JvmSocket
 
 @Suppress("CLASSNAME")
-public actual class _Socket public actual constructor(host: String, port: Int, context: PingContext) {
+public actual class _Socket public actual constructor(host: String, port: Int, context: MCPingContext) {
     private val socket = JvmSocket(host, port)
 
     public actual fun openReadChannel(): _ReadChannel = _ReadChannel(socket.getInputStream())
@@ -21,7 +21,7 @@ public actual class _Socket public actual constructor(host: String, port: Int, c
 }
 
 @Suppress("CLASSNAME")
-public actual class _UdpSocket public actual constructor(host: String, port: Int, context: PingContext) {
+public actual class _UdpSocket public actual constructor(host: String, port: Int, context: MCPingContext) {
     private val socket = DatagramSocket().apply {
         soTimeout = 3000
         connect(InetSocketAddress(host, port))

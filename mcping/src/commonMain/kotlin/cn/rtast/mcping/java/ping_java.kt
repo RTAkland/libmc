@@ -8,11 +8,11 @@
 package cn.rtast.mcping.java
 
 import cn.rtast.mcping.PingResponse
-import cn.rtast.mcping.platform.PingContext
+import cn.rtast.mcping.platform.MCPingContext
 import cn.rtast.mcping.platform._Socket
 import kotlin.time.Clock
 
-internal fun pingJavaServer(host: String, port: Int, context: PingContext): PingResponse {
+internal fun pingJavaServer(host: String, port: Int, context: MCPingContext): PingResponse {
     val socket = _Socket(host, port, context)
     val receiveChannel = socket.openReadChannel()
     val sendChannel = socket.openWriteChannel()
