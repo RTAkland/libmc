@@ -17,18 +17,10 @@ native platforms required `ktor-network` and `kotlinx-io`
 
 # Get started
 
-```kotlin
-repositories {
-    maven("https://repo.rtast.cn/packages")
-}
+[Use mcping module](https://repo.rtast.cn/packages/-/cn.rtast.mcping:mcping/)
 
-dependencies {
-    implementation("cn.rtast.mcping:mcping:0.0.3")
-    implementation("cn.rtast.mcping:rconlib:0.0.3")
-}
-```
+[Use rconlib module](https://repo.rtast.cn/packages/-/cn.rtast.mcping:rconlib/)
 
-> Get latest version at https://repo.rtast.cn/packages/-/cn.rtast.mcping:mcping/ 
 
 # MC Ping
 
