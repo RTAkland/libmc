@@ -27,6 +27,8 @@ dependencies {
 }
 ```
 
+> Get latest version at https://repo.rtast.cn/packages/-/cn.rtast.mcping:mcping/ 
+
 ## Kotlin example
 
 ```kotlin
