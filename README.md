@@ -32,7 +32,7 @@ fun main() {
     // context is not required, if not passed, default context will be used
     // ping java server
     val response: PingResponse =
-        mcping(host = "org.mc-complex.com", port = 25565, type = ServerType.Java, context = PingContext(sm))
+        mcping(host = "org.mc-complex.com", port = 25565, type = ServerType.Java, context = LibMCContext(sm))
     println(response.content)
     println(response.latency)
 
