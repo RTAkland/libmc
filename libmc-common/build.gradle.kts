@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 kotlin {
     explicitApi()
+    withSourcesJar()
 
     linuxX64()
     linuxArm64()

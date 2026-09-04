@@ -63,6 +63,8 @@ public actual class _Buffer {
         outStream.write(bytes)
     }
 
+    public actual fun writeBoolean(value: Boolean): Unit = writeByte(if (value) 0x01 else 0x00)
+
     private fun ensureReadArray(): ByteArray {
         var buf = readBuffer
         if (buf == null) {
@@ -88,6 +90,8 @@ public actual class _Buffer {
         readOffset += length
         return result
     }
+
+    public actual fun readBoolean(): Boolean = this.readByte() != 0x00.toByte()
 
     public actual fun toByteArray(): ByteArray = outStream.toByteArray()
     public actual fun hasRemaining(): Boolean = readOffset < ensureReadArray().size

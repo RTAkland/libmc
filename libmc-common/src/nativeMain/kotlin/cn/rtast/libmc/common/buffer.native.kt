@@ -40,6 +40,8 @@ public actual class _Buffer {
     }
 
     public actual fun writeBytes(bytes: ByteArray): Unit = _delegateBuf.write(bytes)
+    public actual fun writeBoolean(value: Boolean): Unit = _delegateBuf.writeByte(if (value) 0x01 else 0x00)
+
     public actual fun readByte(): Byte = _delegateBuf.readByte()
     public actual fun readShort(endian: ByteOrder): Short {
         val v = _delegateBuf.readShort()
@@ -57,6 +59,8 @@ public actual class _Buffer {
     }
 
     public actual fun readBytes(length: Int): ByteArray = _delegateBuf.readByteArray(length)
+    public actual fun readBoolean(): Boolean = _delegateBuf.readByte() != 0x00.toByte()
+
     public actual fun toByteArray(): ByteArray {
         val copy = _delegateBuf.peek()
         return try {

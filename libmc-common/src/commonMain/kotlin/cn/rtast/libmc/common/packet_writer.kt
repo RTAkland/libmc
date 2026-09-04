@@ -1,20 +1,13 @@
 /*
  * Copyright © 2026 RTAkland
  * Author: RTAkland
- * Date: 2026/9/3
+ * Date: 2026/9/4
  */
 
 
-package cn.rtast.libmc.mcping.java
+package cn.rtast.libmc.common
 
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common._Buffer
-import cn.rtast.libmc.common._WriteChannel
-import cn.rtast.libmc.common.write
-import cn.rtast.libmc.common.writeBuffer
-
-
-internal fun <T : MinecraftPacket> _WriteChannel.sendPacket(packet: T, codec: PacketCodec<T>) {
+public fun <T : MinecraftPacket> _WriteChannel.sendPacket(packet: T, codec: PacketCodec<T>) {
     val bodyBuffer = _Buffer()
     bodyBuffer.write(packet.packetId, VarIntCodec)
     codec.encode(bodyBuffer, packet)

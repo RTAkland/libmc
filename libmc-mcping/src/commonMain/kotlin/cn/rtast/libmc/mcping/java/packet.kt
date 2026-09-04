@@ -7,15 +7,10 @@
 
 package cn.rtast.libmc.mcping.java
 
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common._Buffer
-
-internal interface MinecraftPacket {
-    val packetId: Int
-}
+import cn.rtast.libmc.common.*
 
 // ref https://minecraft.wiki/w/Java_Edition_protocol/Packets#Handshake
-internal data class HandshakePacket(
+public data class HandshakePacket(
     val protocolVersion: Int,
     val serverAddress: String,
     val serverPort: UShort,
@@ -24,7 +19,7 @@ internal data class HandshakePacket(
 ) : MinecraftPacket {
     override val packetId: Int = 0x00
 
-    companion object Codec : PacketCodec<HandshakePacket> {
+    public companion object Codec : PacketCodec<HandshakePacket> {
         override fun encode(buffer: _Buffer, value: HandshakePacket) {
             VarIntCodec.encode(buffer, value.protocolVersion)
             McStringCodec.encode(buffer, value.serverAddress)
@@ -37,17 +32,17 @@ internal data class HandshakePacket(
 }
 
 // ref https://minecraft.wiki/w/Java_Edition_protocol/Packets#Status
-internal data object StatusRequestPacket : MinecraftPacket, PacketCodec<StatusRequestPacket> {
+public data object StatusRequestPacket : MinecraftPacket, PacketCodec<StatusRequestPacket> {
     override val packetId: Int = 0x00
 
     override fun encode(buffer: _Buffer, value: StatusRequestPacket) {}
     override fun decode(buffer: _Buffer): StatusRequestPacket = throw UnsupportedOperationException()
 }
 
-internal data class PingPacket(val currentTime: Long) : MinecraftPacket {
+public data class PingPacket(val currentTime: Long) : MinecraftPacket {
     override val packetId: Int = 0x01
 
-    companion object : PacketCodec<PingPacket> {
+    public companion object : PacketCodec<PingPacket> {
         override fun encode(buffer: _Buffer, value: PingPacket) {
             buffer.writeLong(value.currentTime)
         }

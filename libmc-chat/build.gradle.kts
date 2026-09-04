@@ -1,5 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+plugins {
+    alias(libs.plugins.kotlinx.serialization)
+}
+
 kotlin {
     explicitApi()
     withSourcesJar()
@@ -14,7 +18,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":common"))
+            implementation(project(":common"))
+            api(libs.kotlinx.serialization.core)
+            api(libs.kotlinx.serialization.json)
+            api(libs.kotlinx.coroutines)
+        }
+
+        jvmMain.dependencies {
+
         }
 
         commonTest.dependencies {

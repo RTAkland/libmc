@@ -22,3 +22,17 @@ public expect class _WriteChannel {
     public fun writeFully(value: ByteArray, startIndex: Int = 0, endIndex: Int = value.size)
     public fun flush()
 }
+
+public fun _ReadChannel.readVarInt(): Int {
+    var numRead = 0
+    var result = 0
+    var read: Byte
+    do {
+        read = this.readByte()
+        val value = (read.toInt() and 0x7F)
+        result = result or (value shl (7 * numRead))
+        numRead++
+        if (numRead > 5) throw IllegalArgumentException("VarInt is too big")
+    } while ((read.toInt() and 0x80) != 0)
+    return result
+}

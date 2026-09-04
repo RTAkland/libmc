@@ -4,12 +4,9 @@
  * Date: 2026/9/3
  */
 
-package cn.rtast.libmc.mcping.java
+package cn.rtast.libmc.common
 
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common._Buffer
-
-internal object VarIntCodec : PacketCodec<Int> {
+public object VarIntCodec : PacketCodec<Int> {
     override fun encode(buffer: _Buffer, value: Int) {
         var v = value
         while (true) {
@@ -23,20 +20,21 @@ internal object VarIntCodec : PacketCodec<Int> {
     }
 
     override fun decode(buffer: _Buffer): Int {
-        var value = 0
-        var position = 0
-        while (true) {
-            val currentByte = buffer.readByte().toInt() and 0xFF
-            value = value or ((currentByte and 0x7F) shl position)
-            if ((currentByte and 0x80) == 0) break
-            position += 7
-            if (position >= 35) throw IllegalArgumentException("VarInt too long")
-        }
-        return value
+        var numRead = 0
+        var result = 0
+        var read: Byte
+        do {
+            read = buffer.readByte()
+            val value = (read.toInt() and 0x7F)
+            result = result or (value shl (7 * numRead))
+            numRead++
+            if (numRead > 5) throw IllegalArgumentException("VarInt is too big")
+        } while ((read.toInt() and 0x80) != 0)
+        return result
     }
 }
 
-internal object McStringCodec : PacketCodec<String> {
+public object McStringCodec : PacketCodec<String> {
     override fun encode(buffer: _Buffer, value: String) {
         val bytes = value.encodeToByteArray()
         VarIntCodec.encode(buffer, bytes.size)
@@ -49,6 +47,3 @@ internal object McStringCodec : PacketCodec<String> {
         return bytes.decodeToString()
     }
 }
-
-internal fun _Buffer.writeVarInt(value: Int) = VarIntCodec.encode(this, value)
-internal fun _Buffer.readVarInt(): Int = VarIntCodec.decode(this)

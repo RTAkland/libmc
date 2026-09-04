@@ -7,10 +7,7 @@
 
 package cn.rtast.libmc.mcping.java
 
-import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common._Buffer
-import cn.rtast.libmc.common._ReadChannel
-import cn.rtast.libmc.common._Socket
+import cn.rtast.libmc.common.*
 import cn.rtast.libmc.mcping.PingResponse
 import kotlin.time.Clock
 
@@ -49,23 +46,5 @@ internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): Pin
         PingResponse(jsonResponse, latency)
     } finally {
         socket.close()
-    }
-}
-
-private fun _ReadChannel.readVarIntWithCodec(): Int {
-    val tempBuffer = _Buffer()
-    while (true) {
-        val byte = this.readByte()
-        tempBuffer.writeByte(byte)
-        if ((byte.toInt() and 0x80) == 0) break
-    }
-    return VarIntCodec.decode(tempBuffer)
-}
-
-private fun _ReadChannel.readPacketFrame(): _Buffer {
-    val length = this.readVarIntWithCodec()
-    val frameBytes = this.readBytes(length)
-    return _Buffer().apply {
-        writeBytes(frameBytes)
     }
 }
