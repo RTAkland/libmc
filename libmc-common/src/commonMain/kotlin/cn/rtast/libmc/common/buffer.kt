@@ -27,6 +27,7 @@ public expect class _Buffer {
     public fun hasRemaining(): Boolean
     public fun close()
     public val size: Int
+    public val remaining: Long
 }
 
 public fun ByteArray.wrap(): _Buffer = _Buffer(this)

@@ -17,17 +17,12 @@ internal fun pingBedrockServer(host: String, port: Int, context: LibMCContext): 
     val socket = _UdpSocket(host, port, context)
     return try {
         val sendTime = Clock.System.now().toEpochMilliseconds()
-        val packet = BedrockRequestPacket(sendTime)
-        val responseBytes = socket.sendPacket(packet)
+        val requestPacket = BedrockRequestPacket(sendTime)
+        val responseBytes = socket.sendPacket(requestPacket, BedrockRequestPacket)
         val receiveTime = Clock.System.now().toEpochMilliseconds()
-        val buf = responseBytes.wrap()
-        buf.readByte()  // packet id
-        buf.readLong() // time
-        buf.readLong()  // server guid
-        buf.readBytes(16)  // magic refer to `rakNetMagic`
-        val payloadLength = buf.readShort()
-        val payload = buf.readBytes(payloadLength.toInt())
-        PingResponse(payload.decodeToString(), (receiveTime - sendTime).toInt())
+        val responsePacket = BedrockResponsePacket.decode(responseBytes.wrap())
+        val latency = (receiveTime - sendTime).toInt()
+        PingResponse(responsePacket.payload, latency)
     } finally {
         socket.close()
     }

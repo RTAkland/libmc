@@ -1,5 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+repositories {
+    maven("https://repo.rtast.cn/packages/")
+}
+
 kotlin {
     explicitApi()
 

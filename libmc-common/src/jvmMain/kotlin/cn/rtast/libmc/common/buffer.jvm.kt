@@ -94,4 +94,5 @@ public actual class _Buffer {
 
     public actual fun close(): Unit = outStream.close()
     public actual val size: Int get() = outStream.size()
+    public actual val remaining: Long get() = (outStream.size() - readOffset).coerceAtLeast(0).toLong()
 }

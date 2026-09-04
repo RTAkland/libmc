@@ -7,10 +7,11 @@
 
 package cn.rtast.libmc.mcping.bedrock
 
+import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common._Buffer
 import kotlin.random.Random
 
-private val rakNetMagic = byteArrayOf(
+private val RAKNET_MAGIC = byteArrayOf(
     0x00, 0xFF.toByte(),
     0xFF.toByte(), 0x00,
     0xFE.toByte(), 0xFE.toByte(),
@@ -22,24 +23,24 @@ private val rakNetMagic = byteArrayOf(
 
 internal interface MinecraftBedrockPacket {
     val packetId: Byte
-    val time: Long
-    val magic: ByteArray
-
-    fun writePayload(buffer: _Buffer)
 }
 
 internal data class BedrockRequestPacket(
-    override val time: Long,
-    override val magic: ByteArray = rakNetMagic,
+    val time: Long,
+    val magic: ByteArray = RAKNET_MAGIC,
     val guid: Long = Random.nextLong(),
 ) : MinecraftBedrockPacket {
     override val packetId: Byte = 0x01
 
-    override fun writePayload(buffer: _Buffer) {
-        buffer.writeByte(packetId)
-        buffer.writeLong(time)
-        buffer.writeBytes(magic)
-        buffer.writeLong(guid)
+    companion object Codec : PacketCodec<BedrockRequestPacket> {
+        override fun encode(buffer: _Buffer, value: BedrockRequestPacket) {
+            buffer.writeByte(value.packetId)
+            buffer.writeLong(value.time)
+            buffer.writeBytes(value.magic)
+            buffer.writeLong(value.guid)
+        }
+
+        override fun decode(buffer: _Buffer): BedrockRequestPacket = throw UnsupportedOperationException()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -64,13 +65,27 @@ internal data class BedrockRequestPacket(
 
 internal data class BedrockResponsePacket(
     override val packetId: Byte,
-    override val time: Long,
+    val time: Long,
     val serverGuid: Long,
-    override val magic: ByteArray,
-    val stringLength: Short,
+    val magic: ByteArray,
     val payload: String,
 ) : MinecraftBedrockPacket {
-    override fun writePayload(buffer: _Buffer) {}
+
+    companion object Codec : PacketCodec<BedrockResponsePacket> {
+        override fun encode(buffer: _Buffer, value: BedrockResponsePacket) = throw UnsupportedOperationException()
+        override fun decode(buffer: _Buffer): BedrockResponsePacket {
+            val packetId = buffer.readByte()
+            if (packetId != 0x1C.toByte()) throw IllegalStateException("Expected pong id 0x1C, got $packetId")
+            val time = buffer.readLong()
+            val serverGuid = buffer.readLong()
+            val magic = buffer.readBytes(16)
+            if (!magic.contentEquals(RAKNET_MAGIC)) throw IllegalStateException("Invalid magic in response")
+            val payloadLength = buffer.readShort().toInt() and 0xFFFF
+            val payloadBytes = buffer.readBytes(payloadLength)
+            val payload = payloadBytes.decodeToString()
+            return BedrockResponsePacket(packetId, time, serverGuid, magic, payload)
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -79,10 +94,8 @@ internal data class BedrockResponsePacket(
         if (packetId != other.packetId) return false
         if (time != other.time) return false
         if (serverGuid != other.serverGuid) return false
-        if (stringLength != other.stringLength) return false
         if (!magic.contentEquals(other.magic)) return false
         if (payload != other.payload) return false
-
         return true
     }
 
@@ -90,7 +103,6 @@ internal data class BedrockResponsePacket(
         var result = packetId.toInt()
         result = 31 * result + time.hashCode()
         result = 31 * result + serverGuid.hashCode()
-        result = 31 * result + stringLength
         result = 31 * result + magic.contentHashCode()
         result = 31 * result + payload.hashCode()
         return result

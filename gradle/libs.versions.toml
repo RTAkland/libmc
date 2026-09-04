@@ -1,0 +1,14 @@
+[versions]
+kotlin = "2.4.10"
+kotlinx-io = "0.9.1"
+ktor-network = "3.5.2"
+coroutines-test = "1.11.0"
+
+[libraries]
+kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
+ktor-network = { module = "io.ktor:ktor-network", version.ref = "ktor-network" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+maven-publish = { id = "maven-publish" }

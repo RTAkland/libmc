@@ -17,13 +17,13 @@ kotlin {
         }
 
         nativeMain.dependencies {
-            implementation("io.ktor:ktor-network:3.5.2")
-            implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.9.1")
+            implementation(libs.ktor.network)
+            implementation(libs.kotlinx.io)
         }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 

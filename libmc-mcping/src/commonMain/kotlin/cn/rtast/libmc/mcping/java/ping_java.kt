@@ -8,6 +8,8 @@
 package cn.rtast.libmc.mcping.java
 
 import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.common._Buffer
+import cn.rtast.libmc.common._ReadChannel
 import cn.rtast.libmc.common._Socket
 import cn.rtast.libmc.mcping.PingResponse
 import kotlin.time.Clock
@@ -24,22 +26,46 @@ internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): Pin
             serverPort = port.toUShort(),
             nextState = 1
         )
-        sendChannel.sendPacket(handshakePacket)
-        sendChannel.sendPacket(StatusRequestPacket)
+        sendChannel.sendPacket(handshakePacket, HandshakePacket)
+        sendChannel.sendPacket(StatusRequestPacket, StatusRequestPacket)
 
-        receiveChannel.readVarInt()  // consume a varint
-        val packetId = receiveChannel.readVarInt()
-        val jsonResponse = if (packetId == StatusRequestPacket.packetId) receiveChannel.readMcString()
-        else throw IllegalStateException("Server does not respond correct packet id, expected ${StatusRequestPacket.packetId} but got $packetId")
+        val statusFrameBuffer = receiveChannel.readPacketFrame()
+        val statusPacketId = VarIntCodec.decode(statusFrameBuffer)
+        if (statusPacketId != 0x00) {
+            throw IllegalStateException("Expected StatusResponse packet ID 0x00, got $statusPacketId")
+        }
+        val jsonResponse = McStringCodec.decode(statusFrameBuffer)
 
         val sendTime = Clock.System.now().toEpochMilliseconds()
         val pingPacket = PingPacket(sendTime)
-        sendChannel.sendPacket(pingPacket)
-        receiveChannel.readVarInt()  // consume a varint
-        receiveChannel.readVarInt()  // packet id
-        receiveChannel.readLong() // pong packet payload
-        PingResponse(jsonResponse, (Clock.System.now().toEpochMilliseconds() - sendTime).toInt())
+        sendChannel.sendPacket(pingPacket, PingPacket)
+
+        val pongFrameBuffer = receiveChannel.readPacketFrame()
+        val pongPacketId = VarIntCodec.decode(pongFrameBuffer)
+        if (pongPacketId != 0x01) {
+            throw IllegalStateException("Expected Pong packet ID 0x01, got $pongPacketId")
+        }
+        val latency = (Clock.System.now().toEpochMilliseconds() - sendTime).toInt()
+        PingResponse(jsonResponse, latency)
     } finally {
         socket.close()
+    }
+}
+
+private fun _ReadChannel.readVarIntWithCodec(): Int {
+    val tempBuffer = _Buffer()
+    while (true) {
+        val byte = this.readByte()
+        tempBuffer.writeByte(byte)
+        if ((byte.toInt() and 0x80) == 0) break
+    }
+    return VarIntCodec.decode(tempBuffer)
+}
+
+private fun _ReadChannel.readPacketFrame(): _Buffer {
+    val length = this.readVarIntWithCodec()
+    val frameBytes = this.readBytes(length)
+    return _Buffer().apply {
+        writeBytes(frameBytes)
     }
 }

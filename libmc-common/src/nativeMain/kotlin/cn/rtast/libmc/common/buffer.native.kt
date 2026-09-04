@@ -7,6 +7,7 @@
 package cn.rtast.libmc.common
 
 import io.ktor.utils.io.bits.*
+import io.ktor.utils.io.core.*
 import kotlinx.io.Buffer
 import kotlinx.io.readByteArray
 
@@ -68,6 +69,6 @@ public actual class _Buffer {
     public actual fun hasRemaining(): Boolean = !_delegateBuf.exhausted()
     public actual fun close(): Unit = _delegateBuf.close()
 
-    public actual val size: Int
-        get() = _delegateBuf.size.toInt()
+    public actual val size: Int get() = _delegateBuf.size.toInt()
+    public actual val remaining: Long get() = _delegateBuf.remaining
 }

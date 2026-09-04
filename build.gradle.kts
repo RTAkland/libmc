@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "2.4.10" apply false
-    id("maven-publish")
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.maven.publish)
 }
 
 allprojects {
