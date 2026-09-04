@@ -1,4 +1,4 @@
-# mcping
+# libmc
 
 A lightweight motd ping / rcon client library for kotlin multiplatform and java,
 no dependencies in `jvm` target except `kotlin-stdlib`

@@ -4,7 +4,7 @@ plugins {
 }
 
 allprojects {
-    group = "cn.rtast.mcping"
+    group = "cn.rtast.libmc"
     version = providers.gradleProperty("libVersion").get()
 
     repositories {

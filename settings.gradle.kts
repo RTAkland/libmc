@@ -1,8 +1,8 @@
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
-rootProject.name = "mcping"
+rootProject.name = "libmc"
 
+include(":common")
 include(":mcping")
 include(":rconlib")
-include(":common")

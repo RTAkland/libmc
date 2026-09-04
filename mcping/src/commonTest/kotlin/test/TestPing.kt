@@ -7,8 +7,8 @@
 
 package test
 
-import cn.rtast.mcping.ServerType
-import cn.rtast.mcping.mcping
+import cn.rtast.libmc.mcping.ServerType
+import cn.rtast.libmc.mcping.mcping
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 

@@ -7,7 +7,7 @@
 
 package test
 
-import cn.rtast.mcping.rconlib.rconClient
+import cn.rtast.libmc.mcping.rconlib.rconClient
 import kotlin.test.Test
 
 class TestRCON {

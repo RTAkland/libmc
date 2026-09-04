@@ -7,8 +7,8 @@
 
 package test;
 
-import cn.rtast.mcping.rconlib.RCONClient;
-import cn.rtast.mcping.rconlib.Rconlib;
+import cn.rtast.libmc.mcping.rconlib.RCONClient;
+import cn.rtast.libmc.mcping.rconlib.Rconlib;
 import org.junit.Test;
 
 public class TestRconClientOnJava {

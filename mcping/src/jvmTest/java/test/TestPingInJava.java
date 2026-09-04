@@ -7,9 +7,9 @@
 
 package test;
 
-import cn.rtast.mcping.McPing;
-import cn.rtast.mcping.PingResponse;
-import cn.rtast.mcping.ServerType;
+import cn.rtast.libmc.mcping.McPing;
+import cn.rtast.libmc.mcping.PingResponse;
+import cn.rtast.libmc.mcping.ServerType;
 import org.junit.Test;
 
 
