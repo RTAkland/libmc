@@ -1,6 +1,6 @@
 # libmc
 
-A lightweight motd ping / rcon client library for kotlin multiplatform and java,
+A lightweight minecraft related library, such as rcon client, motd ping and more for kotlin multiplatform and java,
 no dependencies in `jvm` target except `kotlin-stdlib`
 
 native platforms required `ktor-network` and `kotlinx-io`
@@ -17,10 +17,9 @@ native platforms required `ktor-network` and `kotlinx-io`
 
 # Get started
 
-[Use mcping module](https://repo.rtast.cn/packages/-/cn.rtast.mcping:mcping/)
+[Use mcping module](https://repo.rtast.cn/packages/-/cn.rtast.libmc:mcping/)
 
-[Use rconlib module](https://repo.rtast.cn/packages/-/cn.rtast.mcping:rconlib/)
-
+[Use rconlib module](https://repo.rtast.cn/packages/-/cn.rtast.libmc:rconlib/)
 
 # MC Ping
 
