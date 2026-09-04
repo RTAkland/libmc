@@ -3,6 +3,10 @@ plugins {
 }
 rootProject.name = "libmc"
 
-include(":common")
-include(":mcping")
-include(":rconlib")
+includeSubModule(":common")
+includeSubModule(":mcping")
+includeSubModule(":rconlib")
+
+fun includeSubModule(name: String) = include(name).also {
+    project(name).projectDir = file("libmc-${name.removePrefix(":")}")
+}
