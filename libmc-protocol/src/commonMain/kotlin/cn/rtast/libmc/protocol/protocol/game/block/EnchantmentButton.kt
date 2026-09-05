@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.block
+package cn.rtast.libmc.protocol.protocol.game.block
 
 public enum class EnchantmentButton(public val id: Int) {
     TOPMOST(0),

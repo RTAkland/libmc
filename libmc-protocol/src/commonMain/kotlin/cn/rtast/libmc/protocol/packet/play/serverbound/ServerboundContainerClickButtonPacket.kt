@@ -11,8 +11,8 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
-import cn.rtast.libmc.protocol.block.EnchantmentButton
-import cn.rtast.libmc.protocol.block.LecternButton
+import cn.rtast.libmc.protocol.protocol.game.block.EnchantmentButton
+import cn.rtast.libmc.protocol.protocol.game.block.LecternButton
 
 public data class ServerboundContainerClickButtonPacket(val windowId: Int, val buttonId: Int) : MinecraftPacket {
     public constructor(windowId: Int, button: EnchantmentButton) : this(windowId, button.id)

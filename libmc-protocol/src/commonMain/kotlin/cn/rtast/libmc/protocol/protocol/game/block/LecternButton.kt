@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.block
+package cn.rtast.libmc.protocol.protocol.game.block
 
 public enum class LecternButton(public val id: Int) {
     PREVIOUS_PAGE(1),
