@@ -62,3 +62,10 @@ public fun NBTOutput.writeRootNBTCompound(name: String = ""): ByteArray {
     writeTagPayload(root)
     return toByteArray()
 }
+
+public fun NBTOutput.writeNetworkCompound(compound: NBTCompound) {
+    val compoundTag = compound.element as? NBTTag.CompoundTag
+        ?: throw IllegalArgumentException("NBTCompound element must be an NBTTag.CompoundTag")
+    writeByte(NBTType.Compound.id)
+    writeTagPayload(compoundTag)
+}

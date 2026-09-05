@@ -56,8 +56,51 @@ public fun BytesBuffer.readUuid(): Uuid {
 public fun BytesBuffer.writeVarInt(value: Int): Unit = VarIntCodec.encode(this, value)
 public fun BytesBuffer.readVarInt(): Int = VarIntCodec.decode(this)
 
+public fun BytesBuffer.writeVarLong(value: Long): Unit = VarLongCodec.encode(this, value)
+public fun BytesBuffer.readVarLong(): Long = VarLongCodec.decode(this)
+
 public fun BytesBuffer.writeMcString(value: String): Unit = McStringCodec.encode(this, value)
 public fun BytesBuffer.readMcString(): String = McStringCodec.decode(this)
+
+public fun BytesBuffer.readPrefixedByteArray(): ByteArray {
+    val length = this.readVarInt()
+    val data = this.readBytes(length)
+    return data
+}
+
+public fun BytesBuffer.writePrefixedByteArray(data: ByteArray) {
+    this.writeVarInt(data.size)
+    this.writeBytes(data)
+}
+
+public fun BytesBuffer.readPrefixedVarIntArray(): List<Int> {
+    val length = readVarInt()
+    val list = ArrayList<Int>(length)
+    repeat(length) { list.add(readVarInt()) }
+    return list
+}
+
+public fun BytesBuffer.writePrefixedVarIntArray(value: List<Int>) {
+    writeVarInt(value.size)
+    for (item in value) writeVarInt(item)
+}
+
+public fun BytesBuffer.readPrefixedStringArray(): List<String> {
+    val length = readVarInt()
+    val list = ArrayList<String>(length)
+    repeat(length) { list.add(readMcString()) }
+    return list
+}
+
+public fun BytesBuffer.writePrefixedStringArray(value: List<String>) {
+    writeVarInt(value.size)
+    for (item in value) writeMcString(item)
+}
+
+public inline fun <T> BytesBuffer.writePrefixedArray(value: List<T>, writeItem: BytesBuffer.(T) -> Unit) {
+    writeVarInt(value.size)
+    for (item in value) writeItem(item)
+}
 
 public fun ReadChannel.readPacketFrame(): BytesBuffer {
     val length = this.readVarInt()

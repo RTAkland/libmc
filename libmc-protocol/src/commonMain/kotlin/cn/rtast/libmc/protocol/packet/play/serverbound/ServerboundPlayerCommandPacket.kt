@@ -1,0 +1,35 @@
+/*
+ * Copyright © 2026 RTAkland
+ * Author: RTAkland
+ * Date: 2026/9/5
+ */
+
+
+package cn.rtast.libmc.protocol.packet.play.serverbound
+
+import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.protocol.protocol.game.player.PlayerCommandAction
+
+public data class ServerboundPlayerCommandPacket(
+    val entityId: Int,
+    val action: PlayerCommandAction,
+    /**
+     * Only used by the “start jump with horse” action,
+     * in which case it ranges from 0 to 100. In all other cases it is 0
+     */
+    val jumpBoost: Int,
+) : MinecraftPacket {
+    public companion object Codec : PacketCodec<ServerboundPlayerCommandPacket> {
+        override fun encode(buffer: BytesBuffer, value: ServerboundPlayerCommandPacket) {
+            buffer.writeVarInt(value.entityId)
+            buffer.writeVarInt(value.action.id)
+            buffer.writeVarInt(value.jumpBoost)
+        }
+
+        override fun decode(buffer: BytesBuffer): ServerboundPlayerCommandPacket =
+            throw UnsupportedOperationException()
+    }
+}

@@ -10,9 +10,10 @@ import cn.rtast.libmc.common.LibMCContext
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
-import cn.rtast.libmc.protocol.packet.login.ServerboundLoginStartPacket
+import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginStartPacket
 import cn.rtast.libmc.protocol.protocol.state.HandshakeIntent
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
+import cn.rtast.libmc.protocol.session.TransactionIdManager
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -34,6 +35,8 @@ public class MinecraftClient internal constructor(
 
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
+
+    public val transactionManager: TransactionIdManager = TransactionIdManager()
 
     override val coroutineContext: CoroutineContext
         get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")

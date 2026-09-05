@@ -5,7 +5,11 @@ plugins {
 
 allprojects {
     group = "cn.rtast.libmc"
-    version = providers.gradleProperty("libVersion").get()
+    val libVersion = getProperty("libVersion")
+    version = when (name) {
+        "protocol" -> "${getProperty("protocolVersion")}-$libVersion"
+        else -> libVersion
+    }
 
     repositories {
         mavenCentral()
@@ -30,3 +34,5 @@ subprojects {
         }
     }
 }
+
+fun getProperty(name: String): String = providers.gradleProperty(name).get()

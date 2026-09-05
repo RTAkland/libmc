@@ -8,9 +8,41 @@
 package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.protocol.packet.configuration.*
-import cn.rtast.libmc.protocol.packet.login.*
-import cn.rtast.libmc.protocol.packet.play.*
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundCookieRequestPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundCustomPayloadPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundDisconnectConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundFinishConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundKeepAliveConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundPingConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.clientbound.ClientboundSelectKnownPacksPacket
+import cn.rtast.libmc.protocol.packet.configuration.serverbound.ServerboundAckFinishConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.serverbound.ServerboundKeepAliveConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.serverbound.ServerboundPongConfigurationPacket
+import cn.rtast.libmc.protocol.packet.configuration.serverbound.ServerboundSelectKnownPacksPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundDisconnectLoginPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundSetCompressionPacket
+import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginAcknowledgedPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAcknowledgeBlockChangePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAwardStatisticsPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundBlockDestructionPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundBlockEntityDataPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundDelimiterPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundDisconnectPlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundEntityAnimationPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundKeepAlivePlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLoginPlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPingPlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSpawnEntityPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStartConfigurationPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSystemChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundConfigurationAcknowledgedPacket
+import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundKeepAlivePlayPacket
+import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundPongPlayPacket
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 
 internal class InternalPacketDispatcher(private val client: MinecraftClient) {
@@ -90,6 +122,13 @@ internal class InternalPacketDispatcher(private val client: MinecraftClient) {
             }
 
             is ClientboundSystemChatMessagePacket -> {}
+            is ClientboundAcknowledgeBlockChangePacket -> {}
+            is ClientboundAwardStatisticsPacket -> {}
+            is ClientboundBlockDestructionPacket -> {}
+            is ClientboundBlockEntityDataPacket -> {}
+            ClientboundDelimiterPacket -> {}
+            is ClientboundEntityAnimationPacket -> {}
+            is ClientboundSpawnEntityPacket -> {}
         }
     }
 }
