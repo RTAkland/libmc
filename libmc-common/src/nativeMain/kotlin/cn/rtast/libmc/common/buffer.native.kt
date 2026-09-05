@@ -6,12 +6,10 @@
 
 package cn.rtast.libmc.common
 
-import io.ktor.utils.io.bits.*
 import io.ktor.utils.io.core.*
+import kotlinx.io.*
 import kotlinx.io.Buffer
-import kotlinx.io.readByteArray
 
-@Suppress("CLASSNAME")
 public actual class BytesBuffer {
     private val _delegateBuf: Buffer
 
@@ -26,37 +24,43 @@ public actual class BytesBuffer {
     public actual fun writeByte(value: Byte): Unit = _delegateBuf.writeByte(value)
     public actual fun writeShort(value: Short, endian: ByteOrder) {
         if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeShort(value)
-        else _delegateBuf.writeShort(value.reverseByteOrder())
+        else _delegateBuf.writeShortLe(value)
     }
 
     public actual fun writeInt(value: Int, endian: ByteOrder) {
         if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeInt(value)
-        else _delegateBuf.writeInt(value.reverseByteOrder())
+        else _delegateBuf.writeIntLe(value)
     }
 
     public actual fun writeLong(value: Long, endian: ByteOrder) {
         if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeLong(value)
-        else _delegateBuf.writeLong(value.reverseByteOrder())
+        else _delegateBuf.writeLongLe(value)
     }
+
+    public actual fun writeDouble(value: Double, endian: ByteOrder): Unit =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeDouble(value) else _delegateBuf.writeDoubleLe(value)
+
+    public actual fun writeFloat(value: Float, endian: ByteOrder): Unit =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.writeFloat(value) else _delegateBuf.writeFloatLe(value)
 
     public actual fun writeBytes(bytes: ByteArray): Unit = _delegateBuf.write(bytes)
     public actual fun writeBoolean(value: Boolean): Unit = _delegateBuf.writeByte(if (value) 0x01 else 0x00)
 
     public actual fun readByte(): Byte = _delegateBuf.readByte()
-    public actual fun readShort(endian: ByteOrder): Short {
-        val v = _delegateBuf.readShort()
-        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
-    }
+    public actual fun readShort(endian: ByteOrder): Short =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readShort() else _delegateBuf.readShortLe()
 
-    public actual fun readInt(endian: ByteOrder): Int {
-        val v = _delegateBuf.readInt()
-        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
-    }
+    public actual fun readInt(endian: ByteOrder): Int =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readInt() else _delegateBuf.readIntLe()
 
-    public actual fun readLong(endian: ByteOrder): Long {
-        val v = _delegateBuf.readLong()
-        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
-    }
+    public actual fun readLong(endian: ByteOrder): Long =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readLong() else _delegateBuf.readLongLe()
+
+    public actual fun readDouble(endian: ByteOrder): Double =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readDouble() else _delegateBuf.readDoubleLe()
+
+    public actual fun readFloat(endian: ByteOrder): Float =
+        if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readFloat() else _delegateBuf.readFloatLe()
 
     public actual fun readBytes(length: Int): ByteArray = _delegateBuf.readByteArray(length)
     public actual fun readBoolean(): Boolean = _delegateBuf.readByte() != 0x00.toByte()

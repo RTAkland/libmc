@@ -8,7 +8,6 @@ package cn.rtast.libmc.common
 
 import java.io.ByteArrayOutputStream
 
-@Suppress("CLASSNAME")
 public actual class BytesBuffer {
     private val outStream = ByteArrayOutputStream()
     private var readBuffer: ByteArray? = null
@@ -26,6 +25,7 @@ public actual class BytesBuffer {
     }
 
     public actual fun writeShort(value: Short, endian: ByteOrder) {
+        readBuffer = null
         val v = value.toInt()
         if (endian == ByteOrder.BIG_ENDIAN) {
             outStream.write(v shr 8)
@@ -37,6 +37,7 @@ public actual class BytesBuffer {
     }
 
     public actual fun writeInt(value: Int, endian: ByteOrder) {
+        readBuffer = null
         if (endian == ByteOrder.BIG_ENDIAN) {
             outStream.write(value shr 24)
             outStream.write(value shr 16)
@@ -51,11 +52,20 @@ public actual class BytesBuffer {
     }
 
     public actual fun writeLong(value: Long, endian: ByteOrder) {
+        readBuffer = null
         if (endian == ByteOrder.BIG_ENDIAN) {
             for (i in 56 downTo 0 step 8) outStream.write((value shr i).toInt())
         } else {
             for (i in 0..56 step 8) outStream.write((value shr i).toInt())
         }
+    }
+
+    public actual fun writeDouble(value: Double, endian: ByteOrder) {
+        writeLong(value.toRawBits(), endian)
+    }
+
+    public actual fun writeFloat(value: Float, endian: ByteOrder) {
+        writeInt(value.toRawBits(), endian)
     }
 
     public actual fun writeBytes(bytes: ByteArray) {
@@ -83,6 +93,15 @@ public actual class BytesBuffer {
     public actual fun readShort(endian: ByteOrder): Short = readBytes(2).toShort(endian)
     public actual fun readInt(endian: ByteOrder): Int = readBytes(4).toInt(endian)
     public actual fun readLong(endian: ByteOrder): Long = readBytes(8).toLong(endian)
+
+    public actual fun readDouble(endian: ByteOrder): Double {
+        return Double.fromBits(readLong(endian))
+    }
+
+    public actual fun readFloat(endian: ByteOrder): Float {
+        return Float.fromBits(readInt(endian))
+    }
+
     public actual fun readBytes(length: Int): ByteArray {
         val array = ensureReadArray()
         if (readOffset + length > array.size) throw IndexOutOfBoundsException("Buffer underflow")
@@ -96,7 +115,9 @@ public actual class BytesBuffer {
     public actual fun readRemainingBytes(): ByteArray {
         val array = ensureReadArray()
         if (readOffset >= array.size) return byteArrayOf()
-        return array.copyOfRange(readOffset, array.size)
+        val result = array.copyOfRange(readOffset, array.size)
+        readOffset = array.size
+        return result
     }
 
     public actual fun toByteArray(): ByteArray = outStream.toByteArray()

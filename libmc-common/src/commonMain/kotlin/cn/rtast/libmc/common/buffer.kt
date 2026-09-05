@@ -9,7 +9,6 @@ package cn.rtast.libmc.common
 
 import kotlin.uuid.Uuid
 
-@Suppress("CLASSNAME")
 public expect class BytesBuffer {
     public constructor()
     public constructor(bytes: ByteArray)
@@ -18,6 +17,8 @@ public expect class BytesBuffer {
     public fun writeShort(value: Short, endian: ByteOrder = ByteOrder.BIG_ENDIAN)
     public fun writeInt(value: Int, endian: ByteOrder = ByteOrder.BIG_ENDIAN)
     public fun writeLong(value: Long, endian: ByteOrder = ByteOrder.BIG_ENDIAN)
+    public fun writeDouble(value: Double, endian: ByteOrder = ByteOrder.BIG_ENDIAN)
+    public fun writeFloat(value: Float, endian: ByteOrder = ByteOrder.BIG_ENDIAN)
     public fun writeBytes(bytes: ByteArray)
     public fun writeBoolean(value: Boolean)
 
@@ -25,6 +26,8 @@ public expect class BytesBuffer {
     public fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
     public fun readInt(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Int
     public fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long
+    public fun readDouble(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Double
+    public fun readFloat(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Float
     public fun readBytes(length: Int): ByteArray
     public fun readBoolean(): Boolean
     public fun readRemainingBytes(): ByteArray

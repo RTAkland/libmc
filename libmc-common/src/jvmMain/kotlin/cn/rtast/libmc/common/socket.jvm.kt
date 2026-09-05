@@ -11,7 +11,6 @@ import java.net.DatagramSocket
 import java.net.InetSocketAddress
 import java.net.Socket as JvmSocket
 
-@Suppress("CLASSNAME")
 public actual class Socket public actual constructor(host: String, port: Int, context: LibMCContext) {
     private val socket = JvmSocket(host, port)
 
@@ -20,8 +19,7 @@ public actual class Socket public actual constructor(host: String, port: Int, co
     public actual fun close(): Unit = socket.close()
 }
 
-@Suppress("CLASSNAME")
-public actual class _UdpSocket public actual constructor(host: String, port: Int, context: LibMCContext) {
+public actual class UdpSocket public actual constructor(host: String, port: Int, context: LibMCContext) {
     private val socket = DatagramSocket().apply {
         soTimeout = 3000
         connect(InetSocketAddress(host, port))

@@ -8,13 +8,13 @@
 package cn.rtast.libmc.mcping.bedrock
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common._UdpSocket
+import cn.rtast.libmc.common.UdpSocket
 import cn.rtast.libmc.common.wrap
 import cn.rtast.libmc.mcping.PingResponse
 import kotlin.time.Clock
 
 internal fun pingBedrockServer(host: String, port: Int, context: LibMCContext): PingResponse {
-    val socket = _UdpSocket(host, port, context)
+    val socket = UdpSocket(host, port, context)
     return try {
         val sendTime = Clock.System.now().toEpochMilliseconds()
         val requestPacket = BedrockRequestPacket(sendTime)

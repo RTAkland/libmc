@@ -8,11 +8,7 @@ package cn.rtast.libmc.protocol.protocol
 
 import cn.rtast.libmc.protocol.packet.configuration.*
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
-import cn.rtast.libmc.protocol.packet.login.ClientboundDisconnectLoginPacket
-import cn.rtast.libmc.protocol.packet.login.ClientboundLoginSuccessPacket
-import cn.rtast.libmc.protocol.packet.login.ClientboundSetCompressionPacket
-import cn.rtast.libmc.protocol.packet.login.ServerboundLoginAcknowledgedPacket
-import cn.rtast.libmc.protocol.packet.login.ServerboundLoginStartPacket
+import cn.rtast.libmc.protocol.packet.login.*
 import cn.rtast.libmc.protocol.packet.play.*
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 import cn.rtast.libmc.protocol.protocol.state.ProtocolStateRegistry
@@ -40,6 +36,7 @@ internal object GameProtocols {
             register(0x3d, ClientboundPingPlayPacket)
             register(0x41, ClientboundPlayerChatMessagePacket)
             register(0x76, ClientboundStartConfigurationPacket)
+            register(0x79, ClientboundSystemChatMessagePacket)
         }
     }
 
@@ -58,6 +55,9 @@ internal object GameProtocols {
             register(0x03, ServerboundLoginAcknowledgedPacket)
         }
         register(ProtocolState.PLAY) {
+            register(0x00, ClientboundDelimiterPacket)
+            register(0x01, ClientboundSpawnEntityPacket)
+            register(0x02, ClientboundEntityAnimationPacket)
             register(0x09, ServerboundChatMessagePacket)
             register(0x2d, ServerboundPongPlayPacket)
             register(0x10, ServerboundConfigurationAcknowledgedPacket)

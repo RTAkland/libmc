@@ -88,6 +88,8 @@ internal class InternalPacketDispatcher(private val client: MinecraftClient) {
                 client.networkChannel.sendPacket(ServerboundConfigurationAcknowledgedPacket)
                 client.stateMachine.transitionTo(ProtocolState.CONFIGURATION)
             }
+
+            is ClientboundSystemChatMessagePacket -> {}
         }
     }
 }

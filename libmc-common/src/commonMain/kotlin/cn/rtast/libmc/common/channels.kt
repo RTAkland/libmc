@@ -7,7 +7,6 @@
 
 package cn.rtast.libmc.common
 
-@Suppress("CLASSNAME")
 public expect class ReadChannel {
     public fun readByte(): Byte
     public fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
@@ -17,7 +16,6 @@ public expect class ReadChannel {
     public fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size)
 }
 
-@Suppress("CLASSNAME")
 public expect class WriteChannel {
     public fun writeFully(value: ByteArray, startIndex: Int = 0, endIndex: Int = value.size)
     public fun flush()

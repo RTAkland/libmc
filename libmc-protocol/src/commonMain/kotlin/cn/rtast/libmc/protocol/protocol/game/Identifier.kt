@@ -27,6 +27,7 @@ public value class Identifier internal constructor(public val raw: String) {
 
     public companion object Codec : PacketCodec<Identifier> {
         public fun of(namespace: String, path: String): Identifier = Identifier("$namespace:$path")
+        public fun of(full: String): Identifier = Identifier(full)
 
         override fun encode(buffer: BytesBuffer, value: Identifier) {
             buffer.writeMcString(value.toString())

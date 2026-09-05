@@ -11,7 +11,6 @@ import java.io.EOFException
 import java.io.InputStream
 import java.io.OutputStream
 
-@Suppress("CLASSNAME")
 public actual class ReadChannel(private val _inputStream: InputStream) {
 
     public actual fun readByte(): Byte = _inputStream.read().toByte()
@@ -32,7 +31,6 @@ public actual class ReadChannel(private val _inputStream: InputStream) {
     public actual fun readLong(endian: ByteOrder): Long = readBytes(8).toLong(endian)
 }
 
-@Suppress("CLASSNAME")
 public actual class WriteChannel {
     private val _outputStream: OutputStream
 
