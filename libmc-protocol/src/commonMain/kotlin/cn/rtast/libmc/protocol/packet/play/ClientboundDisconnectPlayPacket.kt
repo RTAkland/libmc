@@ -7,17 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.play
 
-import cn.rtast.libmc.protocol.util.readMinimalTextNbt
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.nbt.NBTCompound
+import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
-public data class ClientboundDisconnectPlayPacket(val reason: String) : MinecraftPacket {
+public data class ClientboundDisconnectPlayPacket(val reason: NBTCompound) : ClientboundPlayPacket {
     public companion object Codec : PacketCodec<ClientboundDisconnectPlayPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundDisconnectPlayPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundDisconnectPlayPacket {
-            val reasonText = buffer.readMinimalTextNbt()
-            return ClientboundDisconnectPlayPacket(reason = reasonText)
+            return ClientboundDisconnectPlayPacket(reason = buffer.readNetworkNBTCompound())
         }
     }
 }

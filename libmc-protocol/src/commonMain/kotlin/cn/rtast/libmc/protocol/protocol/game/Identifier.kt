@@ -7,19 +7,21 @@
 
 package cn.rtast.libmc.protocol.protocol.game
 
-import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readMcString
 import cn.rtast.libmc.common.writeMcString
+import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Identifier
  */
 @JvmInline
-public value class Identifier(public val full: String) {
-    public val namespace: String get() = if (full.contains(':')) full.substringBefore(':') else "minecraft"
-    public val path: String get() = if (full.contains(':')) full.substringAfter(':') else full
+@Serializable
+public value class Identifier internal constructor(public val raw: String) {
+    public val namespace: String get() = if (raw.contains(':')) raw.substringBefore(':') else "minecraft"
+    public val path: String get() = if (raw.contains(':')) raw.substringAfter(':') else raw
 
     override fun toString(): String = "$namespace:$path"
 

@@ -9,9 +9,8 @@ package cn.rtast.libmc.protocol.packet.play
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
 
-public data object ClientboundStartConfigurationPacket : MinecraftPacket,
+public data object ClientboundStartConfigurationPacket : ClientboundPlayPacket,
     PacketCodec<ClientboundStartConfigurationPacket> {
     override fun encode(buffer: BytesBuffer, value: ClientboundStartConfigurationPacket) {}
     override fun decode(buffer: BytesBuffer): ClientboundStartConfigurationPacket {

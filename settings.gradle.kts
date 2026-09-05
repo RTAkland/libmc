@@ -7,8 +7,9 @@ includeSubModule(":common")
 includeSubModule(":mcping")
 includeSubModule(":rconlib")
 includeSubModule(":protocol")
-//includeSubModule(":nbt")
+includeSubModule(":nbt")
+includeSubModule(":snbt")
 
-fun includeSubModule(name: String) = include(name).also {
-    project(name).projectDir = file("libmc-${name.removePrefix(":")}")
+fun includeSubModule(name: String, path: String? = null) = include(name).also {
+    project(name).projectDir = file(path ?: "libmc-${name.removePrefix(":")}")
 }

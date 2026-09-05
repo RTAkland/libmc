@@ -8,10 +8,13 @@
 package cn.rtast.libmc.protocol.packet.play
 
 import cn.rtast.libmc.common.*
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.protocol.util.writeMinimalTextNbt
+import cn.rtast.libmc.nbt.NBTCompound
+import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import kotlin.uuid.Uuid
 
+/**
+ * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Player_Chat_Message
+ */
 public data class ClientboundPlayerChatMessagePacket(
     val globalIndex: Int,
     val sender: Uuid,
@@ -21,13 +24,13 @@ public data class ClientboundPlayerChatMessagePacket(
     val timestamp: Long,
     val salt: Long,
     val previousMessages: List<PreviousMessageEntry>,
-    val unsignedContent: String?,
+    val unsignedContent: NBTCompound?,
     val filterType: ChatFilterType,
     val filterMaskBits: LongArray?,
     val chatType: Int,
-    val senderName: String,
-    val targetName: String?,
-) : MinecraftPacket {
+    val senderName: NBTCompound,
+    val targetName: NBTCompound?,
+) : ClientboundPlayPacket {
     public enum class ChatFilterType(public val id: Int) {
         PASS_THROUGH(0),
         FULLY_FILTERED(1),
@@ -39,32 +42,22 @@ public data class ClientboundPlayerChatMessagePacket(
         }
     }
 
-    public data class PreviousMessageEntry(
-        val messageId: Int,
-        val signature: ByteArray?,
-    ) {
+    public data class PreviousMessageEntry(val messageId: Int, val signature: ByteArray?) {
         public companion object Codec : PacketCodec<PreviousMessageEntry> {
-            override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {
-                buffer.writeVarInt(value.messageId)
-                if (value.messageId == 0) {
-                    val sig = requireNotNull(value.signature) { "signature must be present when messageId is 0" }
-                    require(sig.size == 256)
-                    buffer.writeBytes(sig)
-                }
+            override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
+            override fun decode(buffer: BytesBuffer): PreviousMessageEntry {
+                val messageId = buffer.readVarInt()
+                val signature = if (messageId == 0) buffer.readBytes(256) else null
+                return PreviousMessageEntry(messageId, signature)
             }
-
-            override fun decode(buffer: BytesBuffer): PreviousMessageEntry = throw UnsupportedOperationException()  // TODO
         }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other == null || this::class != other::class) return false
-
             other as PreviousMessageEntry
-
             if (messageId != other.messageId) return false
             if (!signature.contentEquals(other.signature)) return false
-
             return true
         }
 
@@ -76,43 +69,46 @@ public data class ClientboundPlayerChatMessagePacket(
     }
 
     public companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {
-            buffer.writeVarInt(value.globalIndex)
-            buffer.writeUuid(value.sender)
-            buffer.writeVarInt(value.index)
-            val hasSignature = value.messageSignature != null
-            buffer.writeBoolean(hasSignature)
-            if (hasSignature) buffer.writeBytes(requireNotNull(value.messageSignature))
+        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
+            val globalIndex = buffer.readVarInt()
+            val sender = buffer.readUuid()
+            val index = buffer.readVarInt()
+            val hasSignature = buffer.readBoolean()
+            val messageSignature = if (hasSignature) buffer.readBytes(256) else null
 
-            buffer.writeMcString(value.message)
-            buffer.writeLong(value.timestamp)
-            buffer.writeLong(value.salt)
+            val message = buffer.readMcString()
+            val timestamp = buffer.readLong()
+            val salt = buffer.readLong()
 
-            require(value.previousMessages.size == 20)
-            buffer.writeVarInt(value.previousMessages.size)
-            value.previousMessages.forEach { entry -> PreviousMessageEntry.encode(buffer, entry) }
+            val prevMessageCount = buffer.readVarInt()
+            val prevMessages = List(prevMessageCount) { PreviousMessageEntry.decode(buffer) }
 
-            val hasUnsignedContent = value.unsignedContent != null
-            buffer.writeBoolean(hasUnsignedContent)
-            value.unsignedContent?.let { buffer.writeMinimalTextNbt(it) }
+            val hasUnsignedContent = buffer.readBoolean()
+            val unsignedContent = if (hasUnsignedContent) buffer.readNetworkNBTCompound() else null  // ?
 
-            buffer.writeVarInt(value.filterType.id)
-            if (value.filterType == ChatFilterType.PARTIALLY_FILTERED) {
-                val mask = requireNotNull(value.filterMaskBits)
-                buffer.writeVarInt(mask.size)
-                mask.forEach { buffer.writeLong(it) }
-            }
+            val filterTypeId = buffer.readVarInt()
+            val filterType = ChatFilterType.fromId(filterTypeId)
 
-            buffer.writeVarInt(value.chatType)
-            buffer.writeMinimalTextNbt(value.senderName)
+            val filterMaskBits = if (filterType == ChatFilterType.PARTIALLY_FILTERED) {
+                val bitSetLen = buffer.readVarInt()
+                LongArray(bitSetLen) { buffer.readLong() }
+            } else null
 
-            val hasTargetName = value.targetName != null
-            buffer.writeBoolean(hasTargetName)
-            value.targetName?.let { buffer.writeMinimalTextNbt(it) }
+            val chatType = buffer.readVarInt()
+            val senderName = buffer.readNetworkNBTCompound() // ?
+
+            val hasTargetName = buffer.readBoolean()
+            val targetName = if (hasTargetName) buffer.readNetworkNBTCompound() else null // ?
+            return ClientboundPlayerChatMessagePacket(
+                globalIndex, sender, index,
+                messageSignature, message,
+                timestamp, salt, prevMessages,
+                unsignedContent, filterType,
+                filterMaskBits, chatType,
+                senderName, targetName
+            )
         }
-
-        override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket =
-            throw UnsupportedOperationException()  // TODO
     }
 
     override fun equals(other: Any?): Boolean {

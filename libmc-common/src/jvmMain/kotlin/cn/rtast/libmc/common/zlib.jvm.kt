@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.zip.Deflater
 import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 import java.util.zip.Inflater
 
 public actual fun ByteArray.zlibDecompress(): ByteArray {
@@ -29,28 +30,18 @@ public actual fun ByteArray.zlibDecompress(): ByteArray {
     }
 }
 
-private fun ByteArray.gzipDecompress(): ByteArray {
-    if (isEmpty()) return byteArrayOf()
-    ByteArrayInputStream(this).use { bais ->
-        GZIPInputStream(bais).use { gzis ->
-            val outputStream = ByteArrayOutputStream(this.size * 2)
-            val buffer = ByteArray(1024)
-            var len: Int
-            while (gzis.read(buffer).also { len = it } != -1) {
-                outputStream.write(buffer, 0, len)
-            }
-            return outputStream.toByteArray()
-        }
-    }
-}
-
 public actual fun ByteArray.zlibDecompress(expectedSize: Int): ByteArray {
     val inflater = Inflater()
     inflater.setInput(this)
     val result = ByteArray(expectedSize)
+    var totalRead = 0
     try {
-        val resultLength = inflater.inflate(result)
-        check(resultLength == expectedSize) { "Decompression failed: expected $expectedSize bytes, but got $resultLength" }
+        while (!inflater.finished() && totalRead < expectedSize) {
+            val read = inflater.inflate(result, totalRead, expectedSize - totalRead)
+            if (read == 0) break
+            totalRead += read
+        }
+        check(totalRead == expectedSize) { "Decompression failed: expected $expectedSize bytes, but got $totalRead" }
         return result
     } finally {
         inflater.end()
@@ -61,8 +52,22 @@ public actual fun ByteArray.zlibCompress(): ByteArray {
     val deflater = Deflater()
     deflater.setInput(this)
     deflater.finish()
-    val output = ByteArray(this.size + 64)
-    val compressedSize = deflater.deflate(output)
+    val bos = ByteArrayOutputStream(this.size)
+    val buffer = ByteArray(1024)
+    while (!deflater.finished()) {
+        val count = deflater.deflate(buffer)
+        if (count > 0) bos.write(buffer, 0, count)
+    }
     deflater.end()
-    return output.copyOf(compressedSize)
+    return bos.toByteArray()
+}
+
+public actual fun ByteArray.gzipCompress(): ByteArray {
+    val bos = ByteArrayOutputStream()
+    GZIPOutputStream(bos).use { it.write(this) }
+    return bos.toByteArray()
+}
+
+public actual fun ByteArray.gzipDecompress(): ByteArray {
+    return GZIPInputStream(ByteArrayInputStream(this)).use { it.readBytes() }
 }

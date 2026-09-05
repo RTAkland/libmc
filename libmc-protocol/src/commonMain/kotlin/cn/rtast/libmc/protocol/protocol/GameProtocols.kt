@@ -25,7 +25,7 @@ internal object GameProtocols {
             register(0x02, ClientboundDisconnectConfigurationPacket)
             register(0x03, ClientboundFinishConfigurationPacket)
             register(0x04, ClientboundKeepAliveConfigurationPacket)
-            register(0x05, ClientboundPingPacket)
+            register(0x05, ClientboundPingConfigurationPacket)
             register(0x0e, ClientboundSelectKnownPacksPacket)
         }
         register(ProtocolState.LOGIN) {
@@ -34,6 +34,7 @@ internal object GameProtocols {
             register(0x03, ClientboundSetCompressionPacket)
         }
         register(ProtocolState.PLAY) {
+            register(0x20, ClientboundDisconnectPlayPacket)
             register(0x2c, ClientboundKeepAlivePlayPacket)
             register(0x31, ClientboundLoginPlayPacket)
             register(0x3d, ClientboundPingPlayPacket)
@@ -49,7 +50,7 @@ internal object GameProtocols {
         register(ProtocolState.CONFIGURATION) {
             register(0x03, ServerboundAckFinishConfigurationPacket)
             register(0x04, ServerboundKeepAliveConfigurationPacket)
-            register(0x05, ServerboundPongPacket)
+            register(0x05, ServerboundPongConfigurationPacket)
             register(0x07, ServerboundSelectKnownPacksPacket)
         }
         register(ProtocolState.LOGIN) {

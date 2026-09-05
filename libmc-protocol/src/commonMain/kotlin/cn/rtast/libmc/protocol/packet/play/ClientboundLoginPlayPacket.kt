@@ -7,15 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play
 
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readVarInt
-import cn.rtast.libmc.protocol.protocol.game.BlockPos
-import cn.rtast.libmc.protocol.protocol.game.GameMode
-import cn.rtast.libmc.protocol.protocol.game.Identifier
-import cn.rtast.libmc.protocol.protocol.game.readBlockPos
-import cn.rtast.libmc.protocol.protocol.game.readIdentifier
+import cn.rtast.libmc.protocol.protocol.game.*
 
 public data class ClientboundLoginPlayPacket(
     val entityId: Int,
@@ -41,7 +36,7 @@ public data class ClientboundLoginPlayPacket(
     val seaLevel: Int,
     val isOnlineMode: Boolean,
     val enforceSecureChat: Boolean,
-) : MinecraftPacket {
+) : ClientboundPlayPacket {
     public companion object Codec : PacketCodec<ClientboundLoginPlayPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundLoginPlayPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundLoginPlayPacket {

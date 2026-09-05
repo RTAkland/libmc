@@ -9,12 +9,11 @@ package cn.rtast.libmc.protocol.packet.configuration
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
-public data class ClientboundCookieRequestPacket(val key: Identifier) : MinecraftPacket {
+public data class ClientboundCookieRequestPacket(val key: Identifier) : ClientboundConfigurationPacket {
     public companion object Codec : PacketCodec<ClientboundCookieRequestPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCookieRequestPacket) {
             buffer.writeIdentifier(value.key)

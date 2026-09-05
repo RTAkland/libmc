@@ -14,7 +14,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common"))
+            api(project(":common"))
         }
 
         jvmMain.dependencies {

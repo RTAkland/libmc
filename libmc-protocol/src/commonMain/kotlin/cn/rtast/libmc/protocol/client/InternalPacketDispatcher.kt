@@ -9,9 +9,7 @@ package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.packet.configuration.*
-import cn.rtast.libmc.protocol.packet.login.ClientboundDisconnectLoginPacket
-import cn.rtast.libmc.protocol.packet.login.ClientboundLoginSuccessPacket
-import cn.rtast.libmc.protocol.packet.login.ServerboundLoginAcknowledgedPacket
+import cn.rtast.libmc.protocol.packet.login.*
 import cn.rtast.libmc.protocol.packet.play.*
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 
@@ -21,52 +19,74 @@ internal class InternalPacketDispatcher(private val client: MinecraftClient) {
     suspend fun handleIncomingPackets(packet: MinecraftPacket) {
         this.dispatchEvent(packet)
         when (packet) {
+            is ClientboundLoginPacket -> this.handleLoginPackets(packet)
+            is ClientboundConfigurationPacket -> this.handleConfigurationPackets(packet)
+            is ClientboundPlayPacket -> this.handlePlayPackets(packet)
+        }
+    }
+
+    private fun handleLoginPackets(packet: ClientboundLoginPacket) {
+        when (packet) {
+            is ClientboundDisconnectLoginPacket -> {
+                println("Login denied: ${packet.reason}")
+                client.close()
+            }
+
+            is ClientboundSetCompressionPacket -> client.networkChannel.setCompression(packet.threshold)
             is ClientboundLoginSuccessPacket -> {
                 client.networkChannel.sendPacket(ServerboundLoginAcknowledgedPacket)
                 client.stateMachine.transitionTo(ProtocolState.CONFIGURATION)
             }
+        }
+    }
 
-            is ClientboundDisconnectLoginPacket -> {
-                println("Login denied: ${packet.reason}")
-//                close()
+    private fun handleConfigurationPackets(packet: ClientboundConfigurationPacket) {
+        when (packet) {
+            is ClientboundCookieRequestPacket -> {
+                // TODO
             }
 
-            is ClientboundSelectKnownPacksPacket -> {
-                client.networkChannel.sendPacket(ServerboundSelectKnownPacksPacket(emptyList()))  // TODO empty resource packs list
-            }
-
-            is ClientboundPingPacket -> client.networkChannel.sendPacket(ServerboundPongPacket(packet.id))
-
-            is ClientboundKeepAliveConfigurationPacket -> {
-                client.networkChannel.sendPacket(ServerboundKeepAliveConfigurationPacket(packet.id))
-            }
-
-            is ClientboundFinishConfigurationPacket -> {
-                client.networkChannel.sendPacket(ServerboundAckFinishConfigurationPacket)
-                client.stateMachine.transitionTo(ProtocolState.PLAY)
+            is ClientboundCustomPayloadPacket -> {
+                // TODO
             }
 
             is ClientboundDisconnectConfigurationPacket -> {
                 println("Configuration disconnected: ${packet.reason}")
-//                close()
             }
 
-            is ClientboundLoginPlayPacket -> {
-                println("Successfully joined world! Entity ID: ${packet.entityId}")
+            ClientboundFinishConfigurationPacket -> {
+                client.networkChannel.sendPacket(ServerboundAckFinishConfigurationPacket)
+                client.stateMachine.transitionTo(ProtocolState.PLAY)
             }
 
-            is ClientboundKeepAlivePlayPacket -> {
-                client.networkChannel.sendPacket(ServerboundKeepAlivePlayPacket(id = packet.id))
+            is ClientboundKeepAliveConfigurationPacket -> client.networkChannel.sendPacket(
+                ServerboundKeepAliveConfigurationPacket(packet.id)
+            )
+
+            is ClientboundPingConfigurationPacket -> client.networkChannel.sendPacket(
+                ServerboundPongConfigurationPacket(packet.id)
+            )
+
+            is ClientboundSelectKnownPacksPacket -> {
+                client.networkChannel.sendPacket(ServerboundSelectKnownPacksPacket(emptyList()))  // TODO empty resource packs list
+            }
+        }
+    }
+
+    private fun handlePlayPackets(packet: ClientboundPlayPacket) {
+        when (packet) {
+            is ClientboundDisconnectPlayPacket -> client.close()
+            is ClientboundKeepAlivePlayPacket -> client.networkChannel.sendPacket(ServerboundKeepAlivePlayPacket(id = packet.id))
+            is ClientboundLoginPlayPacket -> println("Successfully joined world Entity ID: ${packet.entityId}")
+            is ClientboundPingPlayPacket -> client.networkChannel.sendPacket(ServerboundPongPlayPacket(packet.id))
+            is ClientboundPlayerChatMessagePacket -> {
+                println("Received player chat message $packet")
+                // TODO
             }
 
-            is ClientboundStartConfigurationPacket -> {
+            ClientboundStartConfigurationPacket -> {
                 client.networkChannel.sendPacket(ServerboundConfigurationAcknowledgedPacket)
                 client.stateMachine.transitionTo(ProtocolState.CONFIGURATION)
-            }
-
-            is ClientboundDisconnectPlayPacket -> {
-                println("Disconnected from play session: ${packet.reason}")
-//                close()
             }
         }
     }

@@ -17,7 +17,7 @@ public enum class GameMode(public val id: Byte) {
     /**
      * reserved
      */
-    Unknown(-99);
+    Unknown(-128);
 
     public companion object {
         public fun fromID(id: Byte): GameMode = entries.firstOrNull { it.id == id } ?: Unknown

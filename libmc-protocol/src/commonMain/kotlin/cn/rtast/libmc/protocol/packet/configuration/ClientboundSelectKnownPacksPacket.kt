@@ -9,11 +9,10 @@ package cn.rtast.libmc.protocol.packet.configuration
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.common.writeVarInt
 
-public data class ClientboundSelectKnownPacksPacket(val knownPacks: List<KnownPacks>) : MinecraftPacket {
+public data class ClientboundSelectKnownPacksPacket(val knownPacks: List<KnownPacks>) : ClientboundConfigurationPacket {
     public companion object Codec : PacketCodec<ClientboundSelectKnownPacksPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundSelectKnownPacksPacket) {
             buffer.writeVarInt(value.knownPacks.size)

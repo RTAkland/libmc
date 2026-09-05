@@ -9,10 +9,9 @@ package cn.rtast.libmc.protocol.packet.login
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.readMcString
 
-public data class ClientboundDisconnectLoginPacket(val reason: String) : MinecraftPacket {
+public data class ClientboundDisconnectLoginPacket(val reason: String) : ClientboundLoginPacket {
     public companion object Codec : PacketCodec<ClientboundDisconnectLoginPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundDisconnectLoginPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundDisconnectLoginPacket {

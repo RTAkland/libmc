@@ -13,7 +13,6 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data object ServerboundLoginAcknowledgedPacket : MinecraftPacket,
     PacketCodec<ServerboundLoginAcknowledgedPacket> {
-
     override fun encode(buffer: BytesBuffer, value: ServerboundLoginAcknowledgedPacket) {}
     override fun decode(buffer: BytesBuffer): ServerboundLoginAcknowledgedPacket = throw UnsupportedOperationException()
 }
