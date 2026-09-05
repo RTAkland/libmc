@@ -8,6 +8,7 @@ package cn.rtast.libmc.common
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.util.zip.Deflater
 import java.util.zip.GZIPInputStream
 import java.util.zip.Inflater
 
@@ -41,4 +42,27 @@ private fun ByteArray.gzipDecompress(): ByteArray {
             return outputStream.toByteArray()
         }
     }
+}
+
+public actual fun ByteArray.zlibDecompress(expectedSize: Int): ByteArray {
+    val inflater = Inflater()
+    inflater.setInput(this)
+    val result = ByteArray(expectedSize)
+    try {
+        val resultLength = inflater.inflate(result)
+        check(resultLength == expectedSize) { "Decompression failed: expected $expectedSize bytes, but got $resultLength" }
+        return result
+    } finally {
+        inflater.end()
+    }
+}
+
+public actual fun ByteArray.zlibCompress(): ByteArray {
+    val deflater = Deflater()
+    deflater.setInput(this)
+    deflater.finish()
+    val output = ByteArray(this.size + 64)
+    val compressedSize = deflater.deflate(output)
+    deflater.end()
+    return output.copyOf(compressedSize)
 }

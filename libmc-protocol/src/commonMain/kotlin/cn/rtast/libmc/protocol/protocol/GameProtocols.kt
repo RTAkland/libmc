@@ -10,6 +10,7 @@ import cn.rtast.libmc.protocol.packet.configuration.*
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
 import cn.rtast.libmc.protocol.packet.login.ClientboundDisconnectLoginPacket
 import cn.rtast.libmc.protocol.packet.login.ClientboundLoginSuccessPacket
+import cn.rtast.libmc.protocol.packet.login.ClientboundSetCompressionPacket
 import cn.rtast.libmc.protocol.packet.login.ServerboundLoginAcknowledgedPacket
 import cn.rtast.libmc.protocol.packet.login.ServerboundLoginStartPacket
 import cn.rtast.libmc.protocol.packet.play.*
@@ -30,6 +31,7 @@ internal object GameProtocols {
         register(ProtocolState.LOGIN) {
             register(0x00, ClientboundDisconnectLoginPacket)
             register(0x02, ClientboundLoginSuccessPacket)
+            register(0x03, ClientboundSetCompressionPacket)
         }
         register(ProtocolState.PLAY) {
             register(0x2C, ClientboundKeepAlivePlayPacket)

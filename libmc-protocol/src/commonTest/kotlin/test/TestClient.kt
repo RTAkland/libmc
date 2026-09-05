@@ -7,7 +7,8 @@
 
 package test
 
-import cn.rtast.libmc.protocol.client.MinecraftClient
+import cn.rtast.libmc.protocol.client.createMinecraftClient
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -15,7 +16,10 @@ class TestClient {
 
     @Test
     fun `test client`() = runTest {
-        val cli = MinecraftClient("127.0.0.1", 25565, "123")
-        cli.connect()
+        val cli = createMinecraftClient("127.0.0.1", 25565, "123")
+        cli.launch { cli.connect() }
+
+        while (true) {
+        }
     }
 }

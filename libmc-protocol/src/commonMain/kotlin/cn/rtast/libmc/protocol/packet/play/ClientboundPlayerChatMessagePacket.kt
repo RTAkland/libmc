@@ -9,8 +9,6 @@ package cn.rtast.libmc.protocol.packet.play
 
 import cn.rtast.libmc.common.*
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.protocol.chat.ChatFilterType
-import cn.rtast.libmc.protocol.chat.PreviousMessageEntry
 import cn.rtast.libmc.protocol.util.writeMinimalTextNbt
 import kotlin.uuid.Uuid
 
@@ -30,6 +28,53 @@ public data class ClientboundPlayerChatMessagePacket(
     val senderName: String,
     val targetName: String?,
 ) : MinecraftPacket {
+    public enum class ChatFilterType(public val id: Int) {
+        PASS_THROUGH(0),
+        FULLY_FILTERED(1),
+        PARTIALLY_FILTERED(2);
+
+        public companion object {
+            public fun fromId(id: Int): ChatFilterType =
+                entries.firstOrNull { it.id == id } ?: PASS_THROUGH
+        }
+    }
+
+    public data class PreviousMessageEntry(
+        val messageId: Int,
+        val signature: ByteArray?,
+    ) {
+        public companion object Codec : PacketCodec<PreviousMessageEntry> {
+            override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {
+                buffer.writeVarInt(value.messageId)
+                if (value.messageId == 0) {
+                    val sig = requireNotNull(value.signature) { "signature must be present when messageId is 0" }
+                    require(sig.size == 256)
+                    buffer.writeBytes(sig)
+                }
+            }
+
+            override fun decode(buffer: BytesBuffer): PreviousMessageEntry = throw UnsupportedOperationException()  // TODO
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || this::class != other::class) return false
+
+            other as PreviousMessageEntry
+
+            if (messageId != other.messageId) return false
+            if (!signature.contentEquals(other.signature)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = messageId
+            result = 31 * result + (signature?.contentHashCode() ?: 0)
+            return result
+        }
+    }
+
     public companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {
             buffer.writeVarInt(value.globalIndex)

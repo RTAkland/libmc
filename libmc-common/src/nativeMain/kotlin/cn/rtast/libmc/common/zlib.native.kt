@@ -4,11 +4,12 @@
  * Date: 2026/9/4
  */
 
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
 
 package cn.rtast.libmc.common
 
 import kotlinx.cinterop.*
+import platform.posix.u_longVar
 import platform.zlib.*
 
 private const val ENABLE_ZLIB_GZIP_HEADER = 15 + 32
@@ -64,5 +65,40 @@ public actual fun ByteArray.zlibDecompress(): ByteArray {
         } finally {
             inputPinned.unpin()
         }
+    }
+}
+
+public actual fun ByteArray.zlibDecompress(expectedSize: Int): ByteArray {
+    val result = ByteArray(expectedSize)
+    if (this.isEmpty()) return result
+    memScoped {
+        val destLen = alloc<u_longVar>()
+        destLen.value = expectedSize.toUInt()
+        val res = uncompress(
+            result.refTo(0).getPointer(this).reinterpret(),
+            destLen.ptr,
+            this@zlibDecompress.refTo(0).getPointer(this).reinterpret(),
+            this@zlibDecompress.size.toUInt()
+        )
+        check(res == Z_OK) { "zlib uncompress failed with error code: $res" }
+    }
+    return result
+}
+
+public actual fun ByteArray.zlibCompress(): ByteArray {
+    if (this.isEmpty()) return byteArrayOf()
+    val maxCompressedLen = compressBound(this.size.toUInt()).toInt()
+    val output = ByteArray(maxCompressedLen)
+    memScoped {
+        val destLen = alloc<u_longVar>()
+        destLen.value = maxCompressedLen.toUInt()
+        val res = compress(
+            output.refTo(0).getPointer(this).reinterpret(),
+            destLen.ptr,
+            this@zlibCompress.refTo(0).getPointer(this).reinterpret(),
+            this@zlibCompress.size.toUInt()
+        )
+        check(res == Z_OK) { "zlib compress failed with error code: $res" }
+        return output.copyOf(destLen.value.toInt())
     }
 }

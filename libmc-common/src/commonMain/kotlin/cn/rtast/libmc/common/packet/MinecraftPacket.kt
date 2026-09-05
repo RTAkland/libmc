@@ -7,4 +7,4 @@
 
 package cn.rtast.libmc.common.packet
 
-public interface MinecraftPacket
+public interface MinecraftPacket : PacketEvent

@@ -5,5 +5,6 @@
  */
 
 
-package cn.rtast.libmc.protocol.codec
+package cn.rtast.libmc.common.packet
 
+public interface PacketEvent
