@@ -9,7 +9,7 @@ package cn.rtast.libmc.common
 import java.io.ByteArrayOutputStream
 
 @Suppress("CLASSNAME")
-public actual class _Buffer {
+public actual class BytesBuffer {
     private val outStream = ByteArrayOutputStream()
     private var readBuffer: ByteArray? = null
     private var readOffset = 0

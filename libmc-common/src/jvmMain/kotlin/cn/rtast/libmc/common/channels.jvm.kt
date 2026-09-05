@@ -12,7 +12,7 @@ import java.io.InputStream
 import java.io.OutputStream
 
 @Suppress("CLASSNAME")
-public actual class _ReadChannel(private val _inputStream: InputStream) {
+public actual class ReadChannel(private val _inputStream: InputStream) {
 
     public actual fun readByte(): Byte = _inputStream.read().toByte()
     public actual fun readBytes(length: Int): ByteArray = _inputStream.readNBytes(length)
@@ -33,7 +33,7 @@ public actual class _ReadChannel(private val _inputStream: InputStream) {
 }
 
 @Suppress("CLASSNAME")
-public actual class _WriteChannel {
+public actual class WriteChannel {
     private val _outputStream: OutputStream
 
     public constructor(outputStream: OutputStream) {

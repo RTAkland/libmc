@@ -7,6 +7,6 @@
 
 package cn.rtast.libmc.mcping.rconlib
 
-import cn.rtast.libmc.common._Buffer
+import cn.rtast.libmc.common.BytesBuffer
 
-internal fun _Buffer.writeNull() = writeByte(0x00)
+internal fun BytesBuffer.writeNull() = writeByte(0x00)

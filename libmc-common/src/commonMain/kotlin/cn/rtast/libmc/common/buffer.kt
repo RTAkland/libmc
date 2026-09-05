@@ -10,7 +10,7 @@ package cn.rtast.libmc.common
 import kotlin.uuid.Uuid
 
 @Suppress("CLASSNAME")
-public expect class _Buffer {
+public expect class BytesBuffer {
     public constructor()
     public constructor(bytes: ByteArray)
 
@@ -35,29 +35,27 @@ public expect class _Buffer {
     public val remaining: Long
 }
 
-public fun ByteArray.wrap(): _Buffer = _Buffer(this)
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ByteArray.wrap(): BytesBuffer = BytesBuffer(this)
 
-public fun _Buffer.writeUuid(uuid: Uuid): Unit = uuid.toLongs { mostSignificantBits, leastSignificantBits ->
+public fun BytesBuffer.writeUuid(uuid: Uuid): Unit = uuid.toLongs { mostSignificantBits, leastSignificantBits ->
     this.writeLong(mostSignificantBits)
     this.writeLong(leastSignificantBits)
 }
 
-public fun _Buffer.readUuid(): Uuid {
+public fun BytesBuffer.readUuid(): Uuid {
     val most = this.readLong()
     val least = this.readLong()
     return Uuid.fromLongs(most, least)
 }
 
-public fun _Buffer.writeVarInt(value: Int): Unit = VarIntCodec.encode(this, value)
-public fun _Buffer.readVarInt(): Int = VarIntCodec.decode(this)
+public fun BytesBuffer.writeVarInt(value: Int): Unit = VarIntCodec.encode(this, value)
+public fun BytesBuffer.readVarInt(): Int = VarIntCodec.decode(this)
 
-public fun _Buffer.writeMcString(value: String): Unit = McStringCodec.encode(this, value)
-public fun _Buffer.readMcString(): String = McStringCodec.decode(this)
+public fun BytesBuffer.writeMcString(value: String): Unit = McStringCodec.encode(this, value)
+public fun BytesBuffer.readMcString(): String = McStringCodec.decode(this)
 
-public fun _ReadChannel.readPacketFrame(): _Buffer {
+public fun ReadChannel.readPacketFrame(): BytesBuffer {
     val length = this.readVarInt()
-    val frameBytes = this.readBytes(length)
-    return _Buffer().apply {
-        writeBytes(frameBytes)
-    }
+    return this.readBytes(length).wrap()
 }

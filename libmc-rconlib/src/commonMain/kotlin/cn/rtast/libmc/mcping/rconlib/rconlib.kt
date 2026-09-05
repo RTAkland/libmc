@@ -9,9 +9,9 @@
 package cn.rtast.libmc.mcping.rconlib
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common._ReadChannel
-import cn.rtast.libmc.common._Socket
-import cn.rtast.libmc.common._WriteChannel
+import cn.rtast.libmc.common.ReadChannel
+import cn.rtast.libmc.common.Socket
+import cn.rtast.libmc.common.WriteChannel
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 
@@ -20,13 +20,13 @@ public class RCONClient internal constructor(
     private val port: Int,
     private val context: LibMCContext,
 ) : AutoCloseable {
-    private var socket: _Socket? = null
-    private var readChannel: _ReadChannel? = null
-    private var writeChannel: _WriteChannel? = null
+    private var socket: Socket? = null
+    private var readChannel: ReadChannel? = null
+    private var writeChannel: WriteChannel? = null
     private var currentRequestId = 1
 
     public fun connect(password: String): Boolean {
-        socket = _Socket(host, port, context)
+        socket = Socket(host, port, context)
         readChannel = socket!!.openReadChannel()
         writeChannel = socket!!.openWriteChannel()
         val authPacket = AuthPacket(password, currentRequestId)

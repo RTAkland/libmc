@@ -12,13 +12,13 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.io.readByteArray
 
 @Suppress("CLASSNAME")
-public actual class _Socket public actual constructor(host: String, port: Int, context: LibMCContext) {
+public actual class Socket public actual constructor(host: String, port: Int, context: LibMCContext) {
     private val ctx = context
     private val socket = runBlocking { aSocket(ctx._selectorManager).tcp().connect(host, port) }
 
-    public actual fun openReadChannel(): _ReadChannel = _ReadChannel(socket.openReadChannel())
-    public actual fun openWriteChannel(): _WriteChannel =
-        _WriteChannel(socket.openWriteChannel(autoFlush = true))
+    public actual fun openReadChannel(): ReadChannel = ReadChannel(socket.openReadChannel())
+    public actual fun openWriteChannel(): WriteChannel =
+        WriteChannel(socket.openWriteChannel(autoFlush = true))
 
     public actual fun close() {
         socket.close()

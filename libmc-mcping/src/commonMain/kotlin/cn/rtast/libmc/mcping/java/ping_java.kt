@@ -9,10 +9,11 @@ package cn.rtast.libmc.mcping.java
 
 import cn.rtast.libmc.common.*
 import cn.rtast.libmc.mcping.PingResponse
+import cn.rtast.libmc.mcping.sendPacket
 import kotlin.time.Clock
 
 internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): PingResponse {
-    val socket = _Socket(host, port, context)
+    val socket = Socket(host, port, context)
     val receiveChannel = socket.openReadChannel()
     val sendChannel = socket.openWriteChannel()
 
@@ -23,8 +24,8 @@ internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): Pin
             serverPort = port.toUShort(),
             nextState = 1
         )
-        sendChannel.sendPacket(handshakePacket, HandshakePacket)
-        sendChannel.sendPacket(StatusRequestPacket, StatusRequestPacket)
+        sendChannel.sendPacket(handshakePacket, 0x00, HandshakePacket)
+        sendChannel.sendPacket(StatusRequestPacket, 0x00, StatusRequestPacket)
 
         val statusFrameBuffer = receiveChannel.readPacketFrame()
         val statusPacketId = VarIntCodec.decode(statusFrameBuffer)
@@ -35,7 +36,7 @@ internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): Pin
 
         val sendTime = Clock.System.now().toEpochMilliseconds()
         val pingPacket = PingPacket(sendTime)
-        sendChannel.sendPacket(pingPacket, PingPacket)
+        sendChannel.sendPacket(pingPacket, 0x01, PingPacket)
 
         val pongFrameBuffer = receiveChannel.readPacketFrame()
         val pongPacketId = VarIntCodec.decode(pongFrameBuffer)

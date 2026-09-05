@@ -12,11 +12,11 @@ import java.net.InetSocketAddress
 import java.net.Socket as JvmSocket
 
 @Suppress("CLASSNAME")
-public actual class _Socket public actual constructor(host: String, port: Int, context: LibMCContext) {
+public actual class Socket public actual constructor(host: String, port: Int, context: LibMCContext) {
     private val socket = JvmSocket(host, port)
 
-    public actual fun openReadChannel(): _ReadChannel = _ReadChannel(socket.getInputStream())
-    public actual fun openWriteChannel(): _WriteChannel = _WriteChannel(socket.getOutputStream())
+    public actual fun openReadChannel(): ReadChannel = ReadChannel(socket.getInputStream())
+    public actual fun openWriteChannel(): WriteChannel = WriteChannel(socket.getOutputStream())
     public actual fun close(): Unit = socket.close()
 }
 

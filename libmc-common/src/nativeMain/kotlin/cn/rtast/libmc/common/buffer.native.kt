@@ -12,7 +12,7 @@ import kotlinx.io.Buffer
 import kotlinx.io.readByteArray
 
 @Suppress("CLASSNAME")
-public actual class _Buffer {
+public actual class BytesBuffer {
     private val _delegateBuf: Buffer
 
     public actual constructor() {

@@ -11,7 +11,7 @@ import io.ktor.utils.io.bits.reverseByteOrder
 import kotlinx.coroutines.runBlocking
 
 @Suppress("CLASSNAME")
-public actual class _ReadChannel(private val _readChannel: ByteReadChannel) {
+public actual class ReadChannel(private val _readChannel: ByteReadChannel) {
 
     public actual fun readByte(): Byte = runBlocking { _readChannel.readByte() }
     public actual fun readBytes(length: Int): ByteArray = runBlocking { _readChannel.readByteArray(length) }
@@ -35,7 +35,7 @@ public actual class _ReadChannel(private val _readChannel: ByteReadChannel) {
 }
 
 @Suppress("CLASSNAME")
-public actual class _WriteChannel {
+public actual class WriteChannel {
     private val _writeChannel: ByteWriteChannel
 
     public constructor(writeChannel: ByteWriteChannel) {

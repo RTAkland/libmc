@@ -8,17 +8,17 @@
 package cn.rtast.libmc.common
 
 public interface Encoder<in T> {
-    public fun encode(buffer: _Buffer, value: T)
+    public fun encode(buffer: BytesBuffer, value: T)
 
     public fun encodeToByteArray(value: T): ByteArray {
-        val buf = _Buffer()
+        val buf = BytesBuffer()
         encode(buf, value)
         return buf.toByteArray()
     }
 }
 
 public interface Decoder<out T> {
-    public fun decode(buffer: _Buffer): T
+    public fun decode(buffer: BytesBuffer): T
 
     public fun decodeFromByteArray(bytes: ByteArray): T = decode(bytes.wrap())
 }
@@ -26,12 +26,12 @@ public interface Decoder<out T> {
 public interface PacketCodec<T> : Encoder<T>, Decoder<T>
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> _Buffer.write(value: T, encoder: Encoder<T>): Unit = encoder.encode(this, value)
+public inline fun <T> BytesBuffer.write(value: T, encoder: Encoder<T>): Unit = encoder.encode(this, value)
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> _Buffer.read(decoder: Decoder<T>): T = decoder.decode(this)
+public inline fun <T> BytesBuffer.read(decoder: Decoder<T>): T = decoder.decode(this)
 
-public fun _Buffer.writeBuffer(source: _Buffer, length: Long = source.remaining) {
+public fun BytesBuffer.writeBuffer(source: BytesBuffer, length: Long = source.remaining) {
     if (length <= 0) return
     val bytes = source.readBytes(length.toInt())
     this.writeBytes(bytes)

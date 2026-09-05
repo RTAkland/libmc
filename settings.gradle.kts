@@ -6,7 +6,7 @@ rootProject.name = "libmc"
 includeSubModule(":common")
 includeSubModule(":mcping")
 includeSubModule(":rconlib")
-includeSubModule(":chat")
+includeSubModule(":protocol")
 //includeSubModule(":nbt")
 
 fun includeSubModule(name: String) = include(name).also {

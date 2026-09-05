@@ -7,7 +7,7 @@
 package cn.rtast.libmc.common
 
 public object VarIntCodec : PacketCodec<Int> {
-    override fun encode(buffer: _Buffer, value: Int) {
+    override fun encode(buffer: BytesBuffer, value: Int) {
         var v = value
         while (true) {
             if ((v and 0x7F.inv()) == 0) {
@@ -19,7 +19,7 @@ public object VarIntCodec : PacketCodec<Int> {
         }
     }
 
-    override fun decode(buffer: _Buffer): Int {
+    override fun decode(buffer: BytesBuffer): Int {
         var numRead = 0
         var result = 0
         var read: Byte
@@ -35,13 +35,13 @@ public object VarIntCodec : PacketCodec<Int> {
 }
 
 public object McStringCodec : PacketCodec<String> {
-    override fun encode(buffer: _Buffer, value: String) {
+    override fun encode(buffer: BytesBuffer, value: String) {
         val bytes = value.encodeToByteArray()
         VarIntCodec.encode(buffer, bytes.size)
         buffer.writeBytes(bytes)
     }
 
-    override fun decode(buffer: _Buffer): String {
+    override fun decode(buffer: BytesBuffer): String {
         val length = VarIntCodec.decode(buffer)
         val bytes = buffer.readBytes(length)
         return bytes.decodeToString()
