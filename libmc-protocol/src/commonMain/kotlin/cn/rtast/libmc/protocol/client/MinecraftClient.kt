@@ -55,6 +55,7 @@ public class MinecraftClient internal constructor(
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 if (isActive) {
+                    e.printStackTrace()
                     println("Network read loop exception: ${e.message}")
                     close()
                 }

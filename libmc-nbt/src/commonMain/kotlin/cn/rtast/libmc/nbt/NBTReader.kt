@@ -77,6 +77,12 @@ public fun NBTInput.readRootCompound(): NBTCompound {
 }
 
 public fun NBTInput.readNetworkCompound(): NBTCompound {
-    val root = readCompound()
-    return NBTCompound("", root)
+    return when (val type = NBTType.fromId(readByte().toInt() and 0xFF)) {
+        NBTType.Compound -> NBTCompound("", readCompoundTag())
+        NBTType.String -> NBTCompound(
+            "", NBTTag.CompoundTag(linkedMapOf("text" to NBTTag.StringTag(readStringTag())))
+        )
+
+        else -> throw UnsupportedOperationException("Unsupported network nbt tag 0x${type.id.toString(16).uppercase()}")
+    }
 }

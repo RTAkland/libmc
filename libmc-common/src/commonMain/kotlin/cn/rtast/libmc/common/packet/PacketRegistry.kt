@@ -29,13 +29,8 @@ public class PacketRegistry {
         register(id, T::class, codec)
     }
 
-    public fun decodePacket(packetId: Int, buffer: BytesBuffer): MinecraftPacket {
-        val codec = idToCodec[packetId]
-        if (codec != null) return codec.decode(buffer) else {
-//            println("Ignored unknown packet 0x${packetId.toString(16).uppercase()}")
-            return UnknownPacket(packetId, buffer.readBytes(buffer.remaining.toInt()))
-        }
-    }
+    public fun decodePacket(packetId: Int, buffer: BytesBuffer): MinecraftPacket =
+        idToCodec[packetId]?.decode(buffer) ?: UnknownPacket(packetId, buffer.readBytes(buffer.remaining.toInt()))
 
     public fun <T : MinecraftPacket> encodePacket(buffer: BytesBuffer, packet: T) {
         @Suppress("UNCHECKED_CAST")

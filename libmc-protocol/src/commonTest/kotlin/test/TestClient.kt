@@ -8,6 +8,7 @@
 package test
 
 import cn.rtast.libmc.protocol.client.createMinecraftClient
+import cn.rtast.libmc.protocol.packet.play.ClientboundDisconnectPlayPacket
 import cn.rtast.libmc.protocol.packet.play.ClientboundLoginPlayPacket
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -21,6 +22,9 @@ class TestClient {
         cli.launch { cli.connect() }
 
         cli.on<ClientboundLoginPlayPacket> {
+            println(it)
+        }
+        cli.on<ClientboundDisconnectPlayPacket> {
             println(it)
         }
         while (true) {

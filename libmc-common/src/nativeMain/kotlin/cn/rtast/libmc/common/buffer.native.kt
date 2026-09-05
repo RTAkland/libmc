@@ -60,6 +60,7 @@ public actual class BytesBuffer {
 
     public actual fun readBytes(length: Int): ByteArray = _delegateBuf.readByteArray(length)
     public actual fun readBoolean(): Boolean = _delegateBuf.readByte() != 0x00.toByte()
+    public actual fun readRemainingBytes(): ByteArray = this.toByteArray()
 
     public actual fun toByteArray(): ByteArray {
         val copy = _delegateBuf.peek()

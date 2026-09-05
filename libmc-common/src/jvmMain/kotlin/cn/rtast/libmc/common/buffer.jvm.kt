@@ -93,6 +93,12 @@ public actual class BytesBuffer {
 
     public actual fun readBoolean(): Boolean = this.readByte() != 0x00.toByte()
 
+    public actual fun readRemainingBytes(): ByteArray {
+        val array = ensureReadArray()
+        if (readOffset >= array.size) return byteArrayOf()
+        return array.copyOfRange(readOffset, array.size)
+    }
+
     public actual fun toByteArray(): ByteArray = outStream.toByteArray()
     public actual fun hasRemaining(): Boolean = readOffset < ensureReadArray().size
 

@@ -27,6 +27,7 @@ public expect class BytesBuffer {
     public fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long
     public fun readBytes(length: Int): ByteArray
     public fun readBoolean(): Boolean
+    public fun readRemainingBytes(): ByteArray
 
     public fun toByteArray(): ByteArray
     public fun hasRemaining(): Boolean
