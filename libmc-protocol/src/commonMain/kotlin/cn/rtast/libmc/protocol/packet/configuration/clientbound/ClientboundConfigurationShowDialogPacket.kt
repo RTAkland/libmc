@@ -7,15 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
-public data class ClientboundConfigurationShowDialogPacket(val dialog: NBTCompound) : ClientboundConfigurationPacket {
+public data class ClientboundConfigurationShowDialogPacket(val dialog: NBTCompound) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundConfigurationShowDialogPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundConfigurationShowDialogPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundConfigurationShowDialogPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundConfigurationShowDialogPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundConfigurationShowDialogPacket {
             return ClientboundConfigurationShowDialogPacket(buffer.readNetworkNBTCompound())
         }
     }

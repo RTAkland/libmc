@@ -7,15 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
-public data class ClientboundDisconnectLoginPacket(val reason: NBTCompound) : ClientboundLoginPacket {
+public data class ClientboundDisconnectLoginPacket(val reason: NBTCompound) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDisconnectLoginPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundDisconnectLoginPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundDisconnectLoginPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDisconnectLoginPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundDisconnectLoginPacket {
             return ClientboundDisconnectLoginPacket(reason = buffer.readNetworkNBTCompound())
         }
     }

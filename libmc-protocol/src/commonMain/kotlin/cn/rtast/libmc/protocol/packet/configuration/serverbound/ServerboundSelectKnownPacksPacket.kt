@@ -7,20 +7,20 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.packet.configuration.KnownPacks
 
 public data class ServerboundSelectKnownPacksPacket(val knownPacks: List<KnownPacks>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSelectKnownPacksPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundSelectKnownPacksPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSelectKnownPacksPacket) {
             buffer.writeVarInt(value.knownPacks.size)
             value.knownPacks.forEach { KnownPacks.encode(buffer, it) }
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundSelectKnownPacksPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundSelectKnownPacksPacket =
             throw UnsupportedOperationException()
     }
 }

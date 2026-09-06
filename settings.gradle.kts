@@ -8,6 +8,7 @@ includeSubModule(":common")
 includeSubModule(":mcping")
 includeSubModule(":rconlib")
 includeSubModule(":protocol")
+includeSubModule(":protocol-encrypt")
 includeSubModule(":nbt")
 includeSubModule(":snbt")
 

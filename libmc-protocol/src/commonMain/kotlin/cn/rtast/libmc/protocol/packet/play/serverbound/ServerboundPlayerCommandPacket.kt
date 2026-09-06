@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerCommandAction
 
 public data class ServerboundPlayerCommandPacket(
@@ -23,13 +23,13 @@ public data class ServerboundPlayerCommandPacket(
     val jumpBoost: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPlayerCommandPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPlayerCommandPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPlayerCommandPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeVarInt(value.action.id)
             buffer.writeVarInt(value.jumpBoost)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPlayerCommandPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPlayerCommandPacket =
             throw UnsupportedOperationException()
     }
 }

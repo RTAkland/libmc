@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readPrefixedByteArray
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readPrefixedByteArray
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
@@ -19,10 +20,10 @@ public data class ClientboundStoreCookiePacket(
      * cookie
      */
     val payload: ByteArray,
-) : ClientboundConfigurationPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundStoreCookiePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundStoreCookiePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundStoreCookiePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundStoreCookiePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundStoreCookiePacket {
             val key = buffer.readIdentifier()
             val payload = buffer.readPrefixedByteArray()
             return ClientboundStoreCookiePacket(key, payload)

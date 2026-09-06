@@ -7,11 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.effect.EntityEffectFlags
+import cn.rtast.libmc.protocol.protocol.game.effect.readEntityEffectFlags
 import cn.rtast.libmc.protocol.tick.ticks
 import kotlin.time.Duration
 
@@ -25,13 +26,13 @@ public data class ClientboundEntityEffectPacket(
     public val duration: Duration get() = if (durationTicks == -1) Duration.INFINITE else durationTicks.ticks
 
     internal companion object Codec : PacketCodec<ClientboundEntityEffectPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundEntityEffectPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundEntityEffectPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundEntityEffectPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundEntityEffectPacket {
             val entityId = buffer.readVarInt()
             val effectId = buffer.readVarInt()
             val amplifier = buffer.readVarInt()
             val durationTicks = buffer.readVarInt()
-            val flags = EntityEffectFlags.fromByte(buffer.readByte())
+            val flags = buffer.readEntityEffectFlags()
             return ClientboundEntityEffectPacket(entityId, effectId, amplifier, durationTicks, flags)
         }
     }

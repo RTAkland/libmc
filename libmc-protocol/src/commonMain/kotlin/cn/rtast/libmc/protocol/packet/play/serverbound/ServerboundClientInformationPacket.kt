@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.ChatMode
 import cn.rtast.libmc.protocol.protocol.game.player.MainHand
 import cn.rtast.libmc.protocol.protocol.game.player.skin.ParticleStatus
@@ -49,7 +49,7 @@ public data class ServerboundClientInformationPacket(
     val particleStatus: ParticleStatus,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundClientInformationPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundClientInformationPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundClientInformationPacket) {
             buffer.writeMcString(value.locale)
             buffer.writeByte(value.viewDistance.toByte())
             buffer.writeVarInt(value.chatMode.id)
@@ -61,7 +61,7 @@ public data class ServerboundClientInformationPacket(
             buffer.writeVarInt(value.particleStatus.id)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundClientInformationPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundClientInformationPacket =
             throw UnsupportedOperationException()
     }
 }

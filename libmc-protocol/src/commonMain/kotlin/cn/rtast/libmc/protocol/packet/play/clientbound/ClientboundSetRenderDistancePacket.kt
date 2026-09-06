@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 
 public data class ClientboundSetRenderDistancePacket(
     /**
@@ -19,8 +19,8 @@ public data class ClientboundSetRenderDistancePacket(
     val viewDistance: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetRenderDistancePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetRenderDistancePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSetRenderDistancePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetRenderDistancePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetRenderDistancePacket {
             return ClientboundSetRenderDistancePacket(buffer.readVarInt())
         }
     }

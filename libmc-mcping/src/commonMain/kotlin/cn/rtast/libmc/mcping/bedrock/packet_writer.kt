@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.mcping.bedrock
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.UdpSocket
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.stream.UdpSocket
 
 
-internal fun <T : MinecraftBedrockPacket> UdpSocket.sendPacket(packet: T, codec: PacketCodec<T>): ByteArray {
+internal suspend fun <T : MinecraftBedrockPacket> UdpSocket.sendPacket(packet: T, codec: PacketCodec<T>): ByteArray {
     val buf = BytesBuffer()
     codec.encode(buf, packet)
     return sendAndReceive(buf.toByteArray())

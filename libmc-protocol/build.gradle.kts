@@ -14,7 +14,6 @@ kotlin {
         commonMain.dependencies {
             api(project(":common"))
             api(project(":nbt"))
-            api(libs.kotlinx.coroutines)
         }
 
         jvmMain.dependencies {
@@ -27,8 +26,7 @@ kotlin {
         }
 
         jvmTest.dependencies {
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.okhttp)
+            implementation(project(":protocol-encrypt"))
         }
     }
 }

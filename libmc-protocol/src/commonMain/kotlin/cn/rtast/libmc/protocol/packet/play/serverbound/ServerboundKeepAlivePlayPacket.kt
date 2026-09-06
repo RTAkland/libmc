@@ -7,17 +7,17 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundKeepAlivePlayPacket(val id: Long) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundKeepAlivePlayPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundKeepAlivePlayPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundKeepAlivePlayPacket) {
             buffer.writeLong(value.id)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundKeepAlivePlayPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundKeepAlivePlayPacket =
             ServerboundKeepAlivePlayPacket(buffer.readLong())
     }
 }

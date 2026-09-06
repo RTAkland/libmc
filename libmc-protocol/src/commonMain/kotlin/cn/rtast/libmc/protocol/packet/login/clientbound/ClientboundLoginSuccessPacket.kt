@@ -7,17 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readUuid
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readUuid
 import cn.rtast.libmc.protocol.session.GameProfile
 import kotlin.uuid.Uuid
 
 public data class ClientboundLoginSuccessPacket(val gameProfile: GameProfile, val sessionId: Uuid) :
-    ClientboundLoginPacket {
+    MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundLoginSuccessPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundLoginSuccessPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundLoginSuccessPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundLoginSuccessPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundLoginSuccessPacket {
             val gameProfile = GameProfile.decode(buffer)
             val sessionId = buffer.readUuid()
             return ClientboundLoginSuccessPacket(gameProfile, sessionId)

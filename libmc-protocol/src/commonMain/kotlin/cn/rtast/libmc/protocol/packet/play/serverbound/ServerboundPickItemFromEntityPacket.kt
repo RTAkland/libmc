@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundPickItemFromEntityPacket(
     val entityId: Int,
@@ -20,12 +20,12 @@ public data class ServerboundPickItemFromEntityPacket(
     val includeData: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPickItemFromEntityPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromEntityPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromEntityPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeBoolean(value.includeData)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPickItemFromEntityPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPickItemFromEntityPacket =
             throw UnsupportedOperationException()
     }
 }

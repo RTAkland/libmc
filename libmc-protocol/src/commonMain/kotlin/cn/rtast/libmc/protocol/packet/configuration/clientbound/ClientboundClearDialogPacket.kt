@@ -7,11 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
-public data object ClientboundClearDialogPacket : ClientboundConfigurationPacket,
+public data object ClientboundClearDialogPacket : MinecraftPacket,
     PacketCodec<ClientboundClearDialogPacket> {
-    override fun encode(buffer: BytesBuffer, value: ClientboundClearDialogPacket) {}
-    override fun decode(buffer: BytesBuffer): ClientboundClearDialogPacket = ClientboundClearDialogPacket
+    override suspend fun encode(buffer: BytesBuffer, value: ClientboundClearDialogPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ClientboundClearDialogPacket = ClientboundClearDialogPacket
 }

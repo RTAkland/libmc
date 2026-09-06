@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
@@ -20,8 +20,8 @@ public data class ClientboundOpenScreenPacket(
     val title: NBTCompound,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundOpenScreenPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundOpenScreenPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundOpenScreenPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundOpenScreenPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundOpenScreenPacket {
             val windowId = buffer.readVarInt()
             val windowType = buffer.readVarInt()
             val title = buffer.readNetworkNBTCompound()

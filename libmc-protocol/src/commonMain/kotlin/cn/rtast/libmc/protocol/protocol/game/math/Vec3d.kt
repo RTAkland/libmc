@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.stream.BytesBuffer
 
 public data class Vec3d(val x: Double, val y: Double, val z: Double) {
     public companion object {
@@ -15,7 +15,7 @@ public data class Vec3d(val x: Double, val y: Double, val z: Double) {
     }
 }
 
-internal fun BytesBuffer.readVec3d(optional: Boolean = false): Vec3d? {
+internal suspend fun BytesBuffer.readVec3d(optional: Boolean = false): Vec3d? {
     if (optional && !this.readBoolean()) return null
     val x = this.readDouble()
     val y = this.readDouble()
@@ -23,7 +23,7 @@ internal fun BytesBuffer.readVec3d(optional: Boolean = false): Vec3d? {
     return Vec3d(x, y, z)
 }
 
-internal fun BytesBuffer.writeVec3d(vec3d: Vec3d?, optional: Boolean = false) {
+internal suspend fun BytesBuffer.writeVec3d(vec3d: Vec3d?, optional: Boolean = false) {
     if (optional) {
         this.writeBoolean(vec3d != null)
         if (vec3d == null) return

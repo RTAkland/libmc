@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ClientboundSetTickingStatePacket(val tickRate: Float, val isFrozen: Boolean) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetTickingStatePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetTickingStatePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSetTickingStatePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetTickingStatePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetTickingStatePacket {
             val tickRate = buffer.readFloat()
             val isFrozen = buffer.readBoolean()
             return ClientboundSetTickingStatePacket(tickRate, isFrozen)

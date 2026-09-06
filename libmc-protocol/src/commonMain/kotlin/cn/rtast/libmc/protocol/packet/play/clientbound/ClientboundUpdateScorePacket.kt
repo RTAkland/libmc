@@ -7,8 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.*
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readOptional
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.nbt.NBTTag
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ScoreNumberFormat
@@ -22,8 +26,8 @@ public data class ClientboundUpdateScorePacket(
     val numberFormat: ScoreNumberFormat?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateScorePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateScorePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundUpdateScorePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateScorePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateScorePacket {
             val entityName = buffer.readMcString()
             val objectiveName = buffer.readMcString()
             val value = buffer.readVarInt()

@@ -7,23 +7,23 @@
 
 package cn.rtast.libmc.protocol.protocol.game.sound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.readOptional
-import cn.rtast.libmc.common.writeOptional
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.primitives.readOptional
+import cn.rtast.libmc.common.primitives.writeOptional
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class SoundEvent(val name: Identifier, val hasFixedRange: Boolean, val fixedRange: Float?)
 
-internal fun BytesBuffer.readSoundEvent(): SoundEvent {
+internal suspend fun BytesBuffer.readSoundEvent(): SoundEvent {
     val name = readIdentifier()
     val hasFixedRange = readBoolean()
     val fixedRange = readOptional { readFloat() }
     return SoundEvent(name, hasFixedRange, fixedRange)
 }
 
-internal fun BytesBuffer.writeSoundEvent(event: SoundEvent) {
+internal suspend fun BytesBuffer.writeSoundEvent(event: SoundEvent) {
     writeIdentifier(event.name)
     writeBoolean(event.hasFixedRange)
     writeOptional(event.fixedRange) { writeFloat(it) }

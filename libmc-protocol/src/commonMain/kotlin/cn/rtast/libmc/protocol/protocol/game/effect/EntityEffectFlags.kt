@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.effect
 
-import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.stream.BytesBuffer
 
 public data class EntityEffectFlags(
     val isAmbient: Boolean = false,
@@ -44,6 +44,6 @@ public data class EntityEffectFlags(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-internal inline fun BytesBuffer.readEntityEffectFlags(): EntityEffectFlags {
+internal suspend inline fun BytesBuffer.readEntityEffectFlags(): EntityEffectFlags {
     return EntityEffectFlags.fromByte(this.readByte())
 }

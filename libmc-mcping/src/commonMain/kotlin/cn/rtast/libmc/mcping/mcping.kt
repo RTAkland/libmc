@@ -16,7 +16,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 
 @JvmOverloads
-public fun mcping(
+public suspend fun mcping(
     host: String,
     port: Int,
     type: ServerType = ServerType.Java,

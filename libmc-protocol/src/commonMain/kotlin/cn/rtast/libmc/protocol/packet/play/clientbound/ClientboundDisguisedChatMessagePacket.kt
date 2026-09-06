@@ -7,8 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.*
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.IdOrX
+import cn.rtast.libmc.common.primitives.readIdOrX
+import cn.rtast.libmc.common.primitives.readOptional
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.game.chat.InlineChatType
 import cn.rtast.libmc.protocol.protocol.game.chat.readInlineChatType
@@ -21,8 +25,8 @@ public data class ClientboundDisguisedChatMessagePacket(
     val targetName: NBTCompound?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDisguisedChatMessagePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundDisguisedChatMessagePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundDisguisedChatMessagePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDisguisedChatMessagePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundDisguisedChatMessagePacket {
             val message = buffer.readNetworkNBTCompound()
             val chatType = buffer.readIdOrX { readInlineChatType() }
             val senderName = buffer.readNetworkNBTCompound()

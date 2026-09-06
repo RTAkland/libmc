@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readOptional
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readOptional
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.GameMode
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
@@ -35,8 +35,8 @@ public data class ClientboundRespawnPacket(
     val dataKept: RespawnDataToKeep,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundRespawnPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundRespawnPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundRespawnPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundRespawnPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundRespawnPacket {
             val dimensionType = buffer.readVarInt()
             val dimensionName = buffer.readIdentifier()
             val hashedSeed = buffer.readLong()

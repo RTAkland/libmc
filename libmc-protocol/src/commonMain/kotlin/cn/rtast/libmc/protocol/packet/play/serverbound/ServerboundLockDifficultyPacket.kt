@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 /**
@@ -18,11 +18,11 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
  */
 public data class ServerboundLockDifficultyPacket(val locked: Boolean) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundLockDifficultyPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundLockDifficultyPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundLockDifficultyPacket) {
             buffer.writeBoolean(value.locked)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundLockDifficultyPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundLockDifficultyPacket =
             throw UnsupportedOperationException()
     }
 }

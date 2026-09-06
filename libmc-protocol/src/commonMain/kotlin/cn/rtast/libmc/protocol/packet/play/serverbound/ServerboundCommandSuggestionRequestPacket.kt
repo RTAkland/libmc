@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundCommandSuggestionRequestPacket(
     /**
@@ -24,12 +24,12 @@ public data class ServerboundCommandSuggestionRequestPacket(
     val text: String,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCommandSuggestionRequestPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundCommandSuggestionRequestPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundCommandSuggestionRequestPacket) {
             buffer.writeVarInt(value.transactionId)
             buffer.writeMcString(value.text)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundCommandSuggestionRequestPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundCommandSuggestionRequestPacket =
             throw UnsupportedOperationException()
     }
 }

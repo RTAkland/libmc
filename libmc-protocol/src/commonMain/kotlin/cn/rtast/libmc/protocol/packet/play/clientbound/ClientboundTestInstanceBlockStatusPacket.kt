@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readOptional
+import cn.rtast.libmc.common.primitives.readOptional
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
@@ -22,8 +22,8 @@ public data class ClientboundTestInstanceBlockStatusPacket(
     val sizeZ: Double?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundTestInstanceBlockStatusPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundTestInstanceBlockStatusPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundTestInstanceBlockStatusPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundTestInstanceBlockStatusPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundTestInstanceBlockStatusPacket {
             val status = buffer.readNetworkNBTCompound()
             val hasSize = buffer.readBoolean()
             val sizeX = buffer.readOptional { readDouble() }  // ?

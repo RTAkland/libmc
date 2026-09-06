@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.writeBlockPos
 
@@ -23,13 +23,13 @@ public data class ServerboundJigsawGeneratePacket(
     val keepJigsaw: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundJigsawGeneratePacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundJigsawGeneratePacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundJigsawGeneratePacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeVarInt(value.levels)
             buffer.writeBoolean(value.keepJigsaw)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundJigsawGeneratePacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundJigsawGeneratePacket =
             throw UnsupportedOperationException()
     }
 }

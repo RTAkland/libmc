@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.GameMode
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
@@ -40,10 +41,10 @@ public data class ClientboundLoginPlayPacket(
     val seaLevel: Int,
     val isOnlineMode: Boolean,
     val enforceSecureChat: Boolean,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundLoginPlayPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundLoginPlayPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundLoginPlayPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundLoginPlayPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundLoginPlayPacket {
             val entityId = buffer.readInt()
             val isHardcore = buffer.readBoolean()
             val dimensionNamesCount = buffer.readVarInt()

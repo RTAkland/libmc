@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundAcknowledgeChatMessagePacket(val messageCount: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundAcknowledgeChatMessagePacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundAcknowledgeChatMessagePacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundAcknowledgeChatMessagePacket) {
             buffer.writeVarInt(value.messageCount)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundAcknowledgeChatMessagePacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundAcknowledgeChatMessagePacket =
             throw UnsupportedOperationException()
     }
 }

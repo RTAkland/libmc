@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.status.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
 public data object ServerboundStatusRequestPacket : MinecraftPacket, PacketCodec<ServerboundStatusRequestPacket> {
-    override fun encode(buffer: BytesBuffer, value: ServerboundStatusRequestPacket) {}
-    override fun decode(buffer: BytesBuffer): ServerboundStatusRequestPacket =
+    override suspend fun encode(buffer: BytesBuffer, value: ServerboundStatusRequestPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ServerboundStatusRequestPacket =
         throw UnsupportedOperationException()
 }

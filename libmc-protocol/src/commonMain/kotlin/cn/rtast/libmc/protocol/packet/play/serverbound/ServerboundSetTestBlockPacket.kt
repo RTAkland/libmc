@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.TestBlockMode
 import cn.rtast.libmc.protocol.protocol.game.block.writeBlockPos
@@ -22,13 +22,13 @@ public data class ServerboundSetTestBlockPacket(
     val message: String,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetTestBlockPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundSetTestBlockPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetTestBlockPacket) {
             buffer.writeBlockPos(value.position)
             buffer.writeVarInt(value.mode.id)
             buffer.writeMcString(value.message)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundSetTestBlockPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundSetTestBlockPacket =
             throw UnsupportedOperationException()
     }
 }

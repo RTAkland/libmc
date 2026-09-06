@@ -8,11 +8,11 @@
 package test
 
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.crypto.RSA1024Encryptor
-import cn.rtast.libmc.protocol.crypto.Sha1Hasher
+import cn.rtast.libmc.common.crypto.RSA1024Encryptor
+import cn.rtast.libmc.common.crypto.Sha1Hasher
 import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSystemChatMessagePacket
-import cn.rtast.libmc.protocol.session.AuthenticationProvider
+import cn.rtast.libmc.common.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.launch
 import org.junit.Test

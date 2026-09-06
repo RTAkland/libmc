@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerAbilities
 
@@ -18,8 +18,8 @@ public data class ClientboundPlayerAbilitiesPacket(
     val fovModifier: Float,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPlayerAbilitiesPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerAbilitiesPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundPlayerAbilitiesPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerAbilitiesPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerAbilitiesPacket {
             val flag = PlayerAbilities.fromByte(buffer.readByte())
             val flyingSpeed = buffer.readFloat()
             val fovModifier = buffer.readFloat()

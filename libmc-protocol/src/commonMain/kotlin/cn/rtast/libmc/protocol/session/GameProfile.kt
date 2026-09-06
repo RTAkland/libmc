@@ -7,7 +7,9 @@
 
 package cn.rtast.libmc.protocol.session
 
-import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.*
+import cn.rtast.libmc.common.stream.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class GameProfile(
@@ -21,14 +23,14 @@ public data class GameProfile(
         val signature: String?,
     ) {
         internal companion object Codec : PacketCodec<Property> {
-            override fun encode(buffer: BytesBuffer, value: Property) {
+            override suspend fun encode(buffer: BytesBuffer, value: Property) {
                 buffer.writeMcString(value.name)
                 buffer.writeMcString(value.value)
                 buffer.writeBoolean(value.signature != null)
                 value.signature?.let { buffer.writeMcString(it) }
             }
 
-            override fun decode(buffer: BytesBuffer): Property {
+            override suspend fun decode(buffer: BytesBuffer): Property {
                 val name = buffer.readMcString()
                 val value = buffer.readMcString()
                 val hasSignature = buffer.readBoolean()
@@ -39,14 +41,14 @@ public data class GameProfile(
     }
 
     internal companion object Codec : PacketCodec<GameProfile> {
-        override fun encode(buffer: BytesBuffer, value: GameProfile) {
+        override suspend fun encode(buffer: BytesBuffer, value: GameProfile) {
             buffer.writeUuid(value.uuid)
             buffer.writeMcString(value.username)
             buffer.writeVarInt(value.properties.size)  // prefixed array
             value.properties.forEach { prop -> Property.encode(buffer, prop) }
         }
 
-        override fun decode(buffer: BytesBuffer): GameProfile {
+        override suspend fun decode(buffer: BytesBuffer): GameProfile {
             val uuid = buffer.readUuid()
             val username = buffer.readMcString()
             val propertyCount = buffer.readVarInt()

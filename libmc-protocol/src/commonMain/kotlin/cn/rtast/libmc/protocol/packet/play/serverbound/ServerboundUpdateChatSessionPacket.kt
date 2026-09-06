@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writePrefixedByteArray
-import cn.rtast.libmc.common.writeUuid
+import cn.rtast.libmc.common.primitives.writePrefixedByteArray
+import cn.rtast.libmc.common.primitives.writeUuid
 import kotlin.uuid.Uuid
 
 public data class ServerboundUpdateChatSessionPacket(
@@ -32,14 +32,14 @@ public data class ServerboundUpdateChatSessionPacket(
     val keySignature: ByteArray,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundUpdateChatSessionPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundUpdateChatSessionPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundUpdateChatSessionPacket) {
             buffer.writeUuid(value.sessionId)
             buffer.writeLong(value.expiresAt)
             buffer.writePrefixedByteArray(value.publicKey)
             buffer.writePrefixedByteArray(value.keySignature)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundUpdateChatSessionPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundUpdateChatSessionPacket =
             throw UnsupportedOperationException()
     }
 

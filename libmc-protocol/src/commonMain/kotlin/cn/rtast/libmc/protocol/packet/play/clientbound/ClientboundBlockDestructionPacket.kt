@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.block.BlockDestroyStage
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.readBlockPos
@@ -21,10 +22,10 @@ public data class ClientboundBlockDestructionPacket(
     val entityId: Int,
     val location: BlockPos,
     val stage: BlockDestroyStage,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundBlockDestructionPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundBlockDestructionPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundBlockDestructionPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundBlockDestructionPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundBlockDestructionPacket {
             val entityId = buffer.readVarInt()
             val location = buffer.readBlockPos()
             val stage = buffer.readByte()

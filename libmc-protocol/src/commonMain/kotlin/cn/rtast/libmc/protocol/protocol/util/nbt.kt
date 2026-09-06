@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.protocol.protocol.util
 
-import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.nbt.*
 
-internal fun BytesBuffer.readNBTCompound(): NBTCompound =
+internal suspend fun BytesBuffer.readNBTCompound(): NBTCompound =
     this.toNBTInput().readRootCompound()
 
-internal fun BytesBuffer.readNetworkNBTCompound(): NBTCompound =
+internal suspend fun BytesBuffer.readNetworkNBTCompound(): NBTCompound =
     this.toNBTInput().readNetworkCompound()
 
-internal fun BytesBuffer.writeNetworkNBTCompound(value: NBTCompound) =
+internal suspend fun BytesBuffer.writeNetworkNBTCompound(value: NBTCompound) =
     this.toNBTOutput(NBTTag.CompoundTag(mutableMapOf("" to NBTTag.StringTag("")))).writeNetworkCompound(value)

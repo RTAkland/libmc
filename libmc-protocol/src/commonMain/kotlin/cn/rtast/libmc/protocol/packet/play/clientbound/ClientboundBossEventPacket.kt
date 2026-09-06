@@ -7,10 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readUuid
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readUuid
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarAction
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarColor
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarDivision
@@ -18,10 +19,10 @@ import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarFlags
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import kotlin.uuid.Uuid
 
-public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBarAction) : ClientboundPlayPacket {
+public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBarAction) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundBossEventPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundBossEventPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundBossEventPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundBossEventPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundBossEventPacket {
             val uuid = buffer.readUuid()
             val action = when (val actionId = buffer.readVarInt()) {
                 BossBarAction.ADD_ID -> {

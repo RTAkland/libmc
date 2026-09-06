@@ -7,16 +7,15 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chat
 
-import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.stream.BytesBuffer
 
 public data class InlineChatType(
     val chat: ChatTypeDecoration,
     val narration: ChatTypeDecoration,
 )
 
-internal fun BytesBuffer.readInlineChatType(): InlineChatType {
-    return InlineChatType(
-        chat = readChatTypeDecoration(),
-        narration = readChatTypeDecoration()
-    )
+internal suspend fun BytesBuffer.readInlineChatType(): InlineChatType {
+    val chat = readChatTypeDecoration()
+    val narration = readChatTypeDecoration()
+    return InlineChatType(chat, narration)
 }

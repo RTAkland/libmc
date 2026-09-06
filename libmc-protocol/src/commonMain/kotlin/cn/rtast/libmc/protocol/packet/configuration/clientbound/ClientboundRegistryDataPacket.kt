@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.registry.RegistryEntry
@@ -20,10 +21,10 @@ public data class ClientboundRegistryDataPacket(
      */
     val registryId: Identifier,
     val entries: List<RegistryEntry>,
-) : ClientboundConfigurationPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundRegistryDataPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundRegistryDataPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundRegistryDataPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundRegistryDataPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundRegistryDataPacket {
             val id = buffer.readIdentifier()
             val entryCount = buffer.readVarInt()
             val entries = ArrayList<RegistryEntry>(entryCount)

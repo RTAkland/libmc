@@ -7,14 +7,15 @@
 
 package cn.rtast.libmc.protocol.packet.status.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readMcString
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
 
-public data class ClientboundStatusResponsePacket(val jsonResponse: String) : ClientboundStatusPacket {
+public data class ClientboundStatusResponsePacket(val jsonResponse: String) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundStatusResponsePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundStatusResponsePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundStatusResponsePacket =
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundStatusResponsePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundStatusResponsePacket =
             ClientboundStatusResponsePacket(buffer.readMcString())
     }
 }

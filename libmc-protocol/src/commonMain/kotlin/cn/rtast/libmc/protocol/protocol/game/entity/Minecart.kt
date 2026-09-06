@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.entity
 
-import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.protocol.protocol.game.math.Angle
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readAngle
@@ -21,7 +21,7 @@ public data class MinecartStep(
     val weight: Float,
 )
 
-internal fun BytesBuffer.readMinecartStep(): MinecartStep {
+internal suspend fun BytesBuffer.readMinecartStep(): MinecartStep {
     val position = readVec3d()!!
     val velocity = readVec3d()!!
     val yaw = readAngle()

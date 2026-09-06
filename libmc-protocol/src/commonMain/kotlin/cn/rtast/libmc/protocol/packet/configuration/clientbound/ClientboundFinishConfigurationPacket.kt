@@ -7,13 +7,14 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
-public data object ClientboundFinishConfigurationPacket : ClientboundConfigurationPacket,
+public data object ClientboundFinishConfigurationPacket : MinecraftPacket,
     PacketCodec<ClientboundFinishConfigurationPacket> {
-    override fun encode(buffer: BytesBuffer, value: ClientboundFinishConfigurationPacket) {}
-    override fun decode(buffer: BytesBuffer): ClientboundFinishConfigurationPacket {
+    override suspend fun encode(buffer: BytesBuffer, value: ClientboundFinishConfigurationPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ClientboundFinishConfigurationPacket {
         return ClientboundFinishConfigurationPacket
     }
 }

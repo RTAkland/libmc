@@ -7,9 +7,8 @@
 
 package cn.rtast.libmc.common.packet
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.primitives.writeVarInt
 import kotlin.reflect.KClass
 
 public class PacketRegistry {
@@ -29,10 +28,10 @@ public class PacketRegistry {
         register(id, T::class, codec)
     }
 
-    public fun decodePacket(packetId: Int, buffer: BytesBuffer): MinecraftPacket =
+    public suspend fun decodePacket(packetId: Int, buffer: BytesBuffer): MinecraftPacket =
         idToCodec[packetId]?.decode(buffer) ?: UnknownPacket(packetId, buffer.readBytes(buffer.remaining.toInt()))
 
-    public fun <T : MinecraftPacket> encodePacket(buffer: BytesBuffer, packet: T) {
+    public suspend fun <T : MinecraftPacket> encodePacket(buffer: BytesBuffer, packet: T) {
         @Suppress("UNCHECKED_CAST")
         val info = requireNotNull(classToInfo[packet::class]) {
             "Unregistered Packet ${packet::class.simpleName}"

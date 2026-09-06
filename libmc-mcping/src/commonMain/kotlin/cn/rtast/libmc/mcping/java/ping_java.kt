@@ -8,11 +8,15 @@
 package cn.rtast.libmc.mcping.java
 
 import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.primitives.McStringCodec
+import cn.rtast.libmc.common.primitives.VarIntCodec
+import cn.rtast.libmc.common.stream.Socket
+import cn.rtast.libmc.common.stream.readPacketFrame
 import cn.rtast.libmc.mcping.PingResponse
 import cn.rtast.libmc.mcping.sendPacket
 import kotlin.time.Clock
 
-internal fun pingJavaServer(host: String, port: Int, context: LibMCContext): PingResponse {
+internal suspend fun pingJavaServer(host: String, port: Int, context: LibMCContext): PingResponse {
     val socket = Socket(host, port, context)
     val receiveChannel = socket.openReadChannel()
     val sendChannel = socket.openWriteChannel()

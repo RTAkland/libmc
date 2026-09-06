@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerAbilities
 
 public data class ServerboundPlayerAbilitiesPacket(val flags: PlayerAbilities) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPlayerAbilitiesPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPlayerAbilitiesPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPlayerAbilitiesPacket) {
             buffer.writeByte(value.flags.mask())
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPlayerAbilitiesPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPlayerAbilitiesPacket =
             throw UnsupportedOperationException()
     }
 }

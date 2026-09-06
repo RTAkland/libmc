@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.readBlockPos
 
@@ -29,10 +30,10 @@ public data class ClientboundBlockEventPacket(
      * as it will infer the type of block based on the given position.
      */
     val blockType: Int,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundBlockEventPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundBlockEventPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundBlockEventPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundBlockEventPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundBlockEventPacket {
             val location = buffer.readBlockPos()
             val actionId = buffer.readUByte()
             val actionParameter = buffer.readUByte()

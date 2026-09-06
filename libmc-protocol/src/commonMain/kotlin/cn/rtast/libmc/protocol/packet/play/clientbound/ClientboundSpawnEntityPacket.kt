@@ -7,10 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readUuid
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readUuid
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Angle
 import cn.rtast.libmc.protocol.protocol.game.math.LpVec3
 import cn.rtast.libmc.protocol.protocol.game.math.readAngle
@@ -32,10 +33,10 @@ public data class ClientboundSpawnEntityPacket(
     val yaw: Angle,
     val headYaw: Angle,
     val data: Int,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSpawnEntityPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSpawnEntityPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSpawnEntityPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSpawnEntityPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSpawnEntityPacket {
             val entityId = buffer.readVarInt()
             val entityUuid = buffer.readUuid()
             val type = buffer.readVarInt()

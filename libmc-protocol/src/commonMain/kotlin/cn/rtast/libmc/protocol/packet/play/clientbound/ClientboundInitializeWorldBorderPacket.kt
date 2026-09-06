@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
-import cn.rtast.libmc.common.readVarLong
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.readVarLong
 
 public data class ClientboundInitializeWorldBorderPacket(
     val centerX: Double,
@@ -24,8 +24,8 @@ public data class ClientboundInitializeWorldBorderPacket(
     val warningTime: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundInitializeWorldBorderPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundInitializeWorldBorderPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundInitializeWorldBorderPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundInitializeWorldBorderPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundInitializeWorldBorderPacket {
             val centerX = buffer.readDouble()
             val centerZ = buffer.readDouble()
             val oldDiameter = buffer.readDouble()

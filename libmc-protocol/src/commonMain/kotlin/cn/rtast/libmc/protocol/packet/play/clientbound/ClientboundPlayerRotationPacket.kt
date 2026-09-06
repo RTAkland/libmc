@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
 public data class ClientboundPlayerRotationPacket(
     val yaw: Float,
@@ -18,8 +18,8 @@ public data class ClientboundPlayerRotationPacket(
     val relativePitch: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPlayerRotationPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerRotationPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundPlayerRotationPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerRotationPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerRotationPacket {
             val yaw = buffer.readFloat()
             val relativeYaw = buffer.readBoolean()
             val pitch = buffer.readFloat()

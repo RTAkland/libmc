@@ -7,9 +7,14 @@
 package cn.rtast.libmc.protocol.network
 
 import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.crypto.NetworkCipher
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.writeBuffer
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.stream.wrap
 import cn.rtast.libmc.protocol.client.ClientStateMachine
-import cn.rtast.libmc.protocol.crypto.NetworkCipher
 import cn.rtast.libmc.protocol.protocol.GameProtocols
 import kotlin.concurrent.Volatile
 
@@ -33,7 +38,7 @@ internal class NetworkChannel(
         this.threshold = threshold
     }
 
-    fun readNextPacket(): MinecraftPacket {
+    suspend fun readNextPacket(): MinecraftPacket {
         val packetLength = session.readVarInt()
         val rawFrameBytes = session.readBytes(packetLength)
         val frameBuf = rawFrameBytes.wrap()
@@ -49,7 +54,7 @@ internal class NetworkChannel(
             .decodePacket(packetId, payloadBuf)
     }
 
-    fun sendPacket(packet: MinecraftPacket) {
+    suspend fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
         GameProtocols.serverboundGameProtocols
             .getRegistry(stateMachine.currentState)

@@ -9,9 +9,9 @@
 package cn.rtast.libmc.mcping.rconlib
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common.ReadChannel
-import cn.rtast.libmc.common.Socket
-import cn.rtast.libmc.common.WriteChannel
+import cn.rtast.libmc.common.stream.ReadChannel
+import cn.rtast.libmc.common.stream.Socket
+import cn.rtast.libmc.common.stream.WriteChannel
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 
@@ -25,7 +25,7 @@ public class RCONClient internal constructor(
     private var writeChannel: WriteChannel? = null
     private var currentRequestId = 1
 
-    public fun connect(password: String): Boolean {
+    public suspend fun connect(password: String): Boolean {
         socket = Socket(host, port, context)
         readChannel = socket!!.openReadChannel()
         writeChannel = socket!!.openWriteChannel()
@@ -34,7 +34,7 @@ public class RCONClient internal constructor(
         return readChannel!!.readPacket().requestId != -1
     }
 
-    public fun command(command: String): String {
+    public suspend fun command(command: String): String {
         val reqId = currentRequestId++
         val commandPacket = ExecCommandPacket(command, reqId)
         writeChannel!!.sendPacket(commandPacket)

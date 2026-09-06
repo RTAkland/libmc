@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chat
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.readMcString
-import cn.rtast.libmc.common.readPrefixed
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readPrefixed
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
@@ -28,10 +28,9 @@ public data class ChatTypeDecoration(
     }
 }
 
-internal fun BytesBuffer.readChatTypeDecoration(): ChatTypeDecoration {
-    return ChatTypeDecoration(
-        translationKey = this.readMcString(),
-        parameters = this.readPrefixed { ChatTypeDecoration.ChatTypeParameter.fromID(readVarInt()) },
-        style = this.readNetworkNBTCompound()
-    )
+internal suspend fun BytesBuffer.readChatTypeDecoration(): ChatTypeDecoration {
+    val translationKey = this.readMcString()
+    val parameters = this.readPrefixed { ChatTypeDecoration.ChatTypeParameter.fromID(readVarInt()) }
+    val style = this.readNetworkNBTCompound()
+    return ChatTypeDecoration(translationKey, parameters, style)
 }

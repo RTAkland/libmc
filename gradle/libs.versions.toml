@@ -3,24 +3,27 @@ kotlin = "2.4.10"
 kotlinx-io = "0.9.1"
 ktor-network = "3.5.2"
 coroutines-test = "1.11.0"
-#kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
 ktor-core = "3.5.2"
+cryptography-core = "0.6.0"
+#kotlinx-serialization = "1.11.0"
 
 [libraries]
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 ktor-network = { module = "io.ktor:ktor-network", version.ref = "ktor-network" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+cryptography-provider-optimal = { module = "dev.whyoleg.cryptography:cryptography-provider-optimal", version.ref = "cryptography-core" }
+cryptography-core = { module = "dev.whyoleg.cryptography:cryptography-core", version.ref = "cryptography-core" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-core" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-core" }
+ktor-client-winhttp = { module = "io.ktor:ktor-client-winhttp", version.ref = "ktor-core" }
+ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor-core" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-core" }
 #kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 #kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-core" }
-#ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-core" }
-#ktor-client-winhttp = { module = "io.ktor:ktor-client-winhttp", version.ref = "ktor-core" }
-#ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor-core" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-core" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 maven-publish = { id = "maven-publish" }
+#kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

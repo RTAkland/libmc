@@ -19,7 +19,7 @@ import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundConfigurationA
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundKeepAlivePlayPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundPongPlayPacket
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
-import cn.rtast.libmc.protocol.session.AuthenticationProvider
+import cn.rtast.libmc.common.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.util.generateRandom16Bytes
 
 public class InternalPacketDispatcher(
@@ -31,19 +31,8 @@ public class InternalPacketDispatcher(
     public suspend fun handleIncomingPackets(packet: MinecraftPacket) {
         this.dispatchEvent(packet)
         when (packet) {
-            is ClientboundLoginPacket -> this.handleLoginPackets(packet)
-            is ClientboundConfigurationPacket -> this.handleConfigurationPackets(packet)
-            is ClientboundPlayPacket -> this.handlePlayPackets(packet)
-        }
-    }
-
-    private suspend fun handleLoginPackets(packet: ClientboundLoginPacket) {
-        when (packet) {
-            is ClientboundDisconnectLoginPacket -> {
-                println("Login denied: ${packet.reason}")
-                client.close()
-            }
-
+            // login
+            is ClientboundDisconnectLoginPacket -> client.close()
             is ClientboundSetCompressionPacket -> client.networkChannel.setCompression(packet.threshold)
             is ClientboundLoginSuccessPacket -> {
                 client.networkChannel.sendPacket(ServerboundLoginAcknowledgedPacket)
@@ -67,13 +56,7 @@ public class InternalPacketDispatcher(
                 client.session.enableEncryption(sharedSecret)
             }
 
-            else -> {}
-        }
-    }
-
-    private fun handleConfigurationPackets(packet: ClientboundConfigurationPacket) {
-        when (packet) {
-            is ClientboundDisconnectConfigurationPacket -> println("Configuration disconnected: ${packet.reason}")
+            // configuration
             ClientboundFinishConfigurationPacket -> {
                 client.networkChannel.sendPacket(ServerboundAckFinishConfigurationPacket)
                 client.stateMachine.transitionTo(ProtocolState.PLAY)
@@ -91,24 +74,16 @@ public class InternalPacketDispatcher(
                 ServerboundSelectKnownPacksPacket(emptyList())
             )  // TODO empty resource packs list
             is ClientboundCodeOfConductPacket -> client.networkChannel.sendPacket(ServerboundAcceptCodeOfConductPacket)
-            else -> {}
-        }
-    }
 
-    private fun handlePlayPackets(packet: ClientboundPlayPacket) {
-        when (packet) {
+            // play
             is ClientboundDisconnectPlayPacket -> client.close()
             is ClientboundKeepAlivePlayPacket -> client.networkChannel.sendPacket(ServerboundKeepAlivePlayPacket(id = packet.id))
-            is ClientboundLoginPlayPacket -> println("Successfully joined world Entity ID: ${packet.entityId}")
             is ClientboundPingPacket -> client.networkChannel.sendPacket(ServerboundPongPlayPacket(packet.id))
-            is ClientboundPlayerChatMessagePacket -> println("[Player Chat Message] ${packet.message}")
             ClientboundStartConfigurationPacket -> {
                 client.networkChannel.sendPacket(ServerboundConfigurationAcknowledgedPacket)
                 client.stateMachine.transitionTo(ProtocolState.CONFIGURATION)
             }
-
-            is ClientboundSystemChatMessagePacket -> println("[System message] ${packet.content}")
-            else -> println(packet)
+            else -> {}
         }
     }
 }

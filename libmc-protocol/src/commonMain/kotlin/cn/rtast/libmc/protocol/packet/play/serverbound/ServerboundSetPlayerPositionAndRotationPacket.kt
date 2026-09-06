@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerPositionFlag
 
@@ -30,7 +30,7 @@ public data class ServerboundSetPlayerPositionAndRotationPacket(
     val flags: PlayerPositionFlag,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetPlayerPositionAndRotationPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundSetPlayerPositionAndRotationPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetPlayerPositionAndRotationPacket) {
             buffer.writeDouble(value.x)
             buffer.writeDouble(value.feetY)
             buffer.writeDouble(value.z)
@@ -39,7 +39,7 @@ public data class ServerboundSetPlayerPositionAndRotationPacket(
             buffer.writeByte(value.flags.flag)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundSetPlayerPositionAndRotationPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundSetPlayerPositionAndRotationPacket =
             throw UnsupportedOperationException()
     }
 }

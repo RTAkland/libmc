@@ -8,13 +8,13 @@
 package cn.rtast.libmc.nbt
 
 
-public fun NBTOutput.writeStringTag(value: String) {
+public suspend fun NBTOutput.writeStringTag(value: String) {
     val bytes = value.encodeToByteArray()
     writeShort(bytes.size.toShort())
     writeBytes(bytes)
 }
 
-public fun NBTOutput.writeTagPayload(tag: NBTTag) {
+public suspend fun NBTOutput.writeTagPayload(tag: NBTTag) {
     when (tag) {
         is NBTTag.ByteTag -> writeByte(tag.value)
         is NBTTag.ShortTag -> writeShort(tag.value)
@@ -56,14 +56,14 @@ public fun NBTOutput.writeTagPayload(tag: NBTTag) {
     }
 }
 
-public fun NBTOutput.writeRootNBTCompound(name: String = ""): ByteArray {
+public suspend fun NBTOutput.writeRootNBTCompound(name: String = ""): ByteArray {
     writeByte(NBTType.Compound.id)
     writeStringTag(name)
     writeTagPayload(root)
     return toByteArray()
 }
 
-public fun NBTOutput.writeNetworkCompound(compound: NBTCompound) {
+public suspend fun NBTOutput.writeNetworkCompound(compound: NBTCompound) {
     val compoundTag = compound.element as? NBTTag.CompoundTag
         ?: throw IllegalArgumentException("NBTCompound element must be an NBTTag.CompoundTag")
     writeByte(NBTType.Compound.id)

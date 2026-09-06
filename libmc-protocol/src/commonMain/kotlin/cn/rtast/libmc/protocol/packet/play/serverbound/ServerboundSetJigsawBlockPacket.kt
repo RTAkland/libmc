@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.writeBlockPos
@@ -28,7 +28,7 @@ public data class ServerboundSetJigsawBlockPacket(
     val placementPriority: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetJigsawBlockPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundSetJigsawBlockPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetJigsawBlockPacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeIdentifier(value.name)
             buffer.writeIdentifier(value.target)
@@ -39,7 +39,7 @@ public data class ServerboundSetJigsawBlockPacket(
             buffer.writeVarInt(value.placementPriority)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundSetJigsawBlockPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundSetJigsawBlockPacket =
             throw UnsupportedOperationException()
     }
 }

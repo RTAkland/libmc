@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundPlaceRecipePacket(
     val windowId: Int,
@@ -18,13 +18,13 @@ public data class ServerboundPlaceRecipePacket(
     val makeAll: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPlaceRecipePacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPlaceRecipePacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPlaceRecipePacket) {
             buffer.writeVarInt(value.windowId)
             buffer.writeVarInt(value.recipeId)
             buffer.writeBoolean(value.makeAll)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPlaceRecipePacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPlaceRecipePacket =
             throw UnsupportedOperationException()
     }
 }

@@ -11,10 +11,10 @@ kotlin {
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {
-        jvmMain.dependencies {
-            // no dependencies needed
+        commonMain.dependencies {
+            api(libs.kotlinx.coroutines)
         }
-
+        jvmMain.dependencies {}
         nativeMain.dependencies {
             implementation(libs.ktor.network)
             implementation(libs.kotlinx.io)

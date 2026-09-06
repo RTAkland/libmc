@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Angle
 import cn.rtast.libmc.protocol.protocol.game.math.readAngle
 
@@ -24,8 +24,8 @@ public data class ClientboundUpdateEntityPositionAndRotationPacket(
     val onGround: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateEntityPositionAndRotationPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateEntityPositionAndRotationPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundUpdateEntityPositionAndRotationPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateEntityPositionAndRotationPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateEntityPositionAndRotationPacket {
             val entityId = buffer.readVarInt()
             val x = buffer.readShort()
             val y = buffer.readShort()

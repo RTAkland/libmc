@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundChatMessagePacket(
     val message: String,
@@ -23,7 +23,7 @@ public data class ServerboundChatMessagePacket(
     val checksum: Byte,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundChatMessagePacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundChatMessagePacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundChatMessagePacket) {
             buffer.writeMcString(value.message)
             buffer.writeLong(value.timestamp)
             buffer.writeLong(value.salt)
@@ -35,7 +35,7 @@ public data class ServerboundChatMessagePacket(
             buffer.writeByte(value.checksum)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundChatMessagePacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundChatMessagePacket =
             throw UnsupportedOperationException()
     }
 

@@ -7,17 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Acknowledge_Block_Change
  */
-public data class ClientboundAcknowledgeBlockChangePacket(val sequenceId: Int) : ClientboundPlayPacket {
+public data class ClientboundAcknowledgeBlockChangePacket(val sequenceId: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundAcknowledgeBlockChangePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundAcknowledgeBlockChangePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundAcknowledgeBlockChangePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundAcknowledgeBlockChangePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundAcknowledgeBlockChangePacket {
             return ClientboundAcknowledgeBlockChangePacket(buffer.readVarInt())
         }
     }

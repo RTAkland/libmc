@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.signature
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readMcString
-import cn.rtast.libmc.common.writeMcString
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.writeMcString
 
 public data class ArgumentSignature(val name: String, val signature: ByteArray) {
     init {
@@ -18,12 +18,12 @@ public data class ArgumentSignature(val name: String, val signature: ByteArray) 
     }
 
     internal companion object Codec : PacketCodec<ArgumentSignature> {
-        override fun encode(buffer: BytesBuffer, value: ArgumentSignature) {
+        override suspend fun encode(buffer: BytesBuffer, value: ArgumentSignature) {
             buffer.writeMcString(value.name)
             buffer.writeBytes(value.signature)
         }
 
-        override fun decode(buffer: BytesBuffer): ArgumentSignature {
+        override suspend fun decode(buffer: BytesBuffer): ArgumentSignature {
             val name = buffer.readMcString()
             val signature = buffer.readBytes(256)
             return ArgumentSignature(name, signature)

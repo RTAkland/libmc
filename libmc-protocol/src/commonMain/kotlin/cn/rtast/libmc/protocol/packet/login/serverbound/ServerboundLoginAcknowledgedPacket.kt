@@ -7,12 +7,13 @@
 
 package cn.rtast.libmc.protocol.packet.login.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
 public data object ServerboundLoginAcknowledgedPacket : MinecraftPacket,
     PacketCodec<ServerboundLoginAcknowledgedPacket> {
-    override fun encode(buffer: BytesBuffer, value: ServerboundLoginAcknowledgedPacket) {}
-    override fun decode(buffer: BytesBuffer): ServerboundLoginAcknowledgedPacket = throw UnsupportedOperationException()
+    override suspend fun encode(buffer: BytesBuffer, value: ServerboundLoginAcknowledgedPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ServerboundLoginAcknowledgedPacket =
+        throw UnsupportedOperationException()
 }

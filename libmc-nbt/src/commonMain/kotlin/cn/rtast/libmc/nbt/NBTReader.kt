@@ -7,13 +7,13 @@
 
 package cn.rtast.libmc.nbt
 
-public fun NBTInput.readStringTag(): String {
+public suspend fun NBTInput.readStringTag(): String {
     val length = readShort().toInt() and 0xFFFF
     val bytes = readBytes(length)
     return bytes.decodeToString()
 }
 
-public fun NBTInput.readListTag(): NBTTag.ListTag {
+public suspend fun NBTInput.readListTag(): NBTTag.ListTag {
     val elementTypeId = readByte().toInt() and 0xFF
     val elementType = NBTType.fromID(elementTypeId)
     val length = readInt()
@@ -22,7 +22,7 @@ public fun NBTInput.readListTag(): NBTTag.ListTag {
     return NBTTag.ListTag(elementType, list)
 }
 
-public fun NBTInput.readCompoundTag(): NBTTag.CompoundTag {
+public suspend fun NBTInput.readCompoundTag(): NBTTag.CompoundTag {
     val map = LinkedHashMap<String, NBTTag>()
     while (true) {
         val typeId = readByte().toInt() and 0xFF
@@ -35,7 +35,7 @@ public fun NBTInput.readCompoundTag(): NBTTag.CompoundTag {
     return NBTTag.CompoundTag(map)
 }
 
-public fun NBTInput.readTagPayload(type: NBTType): NBTTag =
+public suspend fun NBTInput.readTagPayload(type: NBTType): NBTTag =
     when (type) {
         NBTType.Byte -> NBTTag.ByteTag(readByte())
         NBTType.Short -> NBTTag.ShortTag(readShort())
@@ -52,7 +52,7 @@ public fun NBTInput.readTagPayload(type: NBTType): NBTTag =
         NBTType.End -> error("TAG_End no payload")
     }
 
-public fun NBTInput.readCompound(): NBTTag {
+public suspend fun NBTInput.readCompound(): NBTTag {
     val map = LinkedHashMap<String, NBTTag>()
     while (true) {
         val typeId = readByte().toInt()
@@ -67,7 +67,7 @@ public fun NBTInput.readCompound(): NBTTag {
     return NBTTag.ListTag(NBTType.Compound, map.values.toMutableList())
 }
 
-public fun NBTInput.readRootCompound(): NBTCompound {
+public suspend fun NBTInput.readRootCompound(): NBTCompound {
     val rootType = NBTType.fromID(readByte().toInt())
     require(rootType == NBTType.Compound) { "Root tag must be TAG_Compound" }
     val nameLen = readShort().toInt() and 0xFFFF
@@ -76,7 +76,7 @@ public fun NBTInput.readRootCompound(): NBTCompound {
     return NBTCompound(name, root)
 }
 
-public fun NBTInput.readNetworkCompound(): NBTCompound {
+public suspend fun NBTInput.readNetworkCompound(): NBTCompound {
     return when (val type = NBTType.fromID(readByte().toInt() and 0xFF)) {
         NBTType.Compound -> NBTCompound("", readCompoundTag())
         NBTType.String -> NBTCompound("", NBTTag.CompoundTag(linkedMapOf("text" to NBTTag.StringTag(readStringTag()))))

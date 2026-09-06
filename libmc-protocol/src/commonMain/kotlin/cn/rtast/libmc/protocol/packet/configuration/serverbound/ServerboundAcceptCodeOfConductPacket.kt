@@ -7,13 +7,13 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data object ServerboundAcceptCodeOfConductPacket : MinecraftPacket,
     PacketCodec<ServerboundAcceptCodeOfConductPacket> {
-    override fun encode(buffer: BytesBuffer, value: ServerboundAcceptCodeOfConductPacket) {}
-    override fun decode(buffer: BytesBuffer): ServerboundAcceptCodeOfConductPacket =
+    override suspend fun encode(buffer: BytesBuffer, value: ServerboundAcceptCodeOfConductPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ServerboundAcceptCodeOfConductPacket =
         ServerboundAcceptCodeOfConductPacket
 }

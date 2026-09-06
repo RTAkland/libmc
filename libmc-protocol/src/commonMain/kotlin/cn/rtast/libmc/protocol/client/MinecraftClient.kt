@@ -7,8 +7,8 @@
 package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.protocol.crypto.ProtocolContext
-import cn.rtast.libmc.protocol.crypto.ProtocolContextBuilder
+import cn.rtast.libmc.common.crypto.ProtocolContext
+import cn.rtast.libmc.common.crypto.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
@@ -56,7 +56,7 @@ public class MinecraftClient internal constructor(
     override val coroutineContext: CoroutineContext
         get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")
 
-    public fun connect(protocolVersion: Int = 776) {
+    public suspend fun connect(protocolVersion: Int = 776) {
         networkChannel.connect()
         startListening()
         networkChannel.sendPacket(

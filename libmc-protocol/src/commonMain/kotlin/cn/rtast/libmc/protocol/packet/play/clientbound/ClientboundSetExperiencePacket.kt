@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 
 public data class ClientboundSetExperiencePacket(
     /**
@@ -21,8 +21,8 @@ public data class ClientboundSetExperiencePacket(
     val totalExperience: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetExperiencePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetExperiencePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSetExperiencePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetExperiencePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetExperiencePacket {
             val experienceBar = buffer.readFloat()
             val level = buffer.readVarInt()
             val totalExperience = buffer.readVarInt()

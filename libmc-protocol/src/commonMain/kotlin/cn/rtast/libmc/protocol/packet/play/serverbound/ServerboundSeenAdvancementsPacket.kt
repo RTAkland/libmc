@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.advancement.AdvancementAction
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
@@ -18,7 +18,7 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 public data class ServerboundSeenAdvancementsPacket(val action: AdvancementAction, val tabId: Identifier?) :
     MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSeenAdvancementsPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundSeenAdvancementsPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSeenAdvancementsPacket) {
             buffer.writeVarInt(value.action.id)
             if (value.action == AdvancementAction.OPENED_TAB) {
                 requireNotNull(value.tabId) { "tabId must not be null when action is OPENED_TAB" }
@@ -26,7 +26,7 @@ public data class ServerboundSeenAdvancementsPacket(val action: AdvancementActio
             } else require(value.tabId == null) { "tabId must be null when action is CLOSED_SCREEN" }
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundSeenAdvancementsPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundSeenAdvancementsPacket =
             throw UnsupportedOperationException()
     }
 }

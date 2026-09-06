@@ -7,20 +7,20 @@
 
 package cn.rtast.libmc.protocol.packet.configuration
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readMcString
-import cn.rtast.libmc.common.writeMcString
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.writeMcString
 
 public data class KnownPacks(val namespace: String, val id: String, val version: String) {
     internal companion object Codec : PacketCodec<KnownPacks> {
-        override fun encode(buffer: BytesBuffer, value: KnownPacks) {
+        override suspend fun encode(buffer: BytesBuffer, value: KnownPacks) {
             buffer.writeMcString(value.namespace)
             buffer.writeMcString(value.id)
             buffer.writeMcString(value.version)
         }
 
-        override fun decode(buffer: BytesBuffer): KnownPacks {
+        override suspend fun decode(buffer: BytesBuffer): KnownPacks {
             val namespace = buffer.readMcString()
             val id = buffer.readMcString()
             val version = buffer.readMcString()

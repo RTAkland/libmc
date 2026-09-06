@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ClientboundEntityEventPacket(
@@ -20,8 +20,8 @@ public data class ClientboundEntityEventPacket(
     val status: Byte,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundEntityEventPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundEntityEventPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundEntityEventPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundEntityEventPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundEntityEventPacket {
             val entityId = buffer.readInt()
             val status = buffer.readByte()
             return ClientboundEntityEventPacket(entityId, status)

@@ -7,14 +7,19 @@
 
 package cn.rtast.libmc.protocol.registry.report
 
-import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.common.primitives.writeVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
 public data class ServerLink(val label: ServerLinkLabel, val url: String) {
     internal companion object Codec : PacketCodec<ServerLink> {
-        override fun encode(buffer: BytesBuffer, value: ServerLink) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerLink) {
             when (value.label) {
                 is ServerLinkLabel.Builtin -> {
                     buffer.writeBoolean(true)
@@ -29,7 +34,7 @@ public data class ServerLink(val label: ServerLinkLabel, val url: String) {
             buffer.writeMcString(value.url)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerLink {
+        override suspend fun decode(buffer: BytesBuffer): ServerLink {
             val isBuiltin = buffer.readBoolean()
             val label = if (isBuiltin) ServerLinkLabel.Builtin(BuiltinServerLinkType.fromID(buffer.readVarInt()))
             else ServerLinkLabel.Custom(buffer.readNetworkNBTCompound())

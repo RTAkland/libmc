@@ -7,9 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Set_Container_Property
@@ -18,10 +19,10 @@ public data class ClientboundContainerSetDataPacket(
     val windowId: Int,
     val property: Short,
     val value: Short,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundContainerSetDataPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundContainerSetDataPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundContainerSetDataPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundContainerSetDataPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundContainerSetDataPacket {
             val windowId = buffer.readVarInt()
             val property = buffer.readShort()
             val value = buffer.readShort()

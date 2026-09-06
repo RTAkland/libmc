@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarLong
+import cn.rtast.libmc.common.primitives.readVarLong
 
 public data class ClientboundSetBorderLeapSizePacket(
     val oldDiameter: Double,
@@ -18,8 +18,8 @@ public data class ClientboundSetBorderLeapSizePacket(
     val speed: Long,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetBorderLeapSizePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetBorderLeapSizePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSetBorderLeapSizePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetBorderLeapSizePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetBorderLeapSizePacket {
             val oldDiameter = buffer.readDouble()
             val newDiameter = buffer.readDouble()
             val speed = buffer.readVarLong()

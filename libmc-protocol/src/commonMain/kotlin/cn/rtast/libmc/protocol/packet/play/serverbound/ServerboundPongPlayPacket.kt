@@ -6,17 +6,17 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundPongPlayPacket(val id: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPongPlayPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPongPlayPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPongPlayPacket) {
             buffer.writeInt(value.id)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPongPlayPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPongPlayPacket =
             throw UnsupportedOperationException()
     }
 }

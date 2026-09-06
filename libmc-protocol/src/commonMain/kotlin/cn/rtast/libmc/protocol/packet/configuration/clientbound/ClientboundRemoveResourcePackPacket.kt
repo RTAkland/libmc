@@ -7,15 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readUuid
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readUuid
 import kotlin.uuid.Uuid
 
-public data class ClientboundRemoveResourcePackPacket(val uuid: Uuid) : ClientboundConfigurationPacket {
+public data class ClientboundRemoveResourcePackPacket(val uuid: Uuid) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundRemoveResourcePackPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundRemoveResourcePackPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundRemoveResourcePackPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundRemoveResourcePackPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundRemoveResourcePackPacket {
             val uuid = buffer.readUuid()
             return ClientboundRemoveResourcePackPacket(uuid)
         }

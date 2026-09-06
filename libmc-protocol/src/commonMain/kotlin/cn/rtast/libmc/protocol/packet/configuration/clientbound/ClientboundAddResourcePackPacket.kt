@@ -7,7 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readUuid
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import kotlin.uuid.Uuid
@@ -18,10 +23,10 @@ public data class ClientboundAddResourcePackPacket(
     val hash: String,
     val forced: Boolean,
     val prompt: NBTCompound,
-) : ClientboundConfigurationPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundAddResourcePackPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundAddResourcePackPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundAddResourcePackPacket {
             val uuid = buffer.readUuid()
             val url = buffer.readMcString()
             val hash = buffer.readMcString()

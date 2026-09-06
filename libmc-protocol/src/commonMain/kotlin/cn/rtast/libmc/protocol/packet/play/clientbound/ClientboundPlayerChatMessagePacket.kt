@@ -7,7 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readUuid
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import kotlin.uuid.Uuid
@@ -30,7 +35,7 @@ public data class ClientboundPlayerChatMessagePacket(
     val chatType: Int,
     val senderName: NBTCompound,
     val targetName: NBTCompound?,
-) : ClientboundPlayPacket {
+) : MinecraftPacket {
     public enum class ChatFilterType(public val id: Int) {
         PASS_THROUGH(0),
         FULLY_FILTERED(1),
@@ -44,8 +49,8 @@ public data class ClientboundPlayerChatMessagePacket(
 
     public data class PreviousMessageEntry(val messageId: Int, val signature: ByteArray?) {
         internal companion object Codec : PacketCodec<PreviousMessageEntry> {
-            override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
-            override fun decode(buffer: BytesBuffer): PreviousMessageEntry {
+            override suspend fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
+            override suspend fun decode(buffer: BytesBuffer): PreviousMessageEntry {
                 val messageId = buffer.readVarInt()
                 val signature = if (messageId == 0) buffer.readBytes(256) else null
                 return PreviousMessageEntry(messageId, signature)
@@ -69,8 +74,8 @@ public data class ClientboundPlayerChatMessagePacket(
     }
 
     internal companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
             val globalIndex = buffer.readVarInt()
             val sender = buffer.readUuid()
             val index = buffer.readVarInt()

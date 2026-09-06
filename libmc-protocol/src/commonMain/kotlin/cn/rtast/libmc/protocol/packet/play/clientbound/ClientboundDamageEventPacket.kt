@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readVec3d
 
@@ -22,8 +22,8 @@ public data class ClientboundDamageEventPacket(
     val position: Vec3d?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDamageEventPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundDamageEventPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundDamageEventPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDamageEventPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundDamageEventPacket {
             val entityId = buffer.readVarInt()
             val sourceTypeId = buffer.readVarInt()
             val rawCauseId = buffer.readVarInt()

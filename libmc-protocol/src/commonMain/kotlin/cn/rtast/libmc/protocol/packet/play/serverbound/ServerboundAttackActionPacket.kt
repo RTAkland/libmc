@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 
 public data class ServerboundAttackActionPacket(val entityId: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundAttackActionPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundAttackActionPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundAttackActionPacket) {
             buffer.writeVarInt(value.entityId)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundAttackActionPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundAttackActionPacket =
             throw UnsupportedOperationException()
     }
 }

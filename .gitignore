@@ -48,3 +48,4 @@ bin/
 .kotlin/
 **/build/*
 /libmc-protocol/src/jvmTest/resources/accessToken.txt
+/libmc-protocol-encrypt/src/commonTest/resources/accessToken.txt

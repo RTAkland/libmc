@@ -7,17 +7,17 @@
 
 package cn.rtast.libmc.protocol.packet.status.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
 public data class ServerboundPingRequestPacket(val timestamp: Long) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPingRequestPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPingRequestPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPingRequestPacket) {
             buffer.writeLong(value.timestamp)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPingRequestPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPingRequestPacket =
             throw UnsupportedOperationException()
     }
 }

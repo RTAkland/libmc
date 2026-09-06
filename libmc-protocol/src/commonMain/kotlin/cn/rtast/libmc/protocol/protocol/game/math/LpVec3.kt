@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.common.ByteOrder
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.readVarInt
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.stream.ByteOrder
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.max
@@ -39,7 +39,7 @@ public data class LpVec3(
 }
 
 // ref: https://minecraft.wiki/w/Java_Edition_protocol/Data_types#LpVec3
-internal fun BytesBuffer.readLpVec3(): LpVec3 {
+internal suspend fun BytesBuffer.readLpVec3(): LpVec3 {
     val byte1 = readByte().toInt() and 0xFF
     if (byte1 == 0) return LpVec3.ZERO
     val byte2 = readByte().toInt() and 0xFF
@@ -55,7 +55,7 @@ internal fun BytesBuffer.readLpVec3(): LpVec3 {
 }
 
 // ref: https://minecraft.wiki/w/Java_Edition_protocol/Data_types#LpVec3
-internal fun BytesBuffer.writeLpVec3(vec3: LpVec3) {
+internal suspend fun BytesBuffer.writeLpVec3(vec3: LpVec3) {
     val maxCoordinate = max(abs(vec3.x), max(abs(vec3.y), abs(vec3.z)))
     if (maxCoordinate.isNaN() || maxCoordinate < 1.0 / 32766.0) {
         writeByte(0x00)

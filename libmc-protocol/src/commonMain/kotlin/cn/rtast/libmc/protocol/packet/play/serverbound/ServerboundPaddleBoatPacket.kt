@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 /**
@@ -25,12 +25,12 @@ public data class ServerboundPaddleBoatPacket(
     val rightPaddleTurning: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPaddleBoatPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPaddleBoatPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPaddleBoatPacket) {
             buffer.writeBoolean(value.leftPaddleTurning)
             buffer.writeBoolean(value.rightPaddleTurning)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPaddleBoatPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundPaddleBoatPacket =
             throw UnsupportedOperationException()
     }
 }

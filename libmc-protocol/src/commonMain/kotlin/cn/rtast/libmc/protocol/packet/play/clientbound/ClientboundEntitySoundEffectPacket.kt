@@ -7,8 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.*
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.IdOrX
+import cn.rtast.libmc.common.primitives.readIdOrX
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.protocol.protocol.game.sound.SoundCategory
 import cn.rtast.libmc.protocol.protocol.game.sound.SoundEvent
 import cn.rtast.libmc.protocol.protocol.game.sound.readSoundEvent
@@ -22,8 +26,8 @@ public data class ClientboundEntitySoundEffectPacket(
     val seed: Long,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundEntitySoundEffectPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundEntitySoundEffectPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundEntitySoundEffectPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundEntitySoundEffectPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundEntitySoundEffectPacket {
             val soundEvent = buffer.readIdOrX { readSoundEvent() }
             val category = SoundCategory.fromID(buffer.readVarInt())
             val entityId = buffer.readVarInt()

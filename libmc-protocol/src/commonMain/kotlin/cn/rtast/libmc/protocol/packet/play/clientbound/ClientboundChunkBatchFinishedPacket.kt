@@ -7,14 +7,15 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
 
-public data class ClientboundChunkBatchFinishedPacket(val batchSize: Int) : ClientboundPlayPacket {
+public data class ClientboundChunkBatchFinishedPacket(val batchSize: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundChunkBatchFinishedPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundChunkBatchFinishedPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundChunkBatchFinishedPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundChunkBatchFinishedPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundChunkBatchFinishedPacket {
             return ClientboundChunkBatchFinishedPacket(buffer.readVarInt())
         }
     }

@@ -7,18 +7,22 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.*
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.writeMcString
 
-public data class ClientboundCustomReportDetailsPacket(val details: List<ReportDetail>) :
-    ClientboundConfigurationPacket {
+public data class ClientboundCustomReportDetailsPacket(val details: List<ReportDetail>) : MinecraftPacket {
     public data class ReportDetail(val title: String, val description: String) {
         internal companion object Codec : PacketCodec<ReportDetail> {
-            override fun encode(buffer: BytesBuffer, value: ReportDetail) {
+            override suspend fun encode(buffer: BytesBuffer, value: ReportDetail) {
                 buffer.writeMcString(value.title)
                 buffer.writeMcString(value.description)
             }
 
-            override fun decode(buffer: BytesBuffer): ReportDetail {
+            override suspend fun decode(buffer: BytesBuffer): ReportDetail {
                 val title = buffer.readMcString()
                 val description = buffer.readMcString()
                 return ReportDetail(title, description)
@@ -27,8 +31,8 @@ public data class ClientboundCustomReportDetailsPacket(val details: List<ReportD
     }
 
     internal companion object Codec : PacketCodec<ClientboundCustomReportDetailsPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundCustomReportDetailsPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundCustomReportDetailsPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundCustomReportDetailsPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundCustomReportDetailsPacket {
             val detailCount = buffer.readVarInt()
             val details = ArrayList<ReportDetail>(detailCount)
             repeat(detailCount) { details.add(ReportDetail.decode(buffer)) }

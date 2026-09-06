@@ -7,10 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readMcString
-import cn.rtast.libmc.common.readPrefixedByteArray
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.common.primitives.readPrefixedByteArray
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Encryption_Request
@@ -24,10 +25,10 @@ public data class ClientboundHelloPacket(
      * ref: https://minecraft.wiki/w/Java_Edition_protocol/Encryption#Authentication
      */
     val shouldAuthenticate: Boolean,
-) : ClientboundLoginPacket {
+) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundHelloPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundHelloPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundHelloPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundHelloPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundHelloPacket {
             val serverId = buffer.readMcString()
             val publicKey = buffer.readPrefixedByteArray()
             val verifyToken = buffer.readPrefixedByteArray()

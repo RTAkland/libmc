@@ -7,16 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class ServerboundCookieResponsePacket(val key: Identifier, val payload: ByteArray?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCookieResponsePacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundCookieResponsePacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundCookieResponsePacket) {
             buffer.writeIdentifier(value.key)
             if (value.payload != null) {
                 buffer.writeBoolean(true)
@@ -25,7 +25,7 @@ public data class ServerboundCookieResponsePacket(val key: Identifier, val paylo
             } else buffer.writeBoolean(false)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundCookieResponsePacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundCookieResponsePacket =
             throw UnsupportedOperationException()
     }
 

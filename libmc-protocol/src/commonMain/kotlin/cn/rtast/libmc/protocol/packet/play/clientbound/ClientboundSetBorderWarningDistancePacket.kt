@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 
 public data class ClientboundSetBorderWarningDistancePacket(
     /**
@@ -19,8 +19,8 @@ public data class ClientboundSetBorderWarningDistancePacket(
     val warningBlocks: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetBorderWarningDistancePacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetBorderWarningDistancePacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundSetBorderWarningDistancePacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetBorderWarningDistancePacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetBorderWarningDistancePacket {
             return ClientboundSetBorderWarningDistancePacket(buffer.readVarInt())
         }
     }

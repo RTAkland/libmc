@@ -7,10 +7,10 @@
 package cn.rtast.libmc.protocol.network
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common.ReadChannel
-import cn.rtast.libmc.common.Socket
-import cn.rtast.libmc.common.WriteChannel
-import cn.rtast.libmc.protocol.crypto.NetworkCipher
+import cn.rtast.libmc.common.stream.ReadChannel
+import cn.rtast.libmc.common.stream.Socket
+import cn.rtast.libmc.common.stream.WriteChannel
+import cn.rtast.libmc.common.crypto.NetworkCipher
 
 internal class NetworkSession(
     private val host: String,
@@ -41,17 +41,17 @@ internal class NetworkSession(
         this.writeChannel = CipherWriteChannel(currentWrite, cipher)
     }
 
-    fun readByte(): Byte {
+    suspend fun readByte(): Byte {
         val channel = requireNotNull(readChannel) { "ReadChannel not connected" }
         return channel.readByte()
     }
 
-    fun readBytes(length: Int): ByteArray {
+    suspend fun readBytes(length: Int): ByteArray {
         val channel = requireNotNull(readChannel) { "ReadChannel not connected" }
         return channel.readBytes(length)
     }
 
-    fun readVarInt(): Int {
+    suspend fun readVarInt(): Int {
         var numRead = 0
         var result = 0
         var read: Byte
@@ -65,7 +65,7 @@ internal class NetworkSession(
         return result
     }
 
-    fun writeFully(data: ByteArray) {
+    suspend fun writeFully(data: ByteArray) {
         val channel = requireNotNull(writeChannel) { "WriteChannel not connected" }
         channel.writeFully(data, 0, data.size)
         channel.flush()

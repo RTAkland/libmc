@@ -7,18 +7,19 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
-import cn.rtast.libmc.common.readVarInt
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 
-public data class ClientboundSetCompressionPacket(val threshold: Int) : ClientboundLoginPacket {
+public data class ClientboundSetCompressionPacket(val threshold: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetCompressionPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundSetCompressionPacket) {
-            buffer.writeVarInt(value.threshold)
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetCompressionPacket) {
+            buffer.writeVarInt(value = value.threshold)
         }
 
-        override fun decode(buffer: BytesBuffer): ClientboundSetCompressionPacket {
+        override suspend fun decode(buffer: BytesBuffer): ClientboundSetCompressionPacket {
             return ClientboundSetCompressionPacket(buffer.readVarInt())
         }
     }

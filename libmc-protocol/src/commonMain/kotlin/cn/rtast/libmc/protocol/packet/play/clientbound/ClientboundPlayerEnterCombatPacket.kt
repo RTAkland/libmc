@@ -7,12 +7,13 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
 import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.common.packet.PacketCodec
 
 public data object ClientboundPlayerEnterCombatPacket : MinecraftPacket,
     PacketCodec<ClientboundPlayerEnterCombatPacket> {
-    override fun encode(buffer: BytesBuffer, value: ClientboundPlayerEnterCombatPacket) {}
-    override fun decode(buffer: BytesBuffer): ClientboundPlayerEnterCombatPacket = ClientboundPlayerEnterCombatPacket
+    override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerEnterCombatPacket) {}
+    override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerEnterCombatPacket =
+        ClientboundPlayerEnterCombatPacket
 }

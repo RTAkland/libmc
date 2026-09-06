@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.readVarInt
+import cn.rtast.libmc.common.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readVec3d
 import cn.rtast.libmc.protocol.protocol.game.player.AnchorPoint
@@ -26,8 +26,8 @@ public data class ClientboundPlayerLookAtPacket(
     )
 
     internal companion object Codec : PacketCodec<ClientboundPlayerLookAtPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerLookAtPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundPlayerLookAtPacket {
+        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerLookAtPacket) {}
+        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerLookAtPacket {
             val fromAnchor = AnchorPoint.fromID(buffer.readVarInt())
             val targetPosition = buffer.readVec3d()!!
             val isEntity = buffer.readBoolean()

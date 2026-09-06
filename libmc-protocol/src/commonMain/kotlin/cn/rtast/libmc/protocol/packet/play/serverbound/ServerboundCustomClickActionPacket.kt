@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.BytesBuffer
-import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.common.packet.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeVarInt
+import cn.rtast.libmc.common.primitives.writeVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
@@ -25,13 +25,13 @@ public data class ServerboundCustomClickActionPacket(
     val payload: NBTCompound,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCustomClickActionPacket> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundCustomClickActionPacket) {
+        override suspend fun encode(buffer: BytesBuffer, value: ServerboundCustomClickActionPacket) {
             buffer.writeIdentifier(value.id)
             buffer.writeVarInt(value.size)
             buffer.writeNetworkNBTCompound(value.payload)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundCustomClickActionPacket =
+        override suspend fun decode(buffer: BytesBuffer): ServerboundCustomClickActionPacket =
             throw UnsupportedOperationException()
     }
 }
