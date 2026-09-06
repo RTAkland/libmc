@@ -1,0 +1,13 @@
+/*
+ * Copyright © 2026 RTAkland
+ * Author: RTAkland
+ * Date: 2026/9/7
+ */
+
+
+package cn.rtast.libmc.protocol.crypto
+
+public interface NetworkCipher {
+    public fun encrypt(buffer: ByteArray, offset: Int, length: Int)
+    public fun decrypt(buffer: ByteArray, offset: Int, length: Int)
+}

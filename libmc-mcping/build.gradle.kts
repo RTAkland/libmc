@@ -8,8 +8,6 @@ kotlin {
     linuxArm64()
     macosArm64()
     mingwX64()
-    iosArm64()
-    iosSimulatorArm64()
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {

@@ -9,27 +9,24 @@ package cn.rtast.libmc.protocol.network
 import cn.rtast.libmc.common.*
 import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.ClientStateMachine
+import cn.rtast.libmc.protocol.crypto.NetworkCipher
 import cn.rtast.libmc.protocol.protocol.GameProtocols
 import kotlin.concurrent.Volatile
 
 internal class NetworkChannel(
-    private val host: String,
-    private val port: Int,
-    private val context: LibMCContext,
+    host: String,
+    port: Int,
+    context: LibMCContext,
     private val stateMachine: ClientStateMachine,
+    cipherProvider: (ByteArray) -> NetworkCipher,
 ) {
-    private var socket: Socket? = null
-    private var readChannel: ReadChannel? = null
-    private var writeChannel: WriteChannel? = null
+    val session: NetworkSession = NetworkSession(host, port, context, cipherProvider)
 
     @Volatile
     private var threshold = -1
 
     fun connect() {
-        val sk = Socket(host, port, context)
-        this.socket = sk
-        this.readChannel = sk.openReadChannel()
-        this.writeChannel = sk.openWriteChannel()
+        session.connect()
     }
 
     fun setCompression(threshold: Int) {
@@ -37,9 +34,8 @@ internal class NetworkChannel(
     }
 
     fun readNextPacket(): MinecraftPacket {
-        val channel = requireNotNull(readChannel) { "ReadChannel not connected" }
-        val packetLength = channel.readVarInt()
-        val rawFrameBytes = channel.readBytes(packetLength)
+        val packetLength = session.readVarInt()
+        val rawFrameBytes = session.readBytes(packetLength)
         val frameBuf = rawFrameBytes.wrap()
         val payloadBuf = if (threshold < 0) frameBuf else {
             val dataLength = frameBuf.readVarInt()
@@ -48,14 +44,12 @@ internal class NetworkChannel(
         }
         val currentState = stateMachine.currentState
         val packetId = payloadBuf.readVarInt()
-        val packet = GameProtocols.clientboundGameProtocols
+        return GameProtocols.clientboundGameProtocols
             .getRegistry(currentState)
             .decodePacket(packetId, payloadBuf)
-        return packet
     }
 
     fun sendPacket(packet: MinecraftPacket) {
-        val channel = requireNotNull(writeChannel) { "WriteChannel not connected" }
         val uncompressedBodyBuf = BytesBuffer()
         GameProtocols.serverboundGameProtocols
             .getRegistry(stateMachine.currentState)
@@ -78,11 +72,10 @@ internal class NetworkChannel(
             frameBuffer.writeVarInt(contentBuf.size)
             frameBuffer.writeBuffer(contentBuf)
         }
-        channel.writeFully(frameBuffer.toByteArray())
-        channel.flush()
+        session.writeFully(frameBuffer.toByteArray())
     }
 
     fun close() {
-        socket?.close()
+        session.close()
     }
 }

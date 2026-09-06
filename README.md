@@ -9,8 +9,6 @@ A lightweight minecraft client-side protocol library and related library, includ
 - MingwX64
 - LinuxArm64
 - LinuxX64
-- iosArm64
-- iosSimulatorArm64
 - MacosArm64
 
 # libmc-protocol
@@ -19,10 +17,9 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 # Minecraft Protocol Library Status & Roadmap
 
-## Unimplemented features
+## Implementation details
 
-- [ ] **Online Mode Authentication & Encryption**: Full Mojang/Microsoft auth pipeline, JoinServer request, and AES-CFB8
-  stream cipher stream wrapper.
+- [ ] **Online Mode Authentication & Encryption**: See [Implement Encryption](docs/implement-encryption.md) 
 - [ ] **Structured `TextComponent` Parser**: Rich Chat Component AST decoder (currently falling back to raw
   `NBTCompound`).
 - [ ] **Command Tree Parser (0x10)**: Full binary graph decoder for brigadier nodes, argument types, and suggestions.
@@ -33,7 +30,8 @@ A lightweight minecraft client-side protocol library and related library, includ
 - [ ] **Light Engine Update (0x30)**: Sky & Block light nibble array parser.
 - [ ] **Explosion Event Decoder (0x24)**: Knockback vectors and destroyed block offsets array.
 - [ ] **Debug Packets Parsing (0x1A - 0x1E)**: Debug subs, block/entity states, and game performance sample events.
-- [ ] **Particle parsing**
+- [ ] **Particle Parsing**
+- [ ] **Slot Data Parsing**
 
 ---
 
@@ -146,9 +144,9 @@ A lightweight minecraft client-side protocol library and related library, includ
 - [x] `0x0F` Command Suggestions (`ClientboundCommandSuggestionsPacket`)
 - [ ] `0x10` Commands (`ClientboundCommandsPacket`)
 - [x] `0x11` Container Close (`ClientboundContainerClosePacket`)
-- [x] `0x12` Container Set Content (`ClientboundContainerSetContentPacket`)
+- [ ] `0x12` Container Set Content (`ClientboundContainerSetContentPacket`)
 - [x] `0x13` Container Set Data (`ClientboundContainerSetDataPacket`)
-- [x] `0x14` Container Set Slot (`ClientboundContainerSetSlotPacket`)
+- [ ] `0x14` Container Set Slot (`ClientboundContainerSetSlotPacket`)
 - [x] `0x15` Cookie Request (`ClientboundCookieRequestPacket`)
 - [x] `0x16` Cooldown (`ClientboundCooldownPacket`)
 - [x] `0x17` Custom Chat Completions (`ClientboundCustomChatCompletionsPacket`)
@@ -224,19 +222,19 @@ A lightweight minecraft client-side protocol library and related library, includ
 - [x] `0x5D` Set Camera (`ClientboundSetCameraPacket`)
 - [x] `0x5E` Set Center Chunk (`ClientboundSetCenterChunkPacket`)
 - [x] `0x5F` Set Render Distance (`ClientboundSetRenderDistancePacket`)
-- [x] `0x60` Set Cursor Item (`ClientboundSetCursorItemPacket`)
+- [ ] `0x60` Set Cursor Item (`ClientboundSetCursorItemPacket`)
 - [x] `0x61` Set Default Spawn Position (`ClientboundSetDefaultSpawnPositionPacket`)
 - [x] `0x62` Set Display Objective (`ClientboundSetDisplayObjectivePacket`)
 - [ ] `0x63` Set Entity Metadata (`ClientboundSetEntityMetadataPacket`)
 - [x] `0x64` Link Entities (`ClientboundLinkEntitiesPacket`)
 - [x] `0x65` Set Entity Velocity (`ClientboundSetEntityVelocityPacket`)
-- [x] `0x66` Set Equipment (`ClientboundSetEquipmentPacket`)
+- [ ] `0x66` Set Equipment (`ClientboundSetEquipmentPacket`)
 - [x] `0x67` Set Experience (`ClientboundSetExperiencePacket`)
 - [x] `0x68` Set Health (`ClientboundSetHealthPacket`)
 - [x] `0x69` Set Carried Item (`ClientboundSetCarriedItemPacket`)
 - [x] `0x6A` Update Objective (`ClientboundUpdateObjectivePacket`)
 - [x] `0x6B` Set Passengers (`ClientboundSetPassengersPacket`)
-- [x] `0x6C` Set Player Inventory Slot (`ClientboundSetPlayerInventorySlotPacket`)
+- [ ] `0x6C` Set Player Inventory Slot (`ClientboundSetPlayerInventorySlotPacket`)
 - [ ] `0x6D` Set Player Team (`ClientboundSetPlayerTeamPacket`)
 - [x] `0x6E` Update Score (`ClientboundUpdateScorePacket`)
 - [x] `0x6F` Set Simulation Distance (`ClientboundSetSimulationDistancePacket`)

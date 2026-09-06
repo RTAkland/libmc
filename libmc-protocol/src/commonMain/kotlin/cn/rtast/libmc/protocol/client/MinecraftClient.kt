@@ -7,6 +7,8 @@
 package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.protocol.crypto.ProtocolContext
+import cn.rtast.libmc.protocol.crypto.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
@@ -24,21 +26,33 @@ public class MinecraftClient internal constructor(
     private val host: String,
     private val port: Int = 25565,
     private val username: String,
-    private val uuid: Uuid,
+    internal val uuid: Uuid,
+    internal val accessToken: String?,
     context: LibMCContext,
     parentJob: Job?,
     private val ioDispatcher: CoroutineDispatcher,
+    cryptoContext: ProtocolContext,
 ) : PacketEventDispatcher(), CoroutineScope {
-
+    internal val rsa1024Encryptor = cryptoContext.rsaEncryptor
+    internal val serverIdHasher = cryptoContext.sha1Hasher
+    internal val authProvider = cryptoContext.authProvider
     internal val stateMachine = ClientStateMachine()
-    internal val networkChannel = NetworkChannel(host, port, context, stateMachine)
-    private val internalPacketDispatcher = InternalPacketDispatcher(this)
 
+    internal val networkChannel = NetworkChannel(
+        host = host,
+        port = port,
+        context = context,
+        stateMachine = stateMachine,
+        cipherProvider = cryptoContext.cipherFactory
+    )
+
+    internal val session get() = networkChannel.session
+    private val internalPacketDispatcher = InternalPacketDispatcher(this, authProvider)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
 
+    public val isOnlineMode: Boolean get() = accessToken != null
     public val transactionManager: TransactionIdManager = TransactionIdManager()
-
     override val coroutineContext: CoroutineContext
         get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")
 
@@ -52,10 +66,14 @@ public class MinecraftClient internal constructor(
         networkChannel.sendPacket(ServerboundLoginStartPacket(username, uuid))
     }
 
+    public fun setCompression(threshold: Int): Unit = networkChannel.setCompression(threshold)
+
     private fun startListening() {
         listenJob = launch {
             try {
-                while (isActive) internalPacketDispatcher.handleIncomingPackets(networkChannel.readNextPacket())
+                while (isActive) {
+                    internalPacketDispatcher.handleIncomingPackets(networkChannel.readNextPacket())
+                }
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 if (isActive) {
@@ -75,10 +93,25 @@ public class MinecraftClient internal constructor(
 
 public fun createMinecraftClient(
     host: String,
-    port: Int,
+    port: Int = 25565,
     username: String,
     uuid: Uuid = generateOfflineUuid(username),
+    accessToken: String?,
     context: LibMCContext = LibMCContext(),
     parentJob: Job? = null,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-): MinecraftClient = MinecraftClient(host, port, username, uuid, context, parentJob, ioDispatcher)
+    crypto: ProtocolContextBuilder.() -> Unit,
+): MinecraftClient {
+    val cryptoContext = ProtocolContextBuilder(accessToken != null).apply(crypto).build()
+    return MinecraftClient(
+        host = host,
+        port = port,
+        username = username,
+        uuid = uuid,
+        accessToken = accessToken,
+        context = context,
+        parentJob = parentJob,
+        ioDispatcher = ioDispatcher,
+        cryptoContext = cryptoContext
+    )
+}

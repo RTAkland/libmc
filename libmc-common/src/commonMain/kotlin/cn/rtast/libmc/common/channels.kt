@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.common
 
-public expect class ReadChannel {
-    public fun readByte(): Byte
-    public fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
-    public fun readInt(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Int
-    public fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long
-    public fun readBytes(length: Int): ByteArray
-    public fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size)
+public expect open class ReadChannel() {
+    public open fun readByte(): Byte
+    public open fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
+    public open fun readInt(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Int
+    public open fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long
+    public open fun readBytes(length: Int): ByteArray
+    public open fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size)
 }
 
-public expect class WriteChannel {
-    public fun writeFully(value: ByteArray, startIndex: Int = 0, endIndex: Int = value.size)
-    public fun flush()
+public expect open class WriteChannel() {
+    public open fun writeFully(value: ByteArray, startIndex: Int = 0, endIndex: Int = value.size)
+    public open fun flush()
 }
 
 public fun ReadChannel.readVarInt(): Int {

@@ -1,9 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-plugins {
-    alias(libs.plugins.kotlinx.serialization)
-}
-
 kotlin {
     explicitApi()
     withSourcesJar()
@@ -12,8 +8,6 @@ kotlin {
     linuxArm64()
     macosArm64()
     mingwX64()
-    iosArm64()
-    iosSimulatorArm64()
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {
@@ -30,6 +24,11 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.okhttp)
         }
     }
 }

@@ -10,38 +10,53 @@ import io.ktor.utils.io.*
 import io.ktor.utils.io.bits.*
 import kotlinx.coroutines.runBlocking
 
-public actual class ReadChannel(private val _readChannel: ByteReadChannel) {
+public actual open class ReadChannel public actual constructor() {
 
-    public actual fun readByte(): Byte = runBlocking { _readChannel.readByte() }
-    public actual fun readBytes(length: Int): ByteArray = runBlocking { _readChannel.readByteArray(length) }
-    public actual fun readFully(out: ByteArray, start: Int, end: Int): Unit =
+    private lateinit var _readChannel: ByteReadChannel
+
+    public constructor(readChannel: ByteReadChannel) : this() {
+        this._readChannel = readChannel
+    }
+
+    public actual open fun readByte(): Byte = runBlocking { _readChannel.readByte() }
+    public actual open fun readBytes(length: Int): ByteArray = runBlocking { _readChannel.readByteArray(length) }
+    public actual open fun readFully(out: ByteArray, start: Int, end: Int): Unit =
         runBlocking { _readChannel.readFully(out, start, end) }
 
-    public actual fun readShort(endian: ByteOrder): Short = runBlocking {
-        val v = _readChannel.readShort()
-        if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    public actual open fun readShort(endian: ByteOrder): Short {
+        val bytes = readBytes(2)
+        val v = ((bytes[0].toInt() and 0xFF shl 8) or (bytes[1].toInt() and 0xFF)).toShort()
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
     }
 
-    public actual fun readInt(endian: ByteOrder): Int = runBlocking {
-        val v = _readChannel.readInt()
-        if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    public actual open fun readInt(endian: ByteOrder): Int {
+        val bytes = readBytes(4)
+        val v = (bytes[0].toInt() and 0xFF shl 24) or
+                (bytes[1].toInt() and 0xFF shl 16) or
+                (bytes[2].toInt() and 0xFF shl 8) or
+                (bytes[3].toInt() and 0xFF)
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
     }
 
-    public actual fun readLong(endian: ByteOrder): Long = runBlocking {
-        val v = _readChannel.readLong()
-        if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
+    public actual open fun readLong(endian: ByteOrder): Long {
+        val bytes = readBytes(8)
+        var v = 0L
+        for (i in 0 until 8) {
+            v = (v shl 8) or (bytes[i].toLong() and 0xFF)
+        }
+        return if (endian == ByteOrder.BIG_ENDIAN) v else v.reverseByteOrder()
     }
 }
 
-public actual class WriteChannel {
-    private val _writeChannel: ByteWriteChannel
+public actual open class WriteChannel public actual constructor() {
+    private lateinit var _writeChannel: ByteWriteChannel
 
-    public constructor(writeChannel: ByteWriteChannel) {
+    public constructor(writeChannel: ByteWriteChannel) : this() {
         _writeChannel = writeChannel
     }
 
-    public actual fun writeFully(value: ByteArray, startIndex: Int, endIndex: Int): Unit =
+    public actual open fun writeFully(value: ByteArray, startIndex: Int, endIndex: Int): Unit =
         runBlocking { _writeChannel.writeFully(value, startIndex, endIndex) }
 
-    public actual fun flush(): Unit = runBlocking { _writeChannel.flush() }
+    public actual open fun flush(): Unit = runBlocking { _writeChannel.flush() }
 }

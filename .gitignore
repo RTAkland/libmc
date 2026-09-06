@@ -47,3 +47,4 @@ bin/
 .idea/
 .kotlin/
 **/build/*
+/libmc-protocol/src/jvmTest/resources/accessToken.txt
