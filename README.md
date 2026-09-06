@@ -19,7 +19,7 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 ## Implementation details
 
-- [ ] **Online Mode Authentication & Encryption**: See [Implement Encryption](docs/implement-encryption.md) 
+- [x] **Online Mode Authentication & Encryption**: See [Implement Encryption](docs/implement-encryption.md) 
 - [ ] **Structured `TextComponent` Parser**: Rich Chat Component AST decoder (currently falling back to raw
   `NBTCompound`).
 - [ ] **Command Tree Parser (0x10)**: Full binary graph decoder for brigadier nodes, argument types, and suggestions.
