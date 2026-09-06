@@ -10,7 +10,7 @@ package cn.rtast.libmc.common.packet
 /**
  * reserved packet
  */
-public data class UnknownPacket(val packetId: Int, val data: ByteArray): MinecraftPacket {
+public data class UnknownPacket(val packetId: Int, val data: ByteArray) : MinecraftPacket {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class != other::class) return false

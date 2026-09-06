@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.protocol.game.block
 
-import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
 import kotlinx.serialization.Serializable
 
 /**

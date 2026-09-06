@@ -17,7 +17,7 @@ public data class ServerboundSpectatorActionPacket(
      * If 0, the player was not targeting an entity.
      * Otherwise, the ID of the targeted entity plus 1.
      */
-    val entityId: Int
+    val entityId: Int,
 ) : MinecraftPacket {
     public companion object Codec : PacketCodec<ServerboundSpectatorActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSpectatorActionPacket) {

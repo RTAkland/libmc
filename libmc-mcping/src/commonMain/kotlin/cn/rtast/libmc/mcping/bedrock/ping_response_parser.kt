@@ -95,7 +95,7 @@ public data class BedrockPingResponse(
      * latency ms
      * reserved not exists in response packet
      */
-    val latency: Int
+    val latency: Int,
 )
 
 internal fun PingResponse.parseBedrockPingResponse(): BedrockPingResponse {

@@ -7,7 +7,7 @@
 package cn.rtast.libmc.common
 
 import io.ktor.utils.io.*
-import io.ktor.utils.io.bits.reverseByteOrder
+import io.ktor.utils.io.bits.*
 import kotlinx.coroutines.runBlocking
 
 public actual class ReadChannel(private val _readChannel: ByteReadChannel) {

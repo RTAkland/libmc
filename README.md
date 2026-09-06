@@ -1,7 +1,7 @@
 # libmc
 
-A lightweight minecraft related library, such as rcon client, motd ping and more for kotlin multiplatform and java,
-no dependencies in `jvm` target except `kotlin-stdlib`
+A lightweight minecraft related library, such as rcon client, motd ping and more for kotlin multiplatform and java, no
+dependencies in `jvm` target except `kotlin-stdlib`
 
 native platforms required `ktor-network` and `kotlinx-io`
 
@@ -60,9 +60,10 @@ void main() {
 
 ## Other resources
 
-> An example of java ping json response can be found at [ping-response-example](example/java-ping-response.json) (Formatted),
-> a raw response of bedrock ping response can be found at [bedrock-pinng-raw-response](example/bedrock-pinng-raw-response.txt)
-
+> An example of java ping json response can be found at [ping-response-example](example/java-ping-response.json)
+> (Formatted),
+> a raw response of bedrock ping response can be found
+> at [bedrock-pinng-raw-response](example/bedrock-pinng-raw-response.txt)
 
 # rcon client
 

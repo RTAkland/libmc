@@ -10,9 +10,11 @@ package cn.rtast.libmc.protocol.packet.play.clientbound
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readVarInt
-import cn.rtast.libmc.protocol.protocol.game.*
+import cn.rtast.libmc.protocol.protocol.game.GameMode
+import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.readBlockPos
+import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
 public data class ClientboundLoginPlayPacket(
     val entityId: Int,

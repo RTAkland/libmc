@@ -28,7 +28,7 @@ public data class ServerboundUseItemOnPacket(
     /**
      * see [cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAcknowledgeBlockChangePacket]
      */
-    val sequence: Int
+    val sequence: Int,
 ) : MinecraftPacket {
     public companion object Codec : PacketCodec<ServerboundUseItemOnPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundUseItemOnPacket) {

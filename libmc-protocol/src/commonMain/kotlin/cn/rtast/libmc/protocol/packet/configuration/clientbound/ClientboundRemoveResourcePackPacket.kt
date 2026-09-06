@@ -7,8 +7,9 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.*
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.common.BytesBuffer
+import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.readUuid
 import kotlin.uuid.Uuid
 
 public data class ClientboundRemoveResourcePackPacket(val uuid: Uuid) : ClientboundConfigurationPacket {
