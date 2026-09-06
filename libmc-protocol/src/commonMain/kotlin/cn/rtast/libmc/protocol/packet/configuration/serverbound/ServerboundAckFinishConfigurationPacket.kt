@@ -14,7 +14,6 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 public data object ServerboundAckFinishConfigurationPacket : MinecraftPacket,
     PacketCodec<ServerboundAckFinishConfigurationPacket> {
     override fun encode(buffer: BytesBuffer, value: ServerboundAckFinishConfigurationPacket) {}
-
     override fun decode(buffer: BytesBuffer): ServerboundAckFinishConfigurationPacket =
-        ServerboundAckFinishConfigurationPacket
+        throw UnsupportedOperationException()
 }

@@ -9,19 +9,34 @@ package cn.rtast.libmc.protocol.protocol
 import cn.rtast.libmc.protocol.packet.configuration.clientbound.*
 import cn.rtast.libmc.protocol.packet.configuration.serverbound.*
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
-import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundDisconnectLoginPacket
-import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
-import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundSetCompressionPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.*
+import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundCustomQueryAnswerPacket
+import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundKeyPacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginAcknowledgedPacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginStartPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.*
 import cn.rtast.libmc.protocol.packet.play.serverbound.*
-import cn.rtast.libmc.protocol.packet.status.serverbound.ServerboundPingRequest
+import cn.rtast.libmc.protocol.packet.status.clientbound.ClientboundPongResponsePacket
+import cn.rtast.libmc.protocol.packet.status.clientbound.ClientboundStatusResponsePacket
+import cn.rtast.libmc.protocol.packet.status.serverbound.ServerboundPingRequestPacket
+import cn.rtast.libmc.protocol.packet.status.serverbound.ServerboundStatusRequestPacket
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 import cn.rtast.libmc.protocol.protocol.state.ProtocolStateRegistry
 
 internal object GameProtocols {
     val clientboundGameProtocols = ProtocolStateRegistry().apply {
+        register(ProtocolState.STATUS) {
+            register(0x00, ClientboundStatusResponsePacket)
+            register(0x01, ClientboundPongResponsePacket)
+        }
+        register(ProtocolState.LOGIN) {
+            register(0x00, ClientboundDisconnectLoginPacket)
+            register(0x01, ClientboundHelloPacket)
+            register(0x02, ClientboundLoginSuccessPacket)
+            register(0x03, ClientboundSetCompressionPacket)
+            register(0x04, ClientboundCustomQueryPacket)
+            register(0x05, ClientboundCookieRequestPacket)
+        }
         register(ProtocolState.CONFIGURATION) {
             register(0x00, ClientboundCookieRequestPacket)
             register(0x01, ClientboundCustomPayloadPacket)
@@ -29,12 +44,20 @@ internal object GameProtocols {
             register(0x03, ClientboundFinishConfigurationPacket)
             register(0x04, ClientboundKeepAliveConfigurationPacket)
             register(0x05, ClientboundPingConfigurationPacket)
+            register(0x06, ClientboundResetChatPacket)
+            register(0x07, ClientboundRegistryDataPacket)
+            register(0x08, ClientboundRemoveResourcePackPacket)
+            register(0x09, ClientboundAddResourcePackPacket)
+            register(0x0a, ClientboundStoreCookiePacket)
+            register(0x0b, ClientboundTransferPacket)
+            register(0x0c, ClientboundUpdateEnabledFeaturesPacket)
+            register(0x0d, ClientboundUpdateTagsPacket)
             register(0x0e, ClientboundSelectKnownPacksPacket)
-        }
-        register(ProtocolState.LOGIN) {
-            register(0x00, ClientboundDisconnectLoginPacket)
-            register(0x02, ClientboundLoginSuccessPacket)
-            register(0x03, ClientboundSetCompressionPacket)
+            register(0x0f, ClientboundCustomReportDetailsPacket)
+            register(0x10, ClientboundServerLinksPacket)
+            register(0x11, ClientboundClearDialogPacket)
+            register(0x12, ClientboundConfigurationShowDialogPacket)
+            register(0x13, ClientboundCodeOfConductPacket)
         }
         register(ProtocolState.PLAY) {
             register(0x00, ClientboundDelimiterPacket)
@@ -45,13 +68,29 @@ internal object GameProtocols {
             register(0x05, ClientboundBlockDestructionPacket)
             register(0x06, ClientboundBlockEntityDataPacket)
 
+            register(0x15, ClientboundCookieRequestPacket)
+
             register(0x20, ClientboundDisconnectPlayPacket)
+            register(0x24, ClientboundCustomPayloadPacket)
             register(0x2c, ClientboundKeepAlivePlayPacket)
             register(0x31, ClientboundLoginPlayPacket)
-            register(0x3d, ClientboundPingPlayPacket)
+            register(0x3d, ClientboundPingPacket)
             register(0x41, ClientboundPlayerChatMessagePacket)
+            register(0x50, ClientboundRemoveResourcePackPacket)
+            register(0x51, ClientboundAddResourcePackPacket)
             register(0x76, ClientboundStartConfigurationPacket)
+            register(0x78, ClientboundStoreCookiePacket)
             register(0x79, ClientboundSystemChatMessagePacket)
+
+            register(0x81, ClientboundTransferPacket)
+
+            register(0x86, ClientboundUpdateTagsPacket)
+
+            register(0x88, ClientboundCustomReportDetailsPacket)
+            register(0x89, ClientboundServerLinksPacket)
+
+            register(0x8b, ClientboundClearDialogPacket)
+            register(0x8c, ClientboundShowDialogPacket)
         }
     }
 
@@ -59,17 +98,27 @@ internal object GameProtocols {
         register(ProtocolState.HANDSHAKE) {
             register(0x00, ServerboundHandshakePacket)
         }
+        register(ProtocolState.STATUS) {
+            register(0x00, ServerboundStatusRequestPacket)
+            register(0x01, ServerboundPingRequestPacket)
+        }
+        register(ProtocolState.LOGIN) {
+            register(0x00, ServerboundLoginStartPacket)
+            register(0x01, ServerboundKeyPacket)
+            register(0x02, ServerboundCustomQueryAnswerPacket)
+            register(0x03, ServerboundLoginAcknowledgedPacket)
+            register(0x04, ServerboundCookieResponsePacket)
+        }
         register(ProtocolState.CONFIGURATION) {
             register(0x00, ServerboundCookieResponsePacket)
+            register(0x01, ServerboundCookieResponsePacket)
             register(0x02, ServerboundCustomPayloadPacket)
             register(0x03, ServerboundAckFinishConfigurationPacket)
             register(0x04, ServerboundKeepAliveConfigurationPacket)
             register(0x05, ServerboundPongConfigurationPacket)
             register(0x07, ServerboundSelectKnownPacksPacket)
-        }
-        register(ProtocolState.LOGIN) {
-            register(0x00, ServerboundLoginStartPacket)
-            register(0x03, ServerboundLoginAcknowledgedPacket)
+            register(0x08, ServerboundCustomClickActionPacket)
+            register(0x09, ServerboundAcceptCodeOfConductPacket)
         }
         register(ProtocolState.PLAY) {
             register(0x00, ServerboundAcceptTeleportationPacket)
@@ -110,7 +159,7 @@ internal object GameProtocols {
             register(0x23, ServerboundPaddleBoatPacket)
             register(0x24, ServerboundPickItemFromBlockPacket)
             register(0x25, ServerboundPickItemFromEntityPacket)
-            register(0x26, ServerboundPingRequest)
+            register(0x26, ServerboundPingRequestPacket)
             register(0x27, ServerboundPlaceRecipePacket)
             register(0x28, ServerboundPlayerAbilitiesPacket)
             register(0x29, ServerboundPlayerActionPacket)

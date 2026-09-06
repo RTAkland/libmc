@@ -7,6 +7,7 @@
 package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket

@@ -17,6 +17,7 @@ public data class ServerboundPongConfigurationPacket(val id: Int) : MinecraftPac
             buffer.writeInt(value.id)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPongConfigurationPacket = ServerboundPongConfigurationPacket(buffer.readInt())
+        override fun decode(buffer: BytesBuffer): ServerboundPongConfigurationPacket =
+            throw UnsupportedOperationException()
     }
 }

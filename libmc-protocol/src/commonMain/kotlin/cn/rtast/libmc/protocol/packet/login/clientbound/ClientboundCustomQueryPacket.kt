@@ -1,27 +1,30 @@
 /*
  * Copyright © 2026 RTAkland
  * Author: RTAkland
- * Date: 2026/9/6
+ * Date: 2026/9/5
  */
 
 
-package cn.rtast.libmc.protocol.packet.configuration.clientbound
+package cn.rtast.libmc.protocol.packet.login.clientbound
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
-public data class ClientboundCustomPayloadPacket(
+public data class ClientboundCustomQueryPacket(
+    val messageId: Int,
     val channel: Identifier,
     val data: ByteArray,
-) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundCustomPayloadPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundCustomPayloadPacket) {}
-        override fun decode(buffer: BytesBuffer): ClientboundCustomPayloadPacket {
+) : ClientboundLoginPacket {
+    public companion object Codec : PacketCodec<ClientboundCustomQueryPacket> {
+        override fun encode(buffer: BytesBuffer, value: ClientboundCustomQueryPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundCustomQueryPacket {
+            val messageId = buffer.readVarInt()
             val channel = buffer.readIdentifier()
-            val data = buffer.readRemainingBytes()
-            return ClientboundCustomPayloadPacket(channel, data)
+            val data = buffer.readBytes(buffer.remaining.toInt())
+            return ClientboundCustomQueryPacket(messageId, channel, data)
         }
     }
 
@@ -29,7 +32,7 @@ public data class ClientboundCustomPayloadPacket(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as ClientboundCustomPayloadPacket
+        other as ClientboundCustomQueryPacket
 
         if (channel != other.channel) return false
         if (!data.contentEquals(other.data)) return false

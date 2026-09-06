@@ -11,13 +11,13 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
-public data class ServerboundPingRequest(val timestamp: Long) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPingRequest> {
-        override fun encode(buffer: BytesBuffer, value: ServerboundPingRequest) {
+public data class ServerboundPingRequestPacket(val timestamp: Long) : MinecraftPacket {
+    public companion object Codec : PacketCodec<ServerboundPingRequestPacket> {
+        override fun encode(buffer: BytesBuffer, value: ServerboundPingRequestPacket) {
             buffer.writeLong(value.timestamp)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundPingRequest =
+        override fun decode(buffer: BytesBuffer): ServerboundPingRequestPacket =
             throw UnsupportedOperationException()
     }
 }

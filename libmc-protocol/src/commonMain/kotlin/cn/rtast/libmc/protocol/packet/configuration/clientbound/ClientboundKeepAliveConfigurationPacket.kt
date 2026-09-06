@@ -12,10 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 
 public data class ClientboundKeepAliveConfigurationPacket(val id: Long) : ClientboundConfigurationPacket {
     public companion object Codec : PacketCodec<ClientboundKeepAliveConfigurationPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundKeepAliveConfigurationPacket) {
-            buffer.writeLong(value.id)
-        }
-
+        override fun encode(buffer: BytesBuffer, value: ClientboundKeepAliveConfigurationPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundKeepAliveConfigurationPacket {
             return ClientboundKeepAliveConfigurationPacket(buffer.readLong())
         }

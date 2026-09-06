@@ -17,8 +17,7 @@ public data class ServerboundKeepAliveConfigurationPacket(val id: Long) : Minecr
             buffer.writeLong(value.id)
         }
 
-        override fun decode(buffer: BytesBuffer): ServerboundKeepAliveConfigurationPacket {
-            return ServerboundKeepAliveConfigurationPacket(buffer.readLong())
-        }
+        override fun decode(buffer: BytesBuffer): ServerboundKeepAliveConfigurationPacket =
+            throw UnsupportedOperationException()
     }
 }

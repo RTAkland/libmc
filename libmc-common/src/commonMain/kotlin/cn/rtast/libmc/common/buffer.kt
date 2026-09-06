@@ -73,6 +73,22 @@ public fun BytesBuffer.writePrefixedByteArray(data: ByteArray) {
     this.writeBytes(data)
 }
 
+public fun BytesBuffer.readOptionalPrefixedByteArray(): ByteArray? {
+    val isPresent = this.readBoolean()
+    return if (isPresent) {
+        val length = this.readVarInt()
+        this.readBytes(length)
+    } else null
+}
+
+public fun BytesBuffer.writeOptionalPrefixedByteArray(data: ByteArray?) {
+    if (data != null) {
+        this.writeBoolean(true)
+        this.writeVarInt(data.size)
+        this.writeBytes(data)
+    } else this.writeBoolean(false)
+}
+
 public fun BytesBuffer.readPrefixedVarIntArray(): List<Int> {
     val length = readVarInt()
     val list = ArrayList<Int>(length)

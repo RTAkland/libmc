@@ -12,5 +12,10 @@ public enum class ProtocolState {
     LOGIN,
     CONFIGURATION,
     PLAY,
-    DISCONNECTED
+    STATUS,
+
+    /**
+     * reserved
+     */
+    DISCONNECTED,
 }
