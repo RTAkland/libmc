@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerPositionFlag
 
 public data class ServerboundSetPlayerMovementFlagPacket(val flags: PlayerPositionFlag) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetPlayerMovementFlagPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetPlayerMovementFlagPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetPlayerMovementFlagPacket) {
             buffer.writeByte(value.flags.flag)
         }

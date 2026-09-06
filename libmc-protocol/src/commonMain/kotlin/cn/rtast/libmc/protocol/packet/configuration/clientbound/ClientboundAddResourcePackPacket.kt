@@ -19,7 +19,7 @@ public data class ClientboundAddResourcePackPacket(
     val forced: Boolean,
     val prompt: NBTCompound,
 ) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundAddResourcePackPacket> {
+    internal companion object Codec : PacketCodec<ClientboundAddResourcePackPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundAddResourcePackPacket {
             val uuid = buffer.readUuid()

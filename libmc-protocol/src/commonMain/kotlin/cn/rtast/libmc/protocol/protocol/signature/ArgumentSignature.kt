@@ -17,7 +17,7 @@ public data class ArgumentSignature(val name: String, val signature: ByteArray) 
         require(signature.size == 256)
     }
 
-    public companion object Codec : PacketCodec<ArgumentSignature> {
+    internal companion object Codec : PacketCodec<ArgumentSignature> {
         override fun encode(buffer: BytesBuffer, value: ArgumentSignature) {
             buffer.writeMcString(value.name)
             buffer.writeBytes(value.signature)

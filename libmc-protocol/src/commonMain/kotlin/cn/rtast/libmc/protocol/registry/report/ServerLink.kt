@@ -13,7 +13,7 @@ import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
 public data class ServerLink(val label: ServerLinkLabel, val url: String) {
-    public companion object Codec : PacketCodec<ServerLink> {
+    internal companion object Codec : PacketCodec<ServerLink> {
         override fun encode(buffer: BytesBuffer, value: ServerLink) {
             when (value.label) {
                 is ServerLinkLabel.Builtin -> {

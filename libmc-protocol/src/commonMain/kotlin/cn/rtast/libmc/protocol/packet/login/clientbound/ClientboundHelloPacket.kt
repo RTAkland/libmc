@@ -25,7 +25,7 @@ public data class ClientboundHelloPacket(
      */
     val shouldAuthenticate: Boolean,
 ) : ClientboundLoginPacket {
-    public companion object Codec : PacketCodec<ClientboundHelloPacket> {
+    internal companion object Codec : PacketCodec<ClientboundHelloPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundHelloPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundHelloPacket {
             val serverId = buffer.readMcString()

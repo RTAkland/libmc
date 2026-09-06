@@ -18,7 +18,7 @@ public data class ClientboundCustomQueryPacket(
     val channel: Identifier,
     val data: ByteArray,
 ) : ClientboundLoginPacket {
-    public companion object Codec : PacketCodec<ClientboundCustomQueryPacket> {
+    internal companion object Codec : PacketCodec<ClientboundCustomQueryPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCustomQueryPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCustomQueryPacket {
             val messageId = buffer.readVarInt()

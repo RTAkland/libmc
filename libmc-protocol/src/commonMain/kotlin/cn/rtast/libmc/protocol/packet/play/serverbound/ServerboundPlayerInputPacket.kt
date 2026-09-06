@@ -20,7 +20,7 @@ public data class ServerboundPlayerInputPacket(
     val sneak: Boolean,
     val sprint: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPlayerInputPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPlayerInputPacket> {
         private const val FLAG_FORWARD = 0x01
         private const val FLAG_BACKWARD = 0x02
         private const val FLAG_LEFT = 0x04

@@ -22,7 +22,7 @@ public data class ServerboundChatMessagePacket(
     val acknowledged: ByteArray,
     val checksum: Byte,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChatMessagePacket> {
+    internal companion object Codec : PacketCodec<ServerboundChatMessagePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChatMessagePacket) {
             buffer.writeMcString(value.message)
             buffer.writeLong(value.timestamp)

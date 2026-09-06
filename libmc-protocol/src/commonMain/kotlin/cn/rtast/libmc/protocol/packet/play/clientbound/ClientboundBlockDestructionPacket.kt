@@ -22,7 +22,7 @@ public data class ClientboundBlockDestructionPacket(
     val location: BlockPos,
     val stage: BlockDestroyStage,
 ) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundBlockDestructionPacket> {
+    internal companion object Codec : PacketCodec<ClientboundBlockDestructionPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundBlockDestructionPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundBlockDestructionPacket {
             val entityId = buffer.readVarInt()

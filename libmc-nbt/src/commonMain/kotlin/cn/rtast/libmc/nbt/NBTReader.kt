@@ -15,7 +15,7 @@ public fun NBTInput.readStringTag(): String {
 
 public fun NBTInput.readListTag(): NBTTag.ListTag {
     val elementTypeId = readByte().toInt() and 0xFF
-    val elementType = NBTType.fromId(elementTypeId)
+    val elementType = NBTType.fromID(elementTypeId)
     val length = readInt()
     val list = ArrayList<NBTTag>(length)
     repeat(length) { list += readTagPayload(elementType) }
@@ -28,7 +28,7 @@ public fun NBTInput.readCompoundTag(): NBTTag.CompoundTag {
         val typeId = readByte().toInt() and 0xFF
         if (typeId == 0) break // TAG_End
         val name = readStringTag()
-        val type = NBTType.fromId(typeId)
+        val type = NBTType.fromID(typeId)
         val payload = readTagPayload(type)
         map[name] = payload
     }
@@ -56,7 +56,7 @@ public fun NBTInput.readCompound(): NBTTag {
     val map = LinkedHashMap<String, NBTTag>()
     while (true) {
         val typeId = readByte().toInt()
-        val type = NBTType.fromId(typeId)
+        val type = NBTType.fromID(typeId)
         if (type == NBTType.End) break
         val nameLen = readShort().toInt() and 0xFFFF
         val nameBytes = readBytes(nameLen)
@@ -68,7 +68,7 @@ public fun NBTInput.readCompound(): NBTTag {
 }
 
 public fun NBTInput.readRootCompound(): NBTCompound {
-    val rootType = NBTType.fromId(readByte().toInt())
+    val rootType = NBTType.fromID(readByte().toInt())
     require(rootType == NBTType.Compound) { "Root tag must be TAG_Compound" }
     val nameLen = readShort().toInt() and 0xFFFF
     val name = readBytes(nameLen).decodeToString()
@@ -77,7 +77,7 @@ public fun NBTInput.readRootCompound(): NBTCompound {
 }
 
 public fun NBTInput.readNetworkCompound(): NBTCompound {
-    return when (val type = NBTType.fromId(readByte().toInt() and 0xFF)) {
+    return when (val type = NBTType.fromID(readByte().toInt() and 0xFF)) {
         NBTType.Compound -> NBTCompound("", readCompoundTag())
         NBTType.String -> NBTCompound("", NBTTag.CompoundTag(linkedMapOf("text" to NBTTag.StringTag(readStringTag()))))
         else -> throw UnsupportedOperationException("Unsupported network nbt tag 0x${type.id.toString(16).uppercase()}")

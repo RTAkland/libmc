@@ -21,8 +21,7 @@ public data class ServerboundSetTestBlockPacket(
     val mode: TestBlockMode,
     val message: String,
 ) : MinecraftPacket {
-
-    public companion object Codec : PacketCodec<ServerboundSetTestBlockPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetTestBlockPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetTestBlockPacket) {
             buffer.writeBlockPos(value.position)
             buffer.writeVarInt(value.mode.id)

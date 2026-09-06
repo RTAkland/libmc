@@ -14,7 +14,7 @@ public enum class NBTType(public val id: Byte) {
     IntArray(11), LongArray(12);
 
     public companion object {
-        public fun fromId(id: Int): NBTType =
+        public fun fromID(id: Int): NBTType =
             entries.firstOrNull { it.id.toInt() == id } ?: error("Unknown NBT type id: $id")
     }
 }

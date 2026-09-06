@@ -31,7 +31,7 @@ public data class ServerboundUpdateChatSessionPacket(
      */
     val keySignature: ByteArray,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundUpdateChatSessionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundUpdateChatSessionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundUpdateChatSessionPacket) {
             buffer.writeUuid(value.sessionId)
             buffer.writeLong(value.expiresAt)

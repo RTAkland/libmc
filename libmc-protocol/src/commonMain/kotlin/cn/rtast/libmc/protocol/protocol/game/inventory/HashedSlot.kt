@@ -11,9 +11,7 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.common.writeVarInt
-import kotlinx.serialization.Serializable
 
-@Serializable
 public data class HashedSlot(
     val hasItem: Boolean,
     val itemId: Int?,
@@ -21,9 +19,8 @@ public data class HashedSlot(
     val componentsToAdd: List<ComponentAddEntry>?,
     val componentsToRemove: List<Int>?,
 ) {
-    @Serializable
     public data class ComponentAddEntry(val typeId: Int, val dataHash: Int) {
-        public companion object Codec : PacketCodec<ComponentAddEntry> {
+        internal companion object Codec : PacketCodec<ComponentAddEntry> {
             override fun encode(buffer: BytesBuffer, value: ComponentAddEntry) {
                 buffer.writeVarInt(value.typeId)
                 buffer.writeVarInt(value.dataHash)

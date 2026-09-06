@@ -19,7 +19,7 @@ public data class ServerboundQueryEntityTagPacket(
     val transactionId: Int,
     val entityId: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundQueryEntityTagPacket> {
+    internal companion object Codec : PacketCodec<ServerboundQueryEntityTagPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundQueryEntityTagPacket) {
             buffer.writeVarInt(value.transactionId)
             buffer.writeVarInt(value.entityId)

@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundAttackActionPacket(val entityId: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundAttackActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundAttackActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundAttackActionPacket) {
             buffer.writeVarInt(value.entityId)
         }

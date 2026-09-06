@@ -20,7 +20,7 @@ public data class ClientboundStoreCookiePacket(
      */
     val payload: ByteArray,
 ) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundStoreCookiePacket> {
+    internal companion object Codec : PacketCodec<ClientboundStoreCookiePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundStoreCookiePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundStoreCookiePacket {
             val key = buffer.readIdentifier()

@@ -18,7 +18,7 @@ import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
  */
 public data class ServerboundQueryBlockEntityTagPacket(val transactionId: Int, val location: BlockPos) :
     MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundQueryBlockEntityTagPacket> {
+    internal companion object Codec : PacketCodec<ServerboundQueryBlockEntityTagPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundQueryBlockEntityTagPacket) {
             buffer.writeVarInt(value.transactionId)
         }

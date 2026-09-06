@@ -11,14 +11,12 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.common.writeVarInt
-import kotlinx.serialization.Serializable
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Award_Statistics
  */
-@Serializable
 public data class StatisticsEntry(val categoryId: Int, val statisticId: Int, val value: Int) {
-    public companion object Codec : PacketCodec<StatisticsEntry> {
+    internal companion object Codec : PacketCodec<StatisticsEntry> {
         override fun encode(buffer: BytesBuffer, value: StatisticsEntry) {
             buffer.writeVarInt(value.categoryId)
             buffer.writeVarInt(value.statisticId)

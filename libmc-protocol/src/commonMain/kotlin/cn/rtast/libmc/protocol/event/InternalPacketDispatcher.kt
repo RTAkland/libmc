@@ -124,6 +124,15 @@ internal class InternalPacketDispatcher(private val client: MinecraftClient) {
             is ClientboundEntityAnimationPacket -> {}
             is ClientboundSpawnEntityPacket -> {}
             is ClientboundShowDialogPacket -> {}
+            is ClientboundBlockEventPacket -> TODO()
+            is ClientboundBlockUpdatePacket -> TODO()
+            is ClientboundBossEventPacket -> TODO()
+            is ClientboundChangeDifficultyPacket -> TODO()
+            is ClientboundChunkBatchFinishedPacket -> TODO()
+            ClientboundChunkBatchStartPacket -> TODO()
+            is ClientboundChunksBiomesPacket -> TODO()
+            is ClientboundClearTitlesPacket -> TODO()
+            is ClientboundCommandSuggestionsPacket -> TODO()
         }
     }
 }

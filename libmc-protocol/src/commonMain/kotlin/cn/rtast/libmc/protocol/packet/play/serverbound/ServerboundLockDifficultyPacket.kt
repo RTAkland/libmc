@@ -17,7 +17,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Lock_Difficulty
  */
 public data class ServerboundLockDifficultyPacket(val locked: Boolean) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundLockDifficultyPacket> {
+    internal companion object Codec : PacketCodec<ServerboundLockDifficultyPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundLockDifficultyPacket) {
             buffer.writeBoolean(value.locked)
         }

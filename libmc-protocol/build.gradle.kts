@@ -20,8 +20,6 @@ kotlin {
         commonMain.dependencies {
             api(project(":common"))
             api(project(":nbt"))
-            api(libs.kotlinx.serialization.core)
-            api(libs.kotlinx.serialization.json)
             api(libs.kotlinx.coroutines)
         }
 

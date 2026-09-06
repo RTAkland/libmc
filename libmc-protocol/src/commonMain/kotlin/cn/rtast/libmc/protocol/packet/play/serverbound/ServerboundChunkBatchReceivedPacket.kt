@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundChunkBatchReceivedPacket(val chunksPerTick: Float) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChunkBatchReceivedPacket> {
+    internal companion object Codec : PacketCodec<ServerboundChunkBatchReceivedPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChunkBatchReceivedPacket) {
             buffer.writeFloat(value.chunksPerTick)
         }

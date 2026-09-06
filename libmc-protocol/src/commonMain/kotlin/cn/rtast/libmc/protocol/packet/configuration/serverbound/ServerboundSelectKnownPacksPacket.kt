@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.packet.configuration.KnownPacks
 
 public data class ServerboundSelectKnownPacksPacket(val knownPacks: List<KnownPacks>) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSelectKnownPacksPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSelectKnownPacksPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSelectKnownPacksPacket) {
             buffer.writeVarInt(value.knownPacks.size)
             value.knownPacks.forEach { KnownPacks.encode(buffer, it) }

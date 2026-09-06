@@ -59,7 +59,7 @@ public data class ServerboundContainerClickPacket(
         carriedItem = carriedItem
     )
 
-    public companion object Codec : PacketCodec<ServerboundContainerClickPacket> {
+    internal companion object Codec : PacketCodec<ServerboundContainerClickPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundContainerClickPacket) {
             buffer.writeVarInt(value.windowId)
             buffer.writeVarInt(value.stateId)

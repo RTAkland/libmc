@@ -18,7 +18,7 @@ public data class ServerboundRecipeBookChangeSettingsPacket(
     val bookOpen: Boolean,
     val filterActive: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundRecipeBookChangeSettingsPacket> {
+    internal companion object Codec : PacketCodec<ServerboundRecipeBookChangeSettingsPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundRecipeBookChangeSettingsPacket) {
             buffer.writeVarInt(value.bookId.id)
             buffer.writeBoolean(value.bookOpen)

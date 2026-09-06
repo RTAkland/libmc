@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
 public data class ClientboundBlockEntityDataPacket(val location: BlockPos, val type: Int, val data: NBTCompound) :
     ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundBlockEntityDataPacket> {
+    internal companion object Codec : PacketCodec<ClientboundBlockEntityDataPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundBlockEntityDataPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundBlockEntityDataPacket {
             val location = buffer.readBlockPos()

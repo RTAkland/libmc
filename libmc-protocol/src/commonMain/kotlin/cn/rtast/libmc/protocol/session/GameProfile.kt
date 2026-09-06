@@ -8,22 +8,19 @@
 package cn.rtast.libmc.protocol.session
 
 import cn.rtast.libmc.common.*
-import kotlinx.serialization.Serializable
 import kotlin.uuid.Uuid
 
-@Serializable
 public data class GameProfile(
     val uuid: Uuid,
     val username: String,
     val properties: List<Property>,
 ) {
-    @Serializable
     public data class Property(
         val name: String,
         val value: String,
         val signature: String?,
     ) {
-        public companion object Codec : PacketCodec<Property> {
+        internal companion object Codec : PacketCodec<Property> {
             override fun encode(buffer: BytesBuffer, value: Property) {
                 buffer.writeMcString(value.name)
                 buffer.writeMcString(value.value)
@@ -41,7 +38,7 @@ public data class GameProfile(
         }
     }
 
-    public companion object Codec : PacketCodec<GameProfile> {
+    internal companion object Codec : PacketCodec<GameProfile> {
         override fun encode(buffer: BytesBuffer, value: GameProfile) {
             buffer.writeUuid(value.uuid)
             buffer.writeMcString(value.username)

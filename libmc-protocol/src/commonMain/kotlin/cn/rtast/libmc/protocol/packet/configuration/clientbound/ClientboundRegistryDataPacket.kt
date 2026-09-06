@@ -21,7 +21,7 @@ public data class ClientboundRegistryDataPacket(
     val registryId: Identifier,
     val entries: List<RegistryEntry>,
 ) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundRegistryDataPacket> {
+    internal companion object Codec : PacketCodec<ClientboundRegistryDataPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundRegistryDataPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundRegistryDataPacket {
             val id = buffer.readIdentifier()

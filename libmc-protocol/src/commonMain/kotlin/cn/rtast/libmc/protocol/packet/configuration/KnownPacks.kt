@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.readMcString
 import cn.rtast.libmc.common.writeMcString
 
 public data class KnownPacks(val namespace: String, val id: String, val version: String) {
-    public companion object Codec : PacketCodec<KnownPacks> {
+    internal companion object Codec : PacketCodec<KnownPacks> {
         override fun encode(buffer: BytesBuffer, value: KnownPacks) {
             buffer.writeMcString(value.namespace)
             buffer.writeMcString(value.id)

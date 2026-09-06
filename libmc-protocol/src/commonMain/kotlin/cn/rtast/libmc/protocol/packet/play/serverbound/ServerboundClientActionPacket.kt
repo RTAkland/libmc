@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.registry.ClientAction
 
 public data class ServerboundClientActionPacket(val action: ClientAction) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundClientActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundClientActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundClientActionPacket) {
             buffer.writeVarInt(value.action.actionID)
         }

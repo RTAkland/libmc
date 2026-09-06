@@ -15,7 +15,7 @@ import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
 public data class ClientboundUpdateEnabledFeaturesPacket(val features: List<Identifier>) :
     ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundUpdateEnabledFeaturesPacket> {
+    internal companion object Codec : PacketCodec<ClientboundUpdateEnabledFeaturesPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundUpdateEnabledFeaturesPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundUpdateEnabledFeaturesPacket {
             val featureCount = buffer.readVarInt()

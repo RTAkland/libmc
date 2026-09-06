@@ -9,13 +9,11 @@ package cn.rtast.libmc.protocol.protocol.game.block
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
-import kotlinx.serialization.Serializable
 
 /**
  * An integer/block position: x (-33 554 432 to 33 554 431), z (-33 554 432 to 33 554 431), y (-2048 to 2047)
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Type:Position
  */
-@Serializable
 public data class BlockPos(val x: Int, val y: Int, val z: Int) {
     public companion object : PacketCodec<BlockPos> {
         private const val PACKED_X_MASK = 0x3FFFFFFL // 26 bits

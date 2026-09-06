@@ -15,7 +15,7 @@ import cn.rtast.libmc.common.readVarInt
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Acknowledge_Block_Change
  */
 public data class ClientboundAcknowledgeBlockChangePacket(val sequenceId: Int) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundAcknowledgeBlockChangePacket> {
+    internal companion object Codec : PacketCodec<ClientboundAcknowledgeBlockChangePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundAcknowledgeBlockChangePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundAcknowledgeBlockChangePacket {
             return ClientboundAcknowledgeBlockChangePacket(buffer.readVarInt())

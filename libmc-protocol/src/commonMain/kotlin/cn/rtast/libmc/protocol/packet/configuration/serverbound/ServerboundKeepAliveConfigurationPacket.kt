@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundKeepAliveConfigurationPacket(val id: Long) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundKeepAliveConfigurationPacket> {
+    internal companion object Codec : PacketCodec<ServerboundKeepAliveConfigurationPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundKeepAliveConfigurationPacket) {
             buffer.writeLong(value.id)
         }

@@ -21,7 +21,7 @@ public data class ServerboundSetCommandMinecartPacket(
      */
     val trackOutput: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetCommandMinecartPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetCommandMinecartPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetCommandMinecartPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeMcString(value.command)

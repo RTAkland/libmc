@@ -17,7 +17,7 @@ public data class ServerboundPlaceRecipePacket(
     val recipeId: Int,
     val makeAll: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPlaceRecipePacket> {
+    internal companion object Codec : PacketCodec<ServerboundPlaceRecipePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPlaceRecipePacket) {
             buffer.writeVarInt(value.windowId)
             buffer.writeVarInt(value.recipeId)

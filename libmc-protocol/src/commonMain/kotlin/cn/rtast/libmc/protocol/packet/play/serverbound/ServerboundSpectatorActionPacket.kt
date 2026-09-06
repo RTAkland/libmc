@@ -19,7 +19,7 @@ public data class ServerboundSpectatorActionPacket(
      */
     val entityId: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSpectatorActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSpectatorActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSpectatorActionPacket) {
             buffer.writeVarInt(value.entityId)
         }

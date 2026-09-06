@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ClientboundSetCompressionPacket(val threshold: Int) : ClientboundLoginPacket {
-    public companion object Codec : PacketCodec<ClientboundSetCompressionPacket> {
+    internal companion object Codec : PacketCodec<ClientboundSetCompressionPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundSetCompressionPacket) {
             buffer.writeVarInt(value.threshold)
         }

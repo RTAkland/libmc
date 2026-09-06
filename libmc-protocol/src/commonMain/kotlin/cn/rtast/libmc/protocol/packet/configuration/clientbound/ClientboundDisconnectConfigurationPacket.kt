@@ -13,7 +13,7 @@ import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
 public data class ClientboundDisconnectConfigurationPacket(val reason: NBTCompound) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundDisconnectConfigurationPacket> {
+    internal companion object Codec : PacketCodec<ClientboundDisconnectConfigurationPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundDisconnectConfigurationPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundDisconnectConfigurationPacket {
             return ClientboundDisconnectConfigurationPacket(reason = buffer.readNetworkNBTCompound())

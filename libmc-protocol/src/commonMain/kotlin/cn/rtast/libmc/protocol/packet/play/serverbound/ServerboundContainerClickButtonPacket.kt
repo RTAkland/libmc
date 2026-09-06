@@ -18,7 +18,7 @@ public data class ServerboundContainerClickButtonPacket(val windowId: Int, val b
     public constructor(windowId: Int, button: EnchantmentButton) : this(windowId, button.id)
     public constructor(windowId: Int, button: LecternButton) : this(windowId, button.id)
 
-    public companion object Codec : PacketCodec<ServerboundContainerClickButtonPacket> {
+    internal companion object Codec : PacketCodec<ServerboundContainerClickButtonPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundContainerClickButtonPacket) {
             buffer.writeVarInt(value.windowId)
             buffer.writeVarInt(value.buttonId)

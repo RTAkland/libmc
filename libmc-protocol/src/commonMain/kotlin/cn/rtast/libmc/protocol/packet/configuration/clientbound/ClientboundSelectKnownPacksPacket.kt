@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.protocol.packet.configuration.KnownPacks
 
 public data class ClientboundSelectKnownPacksPacket(val knownPacks: List<KnownPacks>) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundSelectKnownPacksPacket> {
+    internal companion object Codec : PacketCodec<ClientboundSelectKnownPacksPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundSelectKnownPacksPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundSelectKnownPacksPacket {
             val packsCount = buffer.readVarInt()

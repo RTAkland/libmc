@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.player.Hand
 
 public data class ServerboundSwingPacket(val hand: Hand) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSwingPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSwingPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSwingPacket) {
             buffer.writeVarInt(value.hand.id)
         }

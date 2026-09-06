@@ -50,7 +50,7 @@ public data class ServerboundSetStructureBlockPacket(
     val showBoundingBox: Boolean,
     val strictPlacement: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetStructureBlockPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetStructureBlockPacket> {
         private const val FLAG_IGNORE_ENTITIES = 0x01
         private const val FLAG_SHOW_AIR = 0x02
         private const val FLAG_SHOW_BOUNDING_BOX = 0x04

@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.GameMode
 
 public data class ServerboundChangeGameModePacket(val gameMode: GameMode) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChangeGameModePacket> {
+    internal companion object Codec : PacketCodec<ServerboundChangeGameModePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChangeGameModePacket) {
             require(value.gameMode != GameMode.Unknown && value.gameMode != GameMode.Undefined)
             buffer.writeVarInt(value.gameMode.id.toInt())

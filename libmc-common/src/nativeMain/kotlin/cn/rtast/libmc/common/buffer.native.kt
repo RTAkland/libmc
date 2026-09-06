@@ -47,6 +47,7 @@ public actual class BytesBuffer {
     public actual fun writeBoolean(value: Boolean): Unit = _delegateBuf.writeByte(if (value) 0x01 else 0x00)
 
     public actual fun readByte(): Byte = _delegateBuf.readByte()
+    public actual fun readUByte(): UByte = this.readByte().toUByte()
     public actual fun readShort(endian: ByteOrder): Short =
         if (endian == ByteOrder.BIG_ENDIAN) _delegateBuf.readShort() else _delegateBuf.readShortLe()
 

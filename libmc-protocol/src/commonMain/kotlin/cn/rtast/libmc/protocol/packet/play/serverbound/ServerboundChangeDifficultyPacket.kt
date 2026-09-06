@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.registry.GameDifficulty
 
 public data class ServerboundChangeDifficultyPacket(val newDifficulty: GameDifficulty) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChangeDifficultyPacket> {
+    internal companion object Codec : PacketCodec<ServerboundChangeDifficultyPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChangeDifficultyPacket) {
             buffer.writeByte(value.newDifficulty.id)
         }

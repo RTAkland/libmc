@@ -21,6 +21,7 @@ public expect class BytesBuffer {
     public fun writeBoolean(value: Boolean)
 
     public fun readByte(): Byte
+    public fun readUByte(): UByte
     public fun readShort(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Short
     public fun readInt(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Int
     public fun readLong(endian: ByteOrder = ByteOrder.BIG_ENDIAN): Long

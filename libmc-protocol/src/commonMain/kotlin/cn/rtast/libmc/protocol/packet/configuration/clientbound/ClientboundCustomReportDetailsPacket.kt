@@ -8,13 +8,11 @@
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
 import cn.rtast.libmc.common.*
-import kotlinx.serialization.Serializable
 
 public data class ClientboundCustomReportDetailsPacket(val details: List<ReportDetail>) :
     ClientboundConfigurationPacket {
-    @Serializable
     public data class ReportDetail(val title: String, val description: String) {
-        public companion object Codec : PacketCodec<ReportDetail> {
+        internal companion object Codec : PacketCodec<ReportDetail> {
             override fun encode(buffer: BytesBuffer, value: ReportDetail) {
                 buffer.writeMcString(value.title)
                 buffer.writeMcString(value.description)
@@ -28,7 +26,7 @@ public data class ClientboundCustomReportDetailsPacket(val details: List<ReportD
         }
     }
 
-    public companion object Codec : PacketCodec<ClientboundCustomReportDetailsPacket> {
+    internal companion object Codec : PacketCodec<ClientboundCustomReportDetailsPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCustomReportDetailsPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCustomReportDetailsPacket {
             val detailCount = buffer.readVarInt()

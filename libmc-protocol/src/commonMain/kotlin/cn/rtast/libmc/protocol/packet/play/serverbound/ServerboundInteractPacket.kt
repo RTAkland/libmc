@@ -21,7 +21,7 @@ public data class ServerboundInteractPacket(
     val targetOffset: LpVec3,
     val isSneaking: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundInteractPacket> {
+    internal companion object Codec : PacketCodec<ServerboundInteractPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundInteractPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeVarInt(value.hand.id)

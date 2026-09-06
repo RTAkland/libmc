@@ -20,7 +20,7 @@ public data class ServerboundHandshakePacket(
     val serverPort: UShort,
     val intent: HandshakeIntent,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundHandshakePacket> {
+    internal companion object Codec : PacketCodec<ServerboundHandshakePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundHandshakePacket) {
             buffer.writeVarInt(value.protocolVersion)
             buffer.writeMcString(value.serverAddress)

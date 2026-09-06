@@ -27,7 +27,7 @@ public data class ServerboundSetJigsawBlockPacket(
     val selectionPriority: Int,
     val placementPriority: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetJigsawBlockPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetJigsawBlockPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetJigsawBlockPacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeIdentifier(value.name)

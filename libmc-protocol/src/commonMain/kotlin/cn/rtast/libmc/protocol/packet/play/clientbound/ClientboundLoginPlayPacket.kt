@@ -41,7 +41,7 @@ public data class ClientboundLoginPlayPacket(
     val isOnlineMode: Boolean,
     val enforceSecureChat: Boolean,
 ) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundLoginPlayPacket> {
+    internal companion object Codec : PacketCodec<ClientboundLoginPlayPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundLoginPlayPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundLoginPlayPacket {
             val entityId = buffer.readInt()
@@ -57,7 +57,7 @@ public data class ClientboundLoginPlayPacket(
             val dimensionType = buffer.readVarInt()
             val dimensionName = buffer.readIdentifier()
             val hashedSeed = buffer.readLong()
-            val gameMode = GameMode.fromID(buffer.readByte().toUByte())
+            val gameMode = GameMode.fromID(buffer.readUByte())
             val previousGameMode = GameMode.fromID(buffer.readByte())
             val isDebug = buffer.readBoolean()
             val isFlat = buffer.readBoolean()

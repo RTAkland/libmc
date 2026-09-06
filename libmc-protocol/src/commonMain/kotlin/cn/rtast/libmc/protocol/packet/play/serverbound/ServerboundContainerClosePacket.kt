@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundContainerClosePacket(val windowId: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundContainerClosePacket> {
+    internal companion object Codec : PacketCodec<ServerboundContainerClosePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundContainerClosePacket) {
             buffer.writeVarInt(value.windowId)
         }

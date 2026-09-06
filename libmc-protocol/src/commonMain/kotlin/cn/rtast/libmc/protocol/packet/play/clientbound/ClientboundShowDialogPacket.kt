@@ -15,7 +15,7 @@ import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
 public data class ClientboundShowDialogPacket(val dialog: IdOrX<NBTCompound>) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundShowDialogPacket> {
+    internal companion object Codec : PacketCodec<ClientboundShowDialogPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundShowDialogPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundShowDialogPacket {
             return ClientboundShowDialogPacket(buffer.readIdOrX { this.readNetworkNBTCompound() })

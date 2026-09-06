@@ -48,7 +48,7 @@ public data class ServerboundClientInformationPacket(
     val allowServerListings: Boolean,
     val particleStatus: ParticleStatus,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundClientInformationPacket> {
+    internal companion object Codec : PacketCodec<ServerboundClientInformationPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundClientInformationPacket) {
             buffer.writeMcString(value.locale)
             buffer.writeByte(value.viewDistance.toByte())

@@ -11,23 +11,21 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readMcString
 import cn.rtast.libmc.common.writeMcString
-import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Identifier
  */
 @JvmInline
-@Serializable
 public value class Identifier internal constructor(public val raw: String) {
     public val namespace: String get() = if (raw.contains(':')) raw.substringBefore(':') else "minecraft"
     public val path: String get() = if (raw.contains(':')) raw.substringAfter(':') else raw
 
     override fun toString(): String = "$namespace:$path"
 
-    public companion object Codec : PacketCodec<Identifier> {
-        public fun of(namespace: String, path: String): Identifier = Identifier("$namespace:$path")
-        public fun of(full: String): Identifier = Identifier(full)
+    internal companion object Codec : PacketCodec<Identifier> {
+        fun of(namespace: String, path: String): Identifier = Identifier("$namespace:$path")
+        fun of(full: String): Identifier = Identifier(full)
 
         override fun encode(buffer: BytesBuffer, value: Identifier) {
             buffer.writeMcString(value.toString())

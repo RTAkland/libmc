@@ -15,7 +15,7 @@ import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class ServerboundCookieResponsePacket(val key: Identifier, val payload: ByteArray?) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundCookieResponsePacket> {
+    internal companion object Codec : PacketCodec<ServerboundCookieResponsePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundCookieResponsePacket) {
             buffer.writeIdentifier(value.key)
             if (value.payload != null) {

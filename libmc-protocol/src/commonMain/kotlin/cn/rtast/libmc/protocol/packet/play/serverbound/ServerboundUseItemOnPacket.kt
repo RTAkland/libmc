@@ -30,7 +30,7 @@ public data class ServerboundUseItemOnPacket(
      */
     val sequence: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundUseItemOnPacket> {
+    internal companion object Codec : PacketCodec<ServerboundUseItemOnPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundUseItemOnPacket) {
             require(value.cursorPositionX in 0.0f..1.0f) { "cursorPositionX must be between 0.0 and 1.0" }
             require(value.cursorPositionY in 0.0f..1.0f) { "cursorPositionY must be between 0.0 and 1.0" }

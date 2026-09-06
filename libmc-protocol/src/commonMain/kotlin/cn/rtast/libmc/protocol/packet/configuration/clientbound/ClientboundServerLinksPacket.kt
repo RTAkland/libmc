@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.protocol.registry.report.ServerLink
 
 public data class ClientboundServerLinksPacket(val links: List<ServerLink>) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundServerLinksPacket> {
+    internal companion object Codec : PacketCodec<ClientboundServerLinksPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundServerLinksPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundServerLinksPacket {
             val count = buffer.readVarInt()

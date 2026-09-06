@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundBundleItemSelectedPacket(val slotOfBundle: Int, val slotInBundle: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundBundleItemSelectedPacket> {
+    internal companion object Codec : PacketCodec<ServerboundBundleItemSelectedPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundBundleItemSelectedPacket) {
             buffer.writeVarInt(value.slotOfBundle)
             buffer.writeVarInt(value.slotInBundle)

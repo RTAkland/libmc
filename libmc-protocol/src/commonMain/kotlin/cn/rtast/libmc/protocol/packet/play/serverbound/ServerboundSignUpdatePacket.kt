@@ -25,7 +25,7 @@ public data class ServerboundSignUpdatePacket(
     val line3: String,
     val line4: String,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSignUpdatePacket> {
+    internal companion object Codec : PacketCodec<ServerboundSignUpdatePacket> {
         private const val MAX_LINE_LENGTH = 384
 
         override fun encode(buffer: BytesBuffer, value: ServerboundSignUpdatePacket) {

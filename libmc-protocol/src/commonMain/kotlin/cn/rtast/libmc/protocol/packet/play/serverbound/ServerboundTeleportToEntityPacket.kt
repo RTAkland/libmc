@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeUuid
 import kotlin.uuid.Uuid
 
 public data class ServerboundTeleportToEntityPacket(val targetPlayer: Uuid) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundTeleportToEntityPacket> {
+    internal companion object Codec : PacketCodec<ServerboundTeleportToEntityPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundTeleportToEntityPacket) {
             buffer.writeUuid(value.targetPlayer)
         }

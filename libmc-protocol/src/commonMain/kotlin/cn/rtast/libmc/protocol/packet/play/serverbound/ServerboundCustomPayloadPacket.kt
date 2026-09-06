@@ -14,7 +14,7 @@ import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class ServerboundCustomPayloadPacket(val channel: Identifier, val data: ByteArray) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundCustomPayloadPacket> {
+    internal companion object Codec : PacketCodec<ServerboundCustomPayloadPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundCustomPayloadPacket) {
             buffer.writeIdentifier(value.channel)
             buffer.writeBytes(value.data)  // ?

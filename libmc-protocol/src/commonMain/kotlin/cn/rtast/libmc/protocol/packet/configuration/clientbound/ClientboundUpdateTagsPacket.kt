@@ -14,12 +14,10 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
-import kotlinx.serialization.Serializable
 
 public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistry>) : ClientboundConfigurationPacket {
-    @Serializable
     public data class TaggedRegistry(val registryId: Identifier, val tags: List<Tag>) {
-        public companion object Codec : PacketCodec<TaggedRegistry> {
+        internal companion object Codec : PacketCodec<TaggedRegistry> {
             override fun encode(buffer: BytesBuffer, value: TaggedRegistry) {
                 buffer.writeIdentifier(value.registryId)
                 buffer.writeVarInt(value.tags.size)
@@ -36,9 +34,8 @@ public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistr
         }
     }
 
-    @Serializable
     public data class Tag(val name: Identifier, val entries: IntArray) {
-        public companion object Codec : PacketCodec<Tag> {
+        internal companion object Codec : PacketCodec<Tag> {
             override fun encode(buffer: BytesBuffer, value: Tag) {
                 buffer.writeIdentifier(value.name)
                 buffer.writeVarInt(value.entries.size)
@@ -70,7 +67,7 @@ public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistr
         }
     }
 
-    public companion object Codec : PacketCodec<ClientboundUpdateTagsPacket> {
+    internal companion object Codec : PacketCodec<ClientboundUpdateTagsPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundUpdateTagsPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundUpdateTagsPacket {
             val registryCount = buffer.readVarInt()

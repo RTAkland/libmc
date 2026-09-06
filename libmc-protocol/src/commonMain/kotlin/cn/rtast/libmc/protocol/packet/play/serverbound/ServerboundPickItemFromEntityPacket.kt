@@ -19,7 +19,7 @@ public data class ServerboundPickItemFromEntityPacket(
      */
     val includeData: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPickItemFromEntityPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPickItemFromEntityPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromEntityPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeBoolean(value.includeData)

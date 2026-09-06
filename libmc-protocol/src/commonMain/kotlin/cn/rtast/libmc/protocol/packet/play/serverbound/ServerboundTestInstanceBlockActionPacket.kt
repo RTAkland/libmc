@@ -29,7 +29,7 @@ public data class ServerboundTestInstanceBlockActionPacket(
     val status: TestInstanceStatus,
     val errorMessage: NBTCompound?,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundTestInstanceBlockActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundTestInstanceBlockActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundTestInstanceBlockActionPacket) {
             buffer.writeBlockPos(value.position)
             buffer.writeVarInt(value.action.id)

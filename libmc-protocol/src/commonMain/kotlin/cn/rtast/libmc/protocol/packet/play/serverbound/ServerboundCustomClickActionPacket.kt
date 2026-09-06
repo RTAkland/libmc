@@ -24,7 +24,7 @@ public data class ServerboundCustomClickActionPacket(
     val size: Int,
     val payload: NBTCompound,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundCustomClickActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundCustomClickActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundCustomClickActionPacket) {
             buffer.writeIdentifier(value.id)
             buffer.writeVarInt(value.size)

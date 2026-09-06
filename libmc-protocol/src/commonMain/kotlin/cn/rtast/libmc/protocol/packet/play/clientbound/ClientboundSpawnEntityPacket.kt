@@ -33,7 +33,7 @@ public data class ClientboundSpawnEntityPacket(
     val headYaw: Angle,
     val data: Int,
 ) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundSpawnEntityPacket> {
+    internal companion object Codec : PacketCodec<ClientboundSpawnEntityPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundSpawnEntityPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundSpawnEntityPacket {
             val entityId = buffer.readVarInt()

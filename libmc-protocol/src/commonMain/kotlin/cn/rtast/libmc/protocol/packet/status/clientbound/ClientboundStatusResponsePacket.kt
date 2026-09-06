@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readMcString
 
 public data class ClientboundStatusResponsePacket(val jsonResponse: String) : ClientboundStatusPacket {
-    public companion object Codec : PacketCodec<ClientboundStatusResponsePacket> {
+    internal companion object Codec : PacketCodec<ClientboundStatusResponsePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundStatusResponsePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundStatusResponsePacket =
             ClientboundStatusResponsePacket(buffer.readMcString())

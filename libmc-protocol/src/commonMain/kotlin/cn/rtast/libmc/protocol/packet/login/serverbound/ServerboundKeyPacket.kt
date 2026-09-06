@@ -16,7 +16,7 @@ import cn.rtast.libmc.common.writePrefixedByteArray
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Encryption
  */
 public data class ServerboundKeyPacket(val sharedSecret: ByteArray, val verifyToken: ByteArray) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundKeyPacket> {
+    internal companion object Codec : PacketCodec<ServerboundKeyPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundKeyPacket) {
             buffer.writePrefixedByteArray(value.sharedSecret)
             buffer.writePrefixedByteArray(value.verifyToken)

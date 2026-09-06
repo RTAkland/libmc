@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.readMcString
 import cn.rtast.libmc.common.readVarInt
 
 public data class ClientboundTransferPacket(val host: String, val port: Int) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundTransferPacket> {
+    internal companion object Codec : PacketCodec<ClientboundTransferPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundTransferPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundTransferPacket {
             val host = buffer.readMcString()

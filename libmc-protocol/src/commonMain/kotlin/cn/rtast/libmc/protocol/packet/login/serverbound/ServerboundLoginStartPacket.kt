@@ -15,7 +15,7 @@ import cn.rtast.libmc.common.writeUuid
 import kotlin.uuid.Uuid
 
 public data class ServerboundLoginStartPacket(val username: String, val playerUuid: Uuid) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundLoginStartPacket> {
+    internal companion object Codec : PacketCodec<ServerboundLoginStartPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundLoginStartPacket) {
             buffer.writeMcString(value.username)
             buffer.writeUuid(value.playerUuid)

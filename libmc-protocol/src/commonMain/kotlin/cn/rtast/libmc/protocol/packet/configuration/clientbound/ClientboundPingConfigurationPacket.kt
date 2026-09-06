@@ -11,7 +11,7 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 
 public data class ClientboundPingConfigurationPacket(val id: Int) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundPingConfigurationPacket> {
+    internal companion object Codec : PacketCodec<ClientboundPingConfigurationPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundPingConfigurationPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundPingConfigurationPacket {
             return ClientboundPingConfigurationPacket(id = buffer.readInt())

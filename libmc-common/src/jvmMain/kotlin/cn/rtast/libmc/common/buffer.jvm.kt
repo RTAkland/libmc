@@ -90,6 +90,7 @@ public actual class BytesBuffer {
         return array[readOffset++]
     }
 
+    public actual fun readUByte(): UByte = this.readByte().toUByte()
     public actual fun readShort(endian: ByteOrder): Short = readBytes(2).toShort(endian)
     public actual fun readInt(endian: ByteOrder): Int = readBytes(4).toInt(endian)
     public actual fun readLong(endian: ByteOrder): Long = readBytes(8).toLong(endian)

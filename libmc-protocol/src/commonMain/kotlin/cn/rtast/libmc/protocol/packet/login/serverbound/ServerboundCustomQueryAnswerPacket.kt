@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeOptionalPrefixedByteArray
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundCustomQueryAnswerPacket(val messageId: Int, val data: ByteArray?) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundCustomQueryAnswerPacket> {
+    internal companion object Codec : PacketCodec<ServerboundCustomQueryAnswerPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundCustomQueryAnswerPacket) {
             buffer.writeVarInt(value.messageId)
             buffer.writeOptionalPrefixedByteArray(value.data)

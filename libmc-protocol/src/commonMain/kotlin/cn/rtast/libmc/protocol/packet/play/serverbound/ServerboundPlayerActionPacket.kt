@@ -29,7 +29,7 @@ public data class ServerboundPlayerActionPacket(
      */
     val sequence: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPlayerActionPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPlayerActionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPlayerActionPacket) {
             buffer.writeVarInt(value.status.id)
             buffer.writeBlockPos(value.location)

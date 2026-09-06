@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundChangeContainerSlotStatePacket(val slotId: Int, val windowId: Int, val state: Boolean) :
     MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChangeContainerSlotStatePacket> {
+    internal companion object Codec : PacketCodec<ServerboundChangeContainerSlotStatePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChangeContainerSlotStatePacket) {
             buffer.writeVarInt(value.slotId)
             buffer.writeVarInt(value.windowId)

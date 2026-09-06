@@ -22,7 +22,7 @@ public data class ServerboundPlayerCommandPacket(
      */
     val jumpBoost: Int,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPlayerCommandPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPlayerCommandPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPlayerCommandPacket) {
             buffer.writeVarInt(value.entityId)
             buffer.writeVarInt(value.action.id)

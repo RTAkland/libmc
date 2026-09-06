@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class ServerboundSeenAdvancementsPacket(val action: AdvancementAction, val tabId: Identifier?) :
     MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSeenAdvancementsPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSeenAdvancementsPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSeenAdvancementsPacket) {
             buffer.writeVarInt(value.action.id)
             if (value.action == AdvancementAction.OPENED_TAB) {

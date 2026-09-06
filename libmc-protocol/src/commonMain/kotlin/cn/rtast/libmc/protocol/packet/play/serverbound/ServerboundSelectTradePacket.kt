@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundSelectTradePacket(val selectedSlot: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSelectTradePacket> {
+    internal companion object Codec : PacketCodec<ServerboundSelectTradePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSelectTradePacket) {
             buffer.writeVarInt(value.selectedSlot)
         }

@@ -36,14 +36,14 @@ public data class ClientboundPlayerChatMessagePacket(
         FULLY_FILTERED(1),
         PARTIALLY_FILTERED(2);
 
-        public companion object {
-            public fun fromId(id: Int): ChatFilterType =
+        internal companion object {
+            fun fromID(id: Int): ChatFilterType =
                 entries.firstOrNull { it.id == id } ?: PASS_THROUGH
         }
     }
 
     public data class PreviousMessageEntry(val messageId: Int, val signature: ByteArray?) {
-        public companion object Codec : PacketCodec<PreviousMessageEntry> {
+        internal companion object Codec : PacketCodec<PreviousMessageEntry> {
             override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
             override fun decode(buffer: BytesBuffer): PreviousMessageEntry {
                 val messageId = buffer.readVarInt()
@@ -68,7 +68,7 @@ public data class ClientboundPlayerChatMessagePacket(
         }
     }
 
-    public companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
+    internal companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
             val globalIndex = buffer.readVarInt()
@@ -88,7 +88,7 @@ public data class ClientboundPlayerChatMessagePacket(
             val unsignedContent = if (hasUnsignedContent) buffer.readNetworkNBTCompound() else null  // ?
 
             val filterTypeId = buffer.readVarInt()
-            val filterType = ChatFilterType.fromId(filterTypeId)
+            val filterType = ChatFilterType.fromID(filterTypeId)
 
             val filterMaskBits = if (filterType == ChatFilterType.PARTIALLY_FILTERED) {
                 val bitSetLen = buffer.readVarInt()

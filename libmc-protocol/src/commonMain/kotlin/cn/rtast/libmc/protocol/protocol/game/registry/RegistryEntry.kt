@@ -26,7 +26,7 @@ public data class RegistryEntry(
      */
     val data: NBTCompound?,
 ) {
-    public companion object Codec : PacketCodec<RegistryEntry> {
+    internal companion object Codec : PacketCodec<RegistryEntry> {
         override fun encode(buffer: BytesBuffer, value: RegistryEntry) {
             buffer.writeIdentifier(value.id)
             buffer.writeBoolean(value.data != null)

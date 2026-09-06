@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundRecipeBookSeenRecipePacket(val recipeId: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundRecipeBookSeenRecipePacket> {
+    internal companion object Codec : PacketCodec<ServerboundRecipeBookSeenRecipePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundRecipeBookSeenRecipePacket) {
             buffer.writeVarInt(value.recipeId)
         }

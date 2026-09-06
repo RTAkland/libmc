@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.readMcString
 
 public data class ClientboundCodeOfConductPacket(val codeOfConduct: String) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundCodeOfConductPacket> {
+    internal companion object Codec : PacketCodec<ClientboundCodeOfConductPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCodeOfConductPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCodeOfConductPacket {
             return ClientboundCodeOfConductPacket(buffer.readMcString())

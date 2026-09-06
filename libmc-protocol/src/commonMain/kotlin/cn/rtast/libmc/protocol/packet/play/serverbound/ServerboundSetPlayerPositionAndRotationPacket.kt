@@ -29,7 +29,7 @@ public data class ServerboundSetPlayerPositionAndRotationPacket(
     val pitch: Float,
     val flags: PlayerPositionFlag,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetPlayerPositionAndRotationPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetPlayerPositionAndRotationPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetPlayerPositionAndRotationPacket) {
             buffer.writeDouble(value.x)
             buffer.writeDouble(value.feetY)

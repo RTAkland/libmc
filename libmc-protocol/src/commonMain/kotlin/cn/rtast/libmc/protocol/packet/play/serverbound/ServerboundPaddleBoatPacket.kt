@@ -24,7 +24,7 @@ public data class ServerboundPaddleBoatPacket(
     val leftPaddleTurning: Boolean,
     val rightPaddleTurning: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPaddleBoatPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPaddleBoatPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPaddleBoatPacket) {
             buffer.writeBoolean(value.leftPaddleTurning)
             buffer.writeBoolean(value.rightPaddleTurning)

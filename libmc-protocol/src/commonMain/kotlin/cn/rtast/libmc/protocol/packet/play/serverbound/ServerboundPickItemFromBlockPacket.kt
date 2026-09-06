@@ -21,7 +21,7 @@ public data class ServerboundPickItemFromBlockPacket(
      */
     val includeData: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPickItemFromBlockPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPickItemFromBlockPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromBlockPacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeBoolean(value.includeData)

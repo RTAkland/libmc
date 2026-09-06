@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.game.Animations
  */
 public data class ClientboundEntityAnimationPacket(val entityId: Int, val animation: Animations) :
     ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundEntityAnimationPacket> {
+    internal companion object Codec : PacketCodec<ClientboundEntityAnimationPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundEntityAnimationPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundEntityAnimationPacket {
             val entityId = buffer.readVarInt()

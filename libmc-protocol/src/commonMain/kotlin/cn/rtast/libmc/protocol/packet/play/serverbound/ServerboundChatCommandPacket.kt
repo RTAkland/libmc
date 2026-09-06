@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeMcString
 
 public data class ServerboundChatCommandPacket(val command: String) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundChatCommandPacket> {
+    internal companion object Codec : PacketCodec<ServerboundChatCommandPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundChatCommandPacket) {
             buffer.writeMcString(value.command.removePrefix("/"))
         }

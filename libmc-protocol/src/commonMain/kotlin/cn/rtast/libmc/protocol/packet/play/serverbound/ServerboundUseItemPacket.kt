@@ -22,7 +22,7 @@ public data class ServerboundUseItemPacket(
     val yaw: Float,
     val pitch: Float,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundUseItemPacket> {
+    internal companion object Codec : PacketCodec<ServerboundUseItemPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundUseItemPacket) {
             buffer.writeVarInt(value.hand.id)
             buffer.writeVarInt(value.sequence)

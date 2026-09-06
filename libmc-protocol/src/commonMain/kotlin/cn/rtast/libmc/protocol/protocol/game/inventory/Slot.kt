@@ -11,16 +11,13 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.readPrefixedByteArray
 import cn.rtast.libmc.common.readVarInt
 import cn.rtast.libmc.common.writeVarInt
-import kotlinx.serialization.Serializable
 
-@Serializable
 public data class Slot(
     val count: Int,
     val itemId: Int?,
     val componentsToAdd: List<DataComponentToAdd>,
     val componentsToRemove: List<Int>,
 ) {
-    @Serializable
     public data class DataComponentToAdd(val typeId: Int, val data: ByteArray) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

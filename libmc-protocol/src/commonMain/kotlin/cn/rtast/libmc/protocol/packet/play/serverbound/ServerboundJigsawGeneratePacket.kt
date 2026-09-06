@@ -22,7 +22,7 @@ public data class ServerboundJigsawGeneratePacket(
     val levels: Int,
     val keepJigsaw: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundJigsawGeneratePacket> {
+    internal companion object Codec : PacketCodec<ServerboundJigsawGeneratePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundJigsawGeneratePacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeVarInt(value.levels)

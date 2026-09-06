@@ -11,11 +11,8 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 
 public data class ClientboundKeepAlivePlayPacket(val id: Long) : ClientboundPlayPacket {
-    public companion object Codec : PacketCodec<ClientboundKeepAlivePlayPacket> {
-        override fun encode(buffer: BytesBuffer, value: ClientboundKeepAlivePlayPacket) {
-            buffer.writeLong(value.id)
-        }
-
+    internal companion object Codec : PacketCodec<ClientboundKeepAlivePlayPacket> {
+        override fun encode(buffer: BytesBuffer, value: ClientboundKeepAlivePlayPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundKeepAlivePlayPacket =
             ClientboundKeepAlivePlayPacket(buffer.readLong())
     }

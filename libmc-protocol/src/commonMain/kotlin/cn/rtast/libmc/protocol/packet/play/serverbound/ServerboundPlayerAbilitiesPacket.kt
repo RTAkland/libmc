@@ -13,9 +13,9 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerAbilities
 
 public data class ServerboundPlayerAbilitiesPacket(val flags: PlayerAbilities) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPlayerAbilitiesPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPlayerAbilitiesPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPlayerAbilitiesPacket) {
-            buffer.writeByte(value.flags.flag)
+            buffer.writeByte(value.flags.mask())
         }
 
         override fun decode(buffer: BytesBuffer): ServerboundPlayerAbilitiesPacket =

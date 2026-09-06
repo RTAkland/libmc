@@ -24,7 +24,7 @@ public data class ServerboundSetCommandBlockPacket(
     val conditional: Boolean,
     val automatic: Boolean,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetCommandBlockPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetCommandBlockPacket> {
         private const val FLAG_TRACK_OUTPUT = 0x01
         private const val FLAG_CONDITIONAL = 0x02
         private const val FLAG_AUTOMATIC = 0x04

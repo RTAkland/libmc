@@ -23,7 +23,7 @@ public data class ServerboundMoveVehiclePacket(
     val pitch: Float,
 //    val onGround: Boolean
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundMoveVehiclePacket> {
+    internal companion object Codec : PacketCodec<ServerboundMoveVehiclePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundMoveVehiclePacket) {
             buffer.writeDouble(value.x)
             buffer.writeDouble(value.y)

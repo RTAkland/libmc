@@ -9,18 +9,10 @@ package cn.rtast.libmc.common
 
 public interface Encoder<in T> {
     public fun encode(buffer: BytesBuffer, value: T)
-
-    public fun encodeToByteArray(value: T): ByteArray {
-        val buf = BytesBuffer()
-        encode(buf, value)
-        return buf.toByteArray()
-    }
 }
 
 public interface Decoder<out T> {
     public fun decode(buffer: BytesBuffer): T
-
-    public fun decodeFromByteArray(bytes: ByteArray): T = decode(bytes.wrap())
 }
 
 public interface PacketCodec<T> : Encoder<T>, Decoder<T>

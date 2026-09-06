@@ -19,7 +19,7 @@ public data class ServerboundResourcePackResponsePacket(
     val uuid: Uuid,
     val result: ResourcePackResult,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundResourcePackResponsePacket> {
+    internal companion object Codec : PacketCodec<ServerboundResourcePackResponsePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundResourcePackResponsePacket) {
             buffer.writeUuid(value.uuid)
             buffer.writeVarInt(value.result.id)

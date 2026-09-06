@@ -9,14 +9,15 @@ package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
+import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
 public data class ClientboundCustomPayloadPacket(
     val channel: Identifier,
     val data: ByteArray,
-) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundCustomPayloadPacket> {
+) : MinecraftPacket {
+    internal companion object Codec : PacketCodec<ClientboundCustomPayloadPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCustomPayloadPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCustomPayloadPacket {
             val channel = buffer.readIdentifier()

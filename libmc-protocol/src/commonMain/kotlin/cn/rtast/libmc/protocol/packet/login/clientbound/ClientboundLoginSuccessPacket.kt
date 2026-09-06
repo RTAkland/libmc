@@ -15,7 +15,7 @@ import kotlin.uuid.Uuid
 
 public data class ClientboundLoginSuccessPacket(val gameProfile: GameProfile, val sessionId: Uuid) :
     ClientboundLoginPacket {
-    public companion object Codec : PacketCodec<ClientboundLoginSuccessPacket> {
+    internal companion object Codec : PacketCodec<ClientboundLoginSuccessPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundLoginSuccessPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundLoginSuccessPacket {
             val gameProfile = GameProfile.decode(buffer)

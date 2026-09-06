@@ -10,17 +10,14 @@ package cn.rtast.libmc.protocol.packet.play.serverbound
 import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.writeMcString
-import cn.rtast.libmc.common.writePrefixedArray
+import cn.rtast.libmc.common.writePrefixed
 import cn.rtast.libmc.protocol.protocol.game.gamerule.GameRuleEntry
+import cn.rtast.libmc.protocol.protocol.game.gamerule.writeGameRule
 
 public data class ServerboundSetGameRulePacket(val rules: List<GameRuleEntry>) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetGameRulePacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetGameRulePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetGameRulePacket) {
-            buffer.writePrefixedArray(value.rules) { rule ->
-                writeMcString(rule.name)
-                writeMcString(rule.value)
-            }
+            buffer.writePrefixed(value.rules) { rule -> writeGameRule(rule) }
         }
 
         override fun decode(buffer: BytesBuffer): ServerboundSetGameRulePacket =

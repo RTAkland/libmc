@@ -14,7 +14,7 @@ import cn.rtast.libmc.common.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.player.PlayerActionStatus
 
 public data class ServerboundClientCommandPacket(val action: PlayerActionStatus) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundClientCommandPacket> {
+    internal companion object Codec : PacketCodec<ServerboundClientCommandPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundClientCommandPacket) {
             buffer.writeVarInt(value.action.id)
         }

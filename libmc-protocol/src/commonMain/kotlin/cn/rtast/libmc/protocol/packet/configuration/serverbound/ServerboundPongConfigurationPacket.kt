@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundPongConfigurationPacket(val id: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundPongConfigurationPacket> {
+    internal companion object Codec : PacketCodec<ServerboundPongConfigurationPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundPongConfigurationPacket) {
             buffer.writeInt(value.id)
         }

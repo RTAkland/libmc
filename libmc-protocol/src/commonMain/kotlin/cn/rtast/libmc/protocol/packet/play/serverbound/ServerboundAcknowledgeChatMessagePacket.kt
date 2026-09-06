@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundAcknowledgeChatMessagePacket(val messageCount: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundAcknowledgeChatMessagePacket> {
+    internal companion object Codec : PacketCodec<ServerboundAcknowledgeChatMessagePacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundAcknowledgeChatMessagePacket) {
             buffer.writeVarInt(value.messageCount)
         }

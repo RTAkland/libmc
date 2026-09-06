@@ -11,7 +11,7 @@ import cn.rtast.libmc.common.BytesBuffer
 import cn.rtast.libmc.common.PacketCodec
 
 public data class ClientboundPongResponsePacket(val timestamp: Long) : ClientboundStatusPacket {
-    public companion object Codec : PacketCodec<ClientboundPongResponsePacket> {
+    internal companion object Codec : PacketCodec<ClientboundPongResponsePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundPongResponsePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundPongResponsePacket {
             return ClientboundPongResponsePacket(buffer.readLong())

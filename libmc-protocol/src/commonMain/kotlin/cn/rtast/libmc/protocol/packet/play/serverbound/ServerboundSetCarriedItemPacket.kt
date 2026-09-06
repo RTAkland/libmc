@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.PacketCodec
 import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundSetCarriedItemPacket(val slot: Short) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundSetCarriedItemPacket> {
+    internal companion object Codec : PacketCodec<ServerboundSetCarriedItemPacket> {
         private const val MIN_SLOT: Short = 0
         private const val MAX_SLOT: Short = 8
         override fun encode(buffer: BytesBuffer, value: ServerboundSetCarriedItemPacket) {

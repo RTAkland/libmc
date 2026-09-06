@@ -13,7 +13,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 import cn.rtast.libmc.common.writeVarInt
 
 public data class ServerboundAcceptTeleportationPacket(val teleportId: Int) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundAcceptTeleportationPacket> {
+    internal companion object Codec : PacketCodec<ServerboundAcceptTeleportationPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundAcceptTeleportationPacket) {
             buffer.writeVarInt(value.teleportId)
         }

@@ -12,7 +12,7 @@ import cn.rtast.libmc.common.packet.MinecraftPacket
 
 public data class ServerboundEditBookPacket(val slot: Int, val entries: List<String>, val title: String?) :
     MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundEditBookPacket> {
+    internal companion object Codec : PacketCodec<ServerboundEditBookPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundEditBookPacket) {
             buffer.writeVarInt(value.slot)
             buffer.writePrefixedStringArray(value.entries)

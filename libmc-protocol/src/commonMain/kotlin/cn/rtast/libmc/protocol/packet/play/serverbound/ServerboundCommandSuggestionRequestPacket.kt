@@ -23,7 +23,7 @@ public data class ServerboundCommandSuggestionRequestPacket(
      */
     val text: String,
 ) : MinecraftPacket {
-    public companion object Codec : PacketCodec<ServerboundCommandSuggestionRequestPacket> {
+    internal companion object Codec : PacketCodec<ServerboundCommandSuggestionRequestPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundCommandSuggestionRequestPacket) {
             buffer.writeVarInt(value.transactionId)
             buffer.writeMcString(value.text)

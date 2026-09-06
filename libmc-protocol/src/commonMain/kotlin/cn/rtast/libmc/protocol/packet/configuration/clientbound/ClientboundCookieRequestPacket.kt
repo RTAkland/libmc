@@ -13,7 +13,7 @@ import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 
 public data class ClientboundCookieRequestPacket(val key: Identifier) : ClientboundConfigurationPacket {
-    public companion object Codec : PacketCodec<ClientboundCookieRequestPacket> {
+    internal companion object Codec : PacketCodec<ClientboundCookieRequestPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundCookieRequestPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCookieRequestPacket {
             return ClientboundCookieRequestPacket(key = buffer.readIdentifier())
