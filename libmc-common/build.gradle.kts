@@ -12,17 +12,23 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.kotlinx.io)
             api(libs.kotlinx.coroutines)
         }
+
         jvmMain.dependencies {}
-        nativeMain.dependencies {
-            implementation(libs.ktor.network)
-            implementation(libs.kotlinx.io)
-        }
+
+//        nativeMain.dependencies {
+//            implementation(libs.ktor.network)
+//        }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
+        }
+
+        jvmTest.dependencies {
+
         }
     }
 

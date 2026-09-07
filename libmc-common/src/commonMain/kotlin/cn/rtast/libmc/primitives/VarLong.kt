@@ -8,10 +8,10 @@
 package cn.rtast.libmc.primitives
 
 import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public object VarLongCodec : PacketCodec<Long> {
-    override suspend fun encode(buffer: BytesBuffer, value: Long) {
+    override fun encode(buffer: BytesBuffer, value: Long) {
         var v = value
         while (true) {
             if ((v and 0x7FL.inv()) == 0L) {
@@ -23,7 +23,7 @@ public object VarLongCodec : PacketCodec<Long> {
         }
     }
 
-    override suspend fun decode(buffer: BytesBuffer): Long {
+    override fun decode(buffer: BytesBuffer): Long {
         var numRead = 0
         var result = 0L
         var read: Byte

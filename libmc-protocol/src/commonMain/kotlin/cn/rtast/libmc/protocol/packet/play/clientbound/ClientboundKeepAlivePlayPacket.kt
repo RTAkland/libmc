@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 
 public data class ClientboundKeepAlivePlayPacket(val id: Long) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundKeepAlivePlayPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundKeepAlivePlayPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundKeepAlivePlayPacket =
+        override fun encode(buffer: BytesBuffer, value: ClientboundKeepAlivePlayPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundKeepAlivePlayPacket =
             ClientboundKeepAlivePlayPacket(buffer.readLong())
     }
 }

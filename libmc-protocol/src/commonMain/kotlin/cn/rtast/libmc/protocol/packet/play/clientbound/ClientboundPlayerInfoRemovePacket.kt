@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readPrefixed
@@ -16,8 +16,8 @@ import kotlin.uuid.Uuid
 
 public data class ClientboundPlayerInfoRemovePacket(val uuids: List<Uuid>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPlayerInfoRemovePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerInfoRemovePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerInfoRemovePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerInfoRemovePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundPlayerInfoRemovePacket {
             return ClientboundPlayerInfoRemovePacket(buffer.readPrefixed { readUuid() })
         }
     }

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -24,8 +24,8 @@ public data class ClientboundUpdateEntityPositionAndRotationPacket(
     val onGround: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateEntityPositionAndRotationPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateEntityPositionAndRotationPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateEntityPositionAndRotationPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateEntityPositionAndRotationPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateEntityPositionAndRotationPacket {
             val entityId = buffer.readVarInt()
             val x = buffer.readShort()
             val y = buffer.readShort()

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writePrefixed
@@ -16,11 +16,11 @@ import cn.rtast.libmc.protocol.protocol.game.gamerule.writeGameRule
 
 public data class ServerboundSetGameRulePacket(val rules: List<GameRuleEntry>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetGameRulePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetGameRulePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSetGameRulePacket) {
             buffer.writePrefixed(value.rules) { rule -> writeGameRule(rule) }
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSetGameRulePacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSetGameRulePacket =
             throw UnsupportedOperationException()
     }
 }

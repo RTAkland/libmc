@@ -14,7 +14,7 @@ import cn.rtast.libmc.primitives.readUuid
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class ClientboundAddResourcePackPacket(
@@ -25,8 +25,8 @@ public data class ClientboundAddResourcePackPacket(
     val prompt: TextComponent,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundAddResourcePackPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundAddResourcePackPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundAddResourcePackPacket {
             val uuid = buffer.readUuid()
             val url = buffer.readMcString()
             val hash = buffer.readMcString()

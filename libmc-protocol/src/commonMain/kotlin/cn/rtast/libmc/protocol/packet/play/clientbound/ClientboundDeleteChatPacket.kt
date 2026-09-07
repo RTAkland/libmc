@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readOptional
@@ -15,8 +15,8 @@ import cn.rtast.libmc.primitives.readVarInt
 
 public data class ClientboundDeleteChatPacket(val messageId: Int, val signature: ByteArray?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDeleteChatPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDeleteChatPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundDeleteChatPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundDeleteChatPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundDeleteChatPacket {
             val messageId = buffer.readVarInt()
             val signature = buffer.readOptional { buffer.readBytes(256) }
             return ClientboundDeleteChatPacket(messageId, signature)

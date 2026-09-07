@@ -63,7 +63,7 @@ class TestClientTestInJvm {
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
 //            null,
             accessToken,
-            crypto = DefaultProtocolContext
+            contextBuilder = DefaultProtocolContext
         )
 //        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it) }
 //        cli.onPacket<ClientboundLoginSuccessPacket> { println(it) }
@@ -81,7 +81,7 @@ class TestClientTestInJvm {
             "11",
             generateOfflineUuid("11"),
             null,
-            crypto = DefaultProtocolContext
+            contextBuilder = DefaultProtocolContext
         )
 //        cli.on { packet, direction ->
 //            if (packet !is ClientboundWaypointPacket)

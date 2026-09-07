@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.handshake
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeMcString
@@ -21,13 +21,13 @@ public data class ServerboundHandshakePacket(
     val intent: HandshakeIntent,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundHandshakePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundHandshakePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundHandshakePacket) {
             buffer.writeVarInt(value.protocolVersion)
             buffer.writeMcString(value.serverAddress)
             buffer.writeShort(value.serverPort.toShort())
             buffer.writeVarInt(value.intent.intentID)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundHandshakePacket = throw UnsupportedOperationException()
+        override fun decode(buffer: BytesBuffer): ServerboundHandshakePacket = throw UnsupportedOperationException()
     }
 }

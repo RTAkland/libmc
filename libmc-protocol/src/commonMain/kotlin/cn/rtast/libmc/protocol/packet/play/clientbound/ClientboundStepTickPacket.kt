@@ -7,15 +7,15 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
 
 public data class ClientboundStepTickPacket(val tickSteps: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundStepTickPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundStepTickPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundStepTickPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundStepTickPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundStepTickPacket {
             return ClientboundStepTickPacket(buffer.readVarInt())
         }
     }

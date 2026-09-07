@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -32,8 +32,8 @@ public data class ClientboundBlockEventPacket(
     val blockType: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundBlockEventPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundBlockEventPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundBlockEventPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundBlockEventPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundBlockEventPacket {
             val location = buffer.readBlockPos()
             val actionId = buffer.readUByte()
             val actionParameter = buffer.readUByte()

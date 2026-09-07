@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 
@@ -24,7 +24,7 @@ public data class ServerboundMoveVehiclePacket(
 //    val onGround: Boolean
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundMoveVehiclePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundMoveVehiclePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundMoveVehiclePacket) {
             buffer.writeDouble(value.x)
             buffer.writeDouble(value.y)
             buffer.writeDouble(value.z)
@@ -32,6 +32,6 @@ public data class ServerboundMoveVehiclePacket(
             buffer.writeFloat(value.pitch)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundMoveVehiclePacket = throw UnsupportedOperationException()
+        override fun decode(buffer: BytesBuffer): ServerboundMoveVehiclePacket = throw UnsupportedOperationException()
     }
 }

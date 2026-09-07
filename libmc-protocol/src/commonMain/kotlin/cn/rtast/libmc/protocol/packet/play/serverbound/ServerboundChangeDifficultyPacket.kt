@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.registry.GameDifficulty
 
 public data class ServerboundChangeDifficultyPacket(val newDifficulty: GameDifficulty) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundChangeDifficultyPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundChangeDifficultyPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundChangeDifficultyPacket) {
             buffer.writeByte(value.newDifficulty.id)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundChangeDifficultyPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundChangeDifficultyPacket =
             throw UnsupportedOperationException()
     }
 }

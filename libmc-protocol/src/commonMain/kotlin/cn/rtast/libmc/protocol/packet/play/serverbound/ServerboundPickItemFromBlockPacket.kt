@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
@@ -22,12 +22,12 @@ public data class ServerboundPickItemFromBlockPacket(
     val includeData: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundPickItemFromBlockPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromBlockPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundPickItemFromBlockPacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeBoolean(value.includeData)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundPickItemFromBlockPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundPickItemFromBlockPacket =
             throw UnsupportedOperationException()
     }
 }

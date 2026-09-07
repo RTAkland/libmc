@@ -12,7 +12,7 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.writeMcString
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.primitives.writeVarLong
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.protocol.protocol.game.block.*
 
 public data class ServerboundSetStructureBlockPacket(
@@ -60,7 +60,7 @@ public data class ServerboundSetStructureBlockPacket(
         private const val FLAG_SHOW_BOUNDING_BOX = 0x04
         private const val FLAG_STRICT_PLACEMENT = 0x08
 
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetStructureBlockPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSetStructureBlockPacket) {
             require(value.offsetX in -48..48) { "offsetX must be between -48 and 48" }
             require(value.offsetY in -48..48) { "offsetY must be between -48 and 48" }
             require(value.offsetZ in -48..48) { "offsetZ must be between -48 and 48" }
@@ -92,7 +92,7 @@ public data class ServerboundSetStructureBlockPacket(
             buffer.writeByte(flags.toByte())
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSetStructureBlockPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSetStructureBlockPacket =
             throw UnsupportedOperationException()
     }
 }

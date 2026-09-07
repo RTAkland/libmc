@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.nbt
 
-import cn.rtast.libmc.stream.ByteOrder
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.ByteOrder
+import cn.rtast.libmc.network.BytesBuffer
 
 public class BytesBufferNBTInput(override val order: ByteOrder, private val buffer: BytesBuffer) : NBTInput {
-    override suspend fun readByte(): Byte = buffer.readByte()
-    override suspend fun readBytes(count: Int): ByteArray = buffer.readBytes(count)
+    override fun readByte(): Byte = buffer.readByte()
+    override fun readBytes(count: Int): ByteArray = buffer.readBytes(count)
 }
 
 public fun BytesBuffer.toNBTInput(order: ByteOrder = ByteOrder.BIG_ENDIAN): BytesBufferNBTInput =

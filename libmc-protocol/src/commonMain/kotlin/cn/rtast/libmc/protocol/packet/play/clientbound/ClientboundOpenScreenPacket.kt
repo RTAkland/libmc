@@ -12,7 +12,7 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundOpenScreenPacket(
     val windowId: Int,
@@ -20,8 +20,8 @@ public data class ClientboundOpenScreenPacket(
     val title: TextComponent,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundOpenScreenPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundOpenScreenPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundOpenScreenPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundOpenScreenPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundOpenScreenPacket {
             val windowId = buffer.readVarInt()
             val windowType = buffer.readVarInt()
             val title = buffer.readTextComponent()

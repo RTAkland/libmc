@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.stream.ByteOrder
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.ByteOrder
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
 import kotlin.math.abs
@@ -39,11 +39,11 @@ public data class LpVec3(
 }
 
 // ref: https://minecraft.wiki/w/Java_Edition_protocol/Data_types#LpVec3
-internal suspend fun BytesBuffer.readLpVec3(): LpVec3 {
+internal fun BytesBuffer.readLpVec3(): LpVec3 {
     val byte1 = readByte().toInt() and 0xFF
     if (byte1 == 0) return LpVec3.ZERO
     val byte2 = readByte().toInt() and 0xFF
-    val bytes3To6 = readInt(ByteOrder.BIG_ENDIAN).toLong() and 0xFFFFFFFFL
+    val bytes3To6 = readInt().toLong() and 0xFFFFFFFFL
     val packed = (bytes3To6 shl 16) or (byte2.toLong() shl 8) or byte1.toLong()
     var scaleFactor = byte1.toLong() and 0x03L
     if ((byte1.toLong() and 0x04L) != 0L) scaleFactor = scaleFactor or (readVarInt().toLong() shl 2)
@@ -55,7 +55,7 @@ internal suspend fun BytesBuffer.readLpVec3(): LpVec3 {
 }
 
 // ref: https://minecraft.wiki/w/Java_Edition_protocol/Data_types#LpVec3
-internal suspend fun BytesBuffer.writeLpVec3(vec3: LpVec3) {
+internal fun BytesBuffer.writeLpVec3(vec3: LpVec3) {
     val maxCoordinate = max(abs(vec3.x), max(abs(vec3.y), abs(vec3.z)))
     if (maxCoordinate.isNaN() || maxCoordinate < 1.0 / 32766.0) {
         writeByte(0x00)
@@ -70,6 +70,6 @@ internal suspend fun BytesBuffer.writeLpVec3(vec3: LpVec3) {
     val packed = packedZ or packedY or packedX or packedScale
     writeByte(packed.toByte())
     writeByte((packed shr 8).toByte())
-    writeInt((packed shr 16).toInt(), ByteOrder.BIG_ENDIAN)
+    writeInt((packed shr 16).toInt())
     if (needContinuation) writeVarInt((scaleFactor shr 2).toInt())
 }

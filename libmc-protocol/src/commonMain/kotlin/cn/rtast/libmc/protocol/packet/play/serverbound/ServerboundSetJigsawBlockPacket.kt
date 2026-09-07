@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeMcString
@@ -28,7 +28,7 @@ public data class ServerboundSetJigsawBlockPacket(
     val placementPriority: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetJigsawBlockPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetJigsawBlockPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSetJigsawBlockPacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeIdentifier(value.name)
             buffer.writeIdentifier(value.target)
@@ -39,7 +39,7 @@ public data class ServerboundSetJigsawBlockPacket(
             buffer.writeVarInt(value.placementPriority)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSetJigsawBlockPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSetJigsawBlockPacket =
             throw UnsupportedOperationException()
     }
 }

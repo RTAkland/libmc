@@ -15,7 +15,7 @@ import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.world.waypoint.WaypointColor
 import cn.rtast.libmc.protocol.protocol.game.world.waypoint.WaypointData
 import cn.rtast.libmc.protocol.protocol.game.world.waypoint.WaypointOperation
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class ClientboundWaypointPacket(
@@ -26,8 +26,8 @@ public data class ClientboundWaypointPacket(
     val waypointData: WaypointData,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundWaypointPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundWaypointPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundWaypointPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundWaypointPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundWaypointPacket {
             val operation = WaypointOperation.fromID(buffer.readVarInt())
             val identifier = buffer.readEither(
                 readLeft = { readUuid() },

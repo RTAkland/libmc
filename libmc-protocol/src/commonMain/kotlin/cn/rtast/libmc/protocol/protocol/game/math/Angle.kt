@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.jvm.JvmInline
 
 /**
@@ -27,5 +27,5 @@ public value class Angle(public val raw: Byte) {
 }
 
 
-internal suspend fun BytesBuffer.readAngle(): Angle = Angle(this.readByte())
-internal suspend fun BytesBuffer.writeAngle(value: Angle) = this.writeByte(value.raw)
+internal fun BytesBuffer.readAngle(): Angle = Angle(this.readByte())
+internal fun BytesBuffer.writeAngle(value: Angle) = this.writeByte(value.raw)

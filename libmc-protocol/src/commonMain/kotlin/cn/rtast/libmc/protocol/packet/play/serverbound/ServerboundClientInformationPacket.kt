@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeMcString
@@ -26,7 +26,7 @@ public data class ServerboundClientInformationPacket(
     val viewDistance: Int,
     val chatMode: ChatMode,
     /**
-     * “Colors” multiplayer setting. The vanilla server stores this value but does nothing with it (see MC-64867).
+     * “Colors�?multiplayer setting. The vanilla server stores this value but does nothing with it (see MC-64867).
      * Some third-party servers disable all coloring in chat and system messages when it is false.
      */
     val chatColors: Boolean,
@@ -49,7 +49,7 @@ public data class ServerboundClientInformationPacket(
     val particleStatus: ParticleStatus,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundClientInformationPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundClientInformationPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundClientInformationPacket) {
             buffer.writeMcString(value.locale)
             buffer.writeByte(value.viewDistance.toByte())
             buffer.writeVarInt(value.chatMode.id)
@@ -61,7 +61,7 @@ public data class ServerboundClientInformationPacket(
             buffer.writeVarInt(value.particleStatus.id)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundClientInformationPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundClientInformationPacket =
             throw UnsupportedOperationException()
     }
 }

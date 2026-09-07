@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public sealed interface IdSet {
     public data class Tag(val tagName: String) : IdSet
     public data class Entries(val ids: List<Int>) : IdSet
 }
 
-public suspend fun BytesBuffer.readIdSet(): IdSet {
+public fun BytesBuffer.readIdSet(): IdSet {
     val type = this.readVarInt()
     return if (type == 0) {
         IdSet.Tag(tagName = this.readMcString())
@@ -26,7 +26,7 @@ public suspend fun BytesBuffer.readIdSet(): IdSet {
     }
 }
 
-public suspend fun BytesBuffer.writeIdSet(idSet: IdSet) {
+public fun BytesBuffer.writeIdSet(idSet: IdSet) {
     when (idSet) {
         is IdSet.Tag -> {
             this.writeVarInt(0)

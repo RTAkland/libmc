@@ -12,12 +12,12 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readPrefixed
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.command.CommandNode
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundCommandsPacket(val nodes: List<CommandNode>, val rootIndex: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundCommandsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundCommandsPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundCommandsPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundCommandsPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundCommandsPacket {
             val nodes = buffer.readPrefixed { CommandNode.decode(buffer) }
             val rootIndex = buffer.readVarInt()
             return ClientboundCommandsPacket(nodes, rootIndex)

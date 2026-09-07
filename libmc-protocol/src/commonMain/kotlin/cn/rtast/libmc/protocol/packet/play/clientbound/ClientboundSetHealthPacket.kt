@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -27,8 +27,8 @@ public data class ClientboundSetHealthPacket(
     val foodSaturation: Float,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetHealthPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetHealthPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSetHealthPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSetHealthPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSetHealthPacket {
             val health = buffer.readFloat()
             val food = buffer.readVarInt()
             val foodSaturation = buffer.readFloat()

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -18,8 +18,8 @@ public data class ClientboundOpenHorseScreenPacket(
     val entityId: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundOpenHorseScreenPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundOpenHorseScreenPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundOpenHorseScreenPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundOpenHorseScreenPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundOpenHorseScreenPacket {
             val windowId = buffer.readVarInt()
             val columnsCount = buffer.readVarInt()
             val entityId = buffer.readInt()

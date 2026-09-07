@@ -7,17 +7,15 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
-import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.*
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.writeTextComponent
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
-import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
 public data class ServerboundTestInstanceBlockActionPacket(
     val position: BlockPos,
@@ -32,7 +30,7 @@ public data class ServerboundTestInstanceBlockActionPacket(
     val errorMessage: TextComponent?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundTestInstanceBlockActionPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundTestInstanceBlockActionPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundTestInstanceBlockActionPacket) {
             buffer.writeBlockPos(value.position)
             buffer.writeVarInt(value.action.id)
             buffer.writeBoolean(value.test != null)
@@ -47,7 +45,7 @@ public data class ServerboundTestInstanceBlockActionPacket(
             if (value.errorMessage != null) buffer.writeTextComponent(value.errorMessage)  // TODO to fix
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundTestInstanceBlockActionPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundTestInstanceBlockActionPacket =
             throw UnsupportedOperationException()
     }
 }

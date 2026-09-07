@@ -11,12 +11,12 @@ import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundSetSubtitleTextPacket(val subTitleText: TextComponent) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetSubtitleTextPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetSubtitleTextPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSetSubtitleTextPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSetSubtitleTextPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSetSubtitleTextPacket {
             return ClientboundSetSubtitleTextPacket(buffer.readTextComponent())
         }
     }

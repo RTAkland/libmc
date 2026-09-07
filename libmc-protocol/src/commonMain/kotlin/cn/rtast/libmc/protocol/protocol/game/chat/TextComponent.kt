@@ -12,7 +12,7 @@ import cn.rtast.libmc.nbt.NBTType
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class TextComponent(
@@ -613,10 +613,10 @@ private fun NBTTag.CompoundTag.getCompoundOrNull(key: String): NBTTag.CompoundTa
 
 private fun NBTTag.CompoundTag.getListOrNull(key: String): List<NBTTag>? = (this.value[key] as? NBTTag.ListTag)?.value
 
-internal suspend fun BytesBuffer.readTextComponent(): TextComponent =
+internal fun BytesBuffer.readTextComponent(): TextComponent =
     this.readNetworkNBTCompound().element.toTextComponent()
 
-internal suspend fun BytesBuffer.writeTextComponent(component: TextComponent) {
+internal fun BytesBuffer.writeTextComponent(component: TextComponent) {
     val nbt = component.toNbt()
     this.writeNetworkNBTCompound(NBTCompound("", nbt))
 }

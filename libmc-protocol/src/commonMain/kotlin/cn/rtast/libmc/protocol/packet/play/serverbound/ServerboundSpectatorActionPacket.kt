@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -20,11 +20,11 @@ public data class ServerboundSpectatorActionPacket(
     val entityId: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSpectatorActionPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSpectatorActionPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSpectatorActionPacket) {
             buffer.writeVarInt(value.entityId)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSpectatorActionPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSpectatorActionPacket =
             throw UnsupportedOperationException()
     }
 }

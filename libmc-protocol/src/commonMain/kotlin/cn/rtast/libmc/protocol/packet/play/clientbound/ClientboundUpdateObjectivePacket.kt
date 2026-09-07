@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.game.scoreboard.ObjectivePayload
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ObjectiveRenderType
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ScoreNumberFormat
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundUpdateObjectivePacket(
     val objectiveName: String,
@@ -25,8 +25,8 @@ public data class ClientboundUpdateObjectivePacket(
     val payload: ObjectivePayload?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateObjectivePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateObjectivePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateObjectivePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateObjectivePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateObjectivePacket {
             val objectiveName = buffer.readMcString()
             val mode = buffer.readByte()
             val payload = when (mode.toInt()) {

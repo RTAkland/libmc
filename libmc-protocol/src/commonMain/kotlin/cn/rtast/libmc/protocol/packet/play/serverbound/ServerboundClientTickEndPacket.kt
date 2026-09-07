@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 
 public data object ServerboundClientTickEndPacket : MinecraftPacket, PacketCodec<ServerboundClientTickEndPacket> {
-    override suspend fun encode(buffer: BytesBuffer, value: ServerboundClientTickEndPacket) {}
-    override suspend fun decode(buffer: BytesBuffer): ServerboundClientTickEndPacket = throw UnsupportedOperationException()
+    override fun encode(buffer: BytesBuffer, value: ServerboundClientTickEndPacket) {}
+    override fun decode(buffer: BytesBuffer): ServerboundClientTickEndPacket = throw UnsupportedOperationException()
 }

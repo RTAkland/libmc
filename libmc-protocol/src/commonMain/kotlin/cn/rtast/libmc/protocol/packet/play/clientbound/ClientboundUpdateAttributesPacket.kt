@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readPrefixed
@@ -22,8 +22,8 @@ public data class ClientboundUpdateAttributesPacket(
     val properties: List<EntityAttributeProperty>,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateAttributesPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateAttributesPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateAttributesPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateAttributesPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateAttributesPacket {
             val entityId = buffer.readVarInt()
             val properties = buffer.readPrefixed {
                 val attributeId = readVarInt()

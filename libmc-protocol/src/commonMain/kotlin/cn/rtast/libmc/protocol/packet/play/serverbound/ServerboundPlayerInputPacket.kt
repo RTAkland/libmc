@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 
@@ -29,7 +29,7 @@ public data class ServerboundPlayerInputPacket(
         private const val FLAG_SNEAK = 0x20
         private const val FLAG_SPRINT = 0x40
 
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundPlayerInputPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundPlayerInputPacket) {
             var flags = 0
             if (value.forward) flags = flags or FLAG_FORWARD
             if (value.backward) flags = flags or FLAG_BACKWARD
@@ -41,7 +41,7 @@ public data class ServerboundPlayerInputPacket(
             buffer.writeByte(flags.toByte())
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundPlayerInputPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundPlayerInputPacket =
             throw UnsupportedOperationException()
     }
 }

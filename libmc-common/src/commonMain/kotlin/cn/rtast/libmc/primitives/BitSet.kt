@@ -7,16 +7,16 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public typealias BitSet = LongArray
 
-public suspend fun BytesBuffer.readBitSet(): BitSet {
+public fun BytesBuffer.readBitSet(): BitSet {
     val count = this.readVarInt()
     return LongArray(count) { this.readLong() }
 }
 
-public suspend fun BytesBuffer.writeBitSet(data: BitSet) {
+public fun BytesBuffer.writeBitSet(data: BitSet) {
     this.writeVarInt(data.size)
     for (i in data.indices) this.writeLong(data[i])
 }

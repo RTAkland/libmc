@@ -8,10 +8,11 @@
 package cn.rtast.libmc.primitives
 
 import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
+import cn.rtast.libmc.network.ReadChannel
 
 public object VarIntCodec : PacketCodec<Int> {
-    override suspend fun encode(buffer: BytesBuffer, value: Int) {
+    override fun encode(buffer: BytesBuffer, value: Int) {
         var v = value
         while (true) {
             if ((v and 0x7F.inv()) == 0) {
@@ -23,7 +24,7 @@ public object VarIntCodec : PacketCodec<Int> {
         }
     }
 
-    override suspend fun decode(buffer: BytesBuffer): Int {
+    override fun decode(buffer: BytesBuffer): Int {
         var numRead = 0
         var result = 0
         var read: Byte
@@ -38,8 +39,22 @@ public object VarIntCodec : PacketCodec<Int> {
     }
 }
 
-public suspend fun BytesBuffer.writeVarInt(value: Int): Unit = VarIntCodec.encode(this, value)
-public suspend fun BytesBuffer.readVarInt(): Int = VarIntCodec.decode(this)
+public fun BytesBuffer.writeVarInt(value: Int): Unit = VarIntCodec.encode(this, value)
+public fun BytesBuffer.readVarInt(): Int = VarIntCodec.decode(this)
 
-public suspend fun BytesBuffer.writeVarLong(value: Long): Unit = VarLongCodec.encode(this, value)
-public suspend fun BytesBuffer.readVarLong(): Long = VarLongCodec.decode(this)
+public fun BytesBuffer.writeVarLong(value: Long): Unit = VarLongCodec.encode(this, value)
+public fun BytesBuffer.readVarLong(): Long = VarLongCodec.decode(this)
+
+public suspend fun ReadChannel.readVarInt(): Int {
+    var numRead = 0
+    var result = 0
+    var read: Byte
+    do {
+        read = readByte()
+        val value = (read.toInt() and 0x7F)
+        result = result or (value shl (7 * numRead))
+        numRead++
+        if (numRead > 5) throw IllegalArgumentException("VarInt is too big")
+    } while ((read.toInt() and 0x80) != 0)
+    return result
+}

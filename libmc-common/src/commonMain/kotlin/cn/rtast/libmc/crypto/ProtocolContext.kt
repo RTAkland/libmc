@@ -7,18 +7,23 @@
 
 package cn.rtast.libmc.crypto
 
+import cn.rtast.libmc.network.SocketContext
+import cn.rtast.libmc.network.SocketEngine
+
 public data class ProtocolContext(
     val rsaEncryptor: RSA1024Encryptor,
     val sha1Hasher: Sha1Hasher,
     val cipherFactory: (sharedKey: ByteArray) -> NetworkCipher,
     val authProvider: AuthenticationProvider?,
-)
+    override val engine: SocketEngine,
+) : SocketContext()
 
 public class ProtocolContextBuilder(private val onlineMode: Boolean) {
     public lateinit var rsaEncryptor: RSA1024Encryptor
     public lateinit var sha1Hasher: Sha1Hasher
     public lateinit var cipherFactory: (sharedKey: ByteArray) -> NetworkCipher
     public lateinit var authProvider: AuthenticationProvider
+    public lateinit var socketEngine: SocketEngine
 
     public fun build(): ProtocolContext =
         ProtocolContext(
@@ -27,14 +32,15 @@ public class ProtocolContextBuilder(private val onlineMode: Boolean) {
             cipherFactory = if (::cipherFactory.isInitialized) cipherFactory else error("cipherFactory is required"),
             authProvider = if (onlineMode) {
                 if (::authProvider.isInitialized) authProvider else error("authProvider is required in online mode")
-            } else if (::authProvider.isInitialized) authProvider else null
+            } else if (::authProvider.isInitialized) authProvider else null,
+            engine = if (::socketEngine.isInitialized) socketEngine else error("SocketEngine is not configured")
         )
 }
 
 public fun interface RSA1024Encryptor {
-    public suspend fun encrypt(key: ByteArray, data: ByteArray): ByteArray
+    public fun encrypt(key: ByteArray, data: ByteArray): ByteArray
 }
 
 public fun interface Sha1Hasher {
-    public suspend fun hash(serverId: String, secretKey: ByteArray, publicKey: ByteArray): String
+    public fun hash(serverId: String, secretKey: ByteArray, publicKey: ByteArray): String
 }

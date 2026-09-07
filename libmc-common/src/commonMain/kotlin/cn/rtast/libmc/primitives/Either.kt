@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public sealed class Either<out L, out R> {
     public data class Left<out L>(val value: L) : Either<L, Nothing>()
@@ -17,7 +17,7 @@ public sealed class Either<out L, out R> {
     public val isRight: Boolean get() = this is Right
 }
 
-public suspend inline fun <L, R> BytesBuffer.readEither(
+public inline fun <L, R> BytesBuffer.readEither(
     readLeft: BytesBuffer.() -> L,
     readRight: BytesBuffer.() -> R,
 ): Either<L, R> {
@@ -25,7 +25,7 @@ public suspend inline fun <L, R> BytesBuffer.readEither(
     return if (isLeft) Either.Left(readLeft(this)) else Either.Right(readRight(this))
 }
 
-public suspend inline fun <L, R> BytesBuffer.writeEither(
+public inline fun <L, R> BytesBuffer.writeEither(
     either: Either<L, R>,
     writeLeft: BytesBuffer.(L) -> Unit,
     writeRight: BytesBuffer.(R) -> Unit,

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeUuid
@@ -20,12 +20,12 @@ public data class ServerboundResourcePackResponsePacket(
     val result: ResourcePackResult,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundResourcePackResponsePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundResourcePackResponsePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundResourcePackResponsePacket) {
             buffer.writeUuid(value.uuid)
             buffer.writeVarInt(value.result.id)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundResourcePackResponsePacket =
+        override fun decode(buffer: BytesBuffer): ServerboundResourcePackResponsePacket =
             throw UnsupportedOperationException()
     }
 }

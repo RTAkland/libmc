@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.block
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 
 /**
@@ -20,7 +20,7 @@ public data class BlockPos(val x: Int, val y: Int, val z: Int) {
         private const val PACKED_Y_MASK = 0xFFFL      // 12 bits
         private const val PACKED_Z_MASK = 0x3FFFFFFL // 26 bits
 
-        override suspend fun decode(buffer: BytesBuffer): BlockPos {
+        override fun decode(buffer: BytesBuffer): BlockPos {
             val packed = buffer.readLong()
             val x = (packed shr 38).toInt()
             val y = (packed shl 52 shr 52).toInt()
@@ -28,7 +28,7 @@ public data class BlockPos(val x: Int, val y: Int, val z: Int) {
             return BlockPos(x, y, z)
         }
 
-        override suspend fun encode(buffer: BytesBuffer, value: BlockPos) {
+        override fun encode(buffer: BytesBuffer, value: BlockPos) {
             val xLong = (value.x.toLong() and PACKED_X_MASK)
             val yLong = (value.y.toLong() and PACKED_Y_MASK)
             val zLong = (value.z.toLong() and PACKED_Z_MASK)
@@ -37,5 +37,5 @@ public data class BlockPos(val x: Int, val y: Int, val z: Int) {
     }
 }
 
-internal suspend fun BytesBuffer.readBlockPos(): BlockPos = BlockPos.decode(this)
-internal suspend fun BytesBuffer.writeBlockPos(pos: BlockPos) = BlockPos.encode(this, pos)
+internal fun BytesBuffer.readBlockPos(): BlockPos = BlockPos.decode(this)
+internal fun BytesBuffer.writeBlockPos(pos: BlockPos) = BlockPos.encode(this, pos)

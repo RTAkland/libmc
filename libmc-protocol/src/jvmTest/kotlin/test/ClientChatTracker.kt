@@ -9,8 +9,6 @@ package test
 
 import cn.rtast.libmc.primitives.FixedBitSet20
 import cn.rtast.libmc.primitives.createFixedBitSet20
-import cn.rtast.libmc.stream.BytesBuffer
-import kotlin.uuid.Uuid
 
 class ClientChatTracker {
     private val lastSeenQueue = ArrayDeque<ByteArray>(20)

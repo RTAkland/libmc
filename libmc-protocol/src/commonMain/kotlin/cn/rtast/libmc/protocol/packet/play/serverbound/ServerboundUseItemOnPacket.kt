@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -31,7 +31,7 @@ public data class ServerboundUseItemOnPacket(
     val sequence: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundUseItemOnPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundUseItemOnPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundUseItemOnPacket) {
             require(value.cursorPositionX in 0.0f..1.0f) { "cursorPositionX must be between 0.0 and 1.0" }
             require(value.cursorPositionY in 0.0f..1.0f) { "cursorPositionY must be between 0.0 and 1.0" }
             require(value.cursorPositionZ in 0.0f..1.0f) { "cursorPositionZ must be between 0.0 and 1.0" }
@@ -46,7 +46,7 @@ public data class ServerboundUseItemOnPacket(
             buffer.writeVarInt(value.sequence)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundUseItemOnPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundUseItemOnPacket =
             throw UnsupportedOperationException()
     }
 }

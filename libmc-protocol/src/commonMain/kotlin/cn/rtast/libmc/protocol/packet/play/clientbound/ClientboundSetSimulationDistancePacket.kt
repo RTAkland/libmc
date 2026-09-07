@@ -7,15 +7,15 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
 
 public data class ClientboundSetSimulationDistancePacket(val distance: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetSimulationDistancePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetSimulationDistancePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSetSimulationDistancePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSetSimulationDistancePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSetSimulationDistancePacket {
             return ClientboundSetSimulationDistancePacket(buffer.readVarInt())
         }
     }

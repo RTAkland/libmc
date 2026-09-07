@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -20,12 +20,12 @@ public data class ServerboundQueryEntityTagPacket(
     val entityId: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundQueryEntityTagPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundQueryEntityTagPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundQueryEntityTagPacket) {
             buffer.writeVarInt(value.transactionId)
             buffer.writeVarInt(value.entityId)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundQueryEntityTagPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundQueryEntityTagPacket =
             throw UnsupportedOperationException()
     }
 }

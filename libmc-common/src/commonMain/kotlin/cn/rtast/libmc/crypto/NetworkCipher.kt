@@ -8,6 +8,6 @@
 package cn.rtast.libmc.crypto
 
 public interface NetworkCipher {
-    public suspend fun encrypt(buffer: ByteArray, offset: Int, length: Int)
-    public suspend fun decrypt(buffer: ByteArray, offset: Int, length: Int)
+    public fun encrypt(buffer: ByteArray, offset: Int, length: Int)
+    public fun decrypt(buffer: ByteArray, offset: Int, length: Int)
 }

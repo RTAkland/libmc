@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -19,12 +19,12 @@ public data class ServerboundContainerClickButtonPacket(val windowId: Int, val b
     public constructor(windowId: Int, button: LecternButton) : this(windowId, button.id)
 
     internal companion object Codec : PacketCodec<ServerboundContainerClickButtonPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundContainerClickButtonPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundContainerClickButtonPacket) {
             buffer.writeVarInt(value.windowId)
             buffer.writeVarInt(value.buttonId)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundContainerClickButtonPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundContainerClickButtonPacket =
             throw UnsupportedOperationException()
     }
 }

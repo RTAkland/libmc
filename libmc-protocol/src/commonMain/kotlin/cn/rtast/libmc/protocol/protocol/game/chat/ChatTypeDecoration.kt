@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chat
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readPrefixed
 import cn.rtast.libmc.primitives.readVarInt
@@ -28,7 +28,7 @@ public data class ChatTypeDecoration(
     }
 }
 
-internal suspend fun BytesBuffer.readChatTypeDecoration(): ChatTypeDecoration {
+internal fun BytesBuffer.readChatTypeDecoration(): ChatTypeDecoration {
     val translationKey = this.readMcString()
     val parameters = this.readPrefixed { ChatTypeDecoration.ChatTypeParameter.fromID(readVarInt()) }
     val style = this.readNetworkNBTCompound()

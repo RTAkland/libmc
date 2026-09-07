@@ -20,6 +20,7 @@ subprojects {
     pluginManager.apply("org.jetbrains.kotlin.multiplatform")
     pluginManager.apply("maven-publish")
 
+    if (project.path.startsWith(":example")) return@subprojects
     publishing {
         repositories {
             maven("https://repo.rtast.cn/packages") {

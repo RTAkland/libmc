@@ -15,11 +15,11 @@ import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.writeTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ServerLink(val label: ServerLinkLabel, val url: String) {
     internal companion object Codec : PacketCodec<ServerLink> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerLink) {
+        override fun encode(buffer: BytesBuffer, value: ServerLink) {
             when (value.label) {
                 is ServerLinkLabel.Builtin -> {
                     buffer.writeBoolean(true)
@@ -34,7 +34,7 @@ public data class ServerLink(val label: ServerLinkLabel, val url: String) {
             buffer.writeMcString(value.url)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerLink {
+        override fun decode(buffer: BytesBuffer): ServerLink {
             val isBuiltin = buffer.readBoolean()
             val label = if (isBuiltin) ServerLinkLabel.Builtin(BuiltinServerLinkType.fromID(buffer.readVarInt()))
             else ServerLinkLabel.Custom(buffer.readTextComponent())

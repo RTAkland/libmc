@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -23,13 +23,13 @@ public data class ServerboundJigsawGeneratePacket(
     val keepJigsaw: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundJigsawGeneratePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundJigsawGeneratePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundJigsawGeneratePacket) {
             buffer.writeBlockPos(value.location)
             buffer.writeVarInt(value.levels)
             buffer.writeBoolean(value.keepJigsaw)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundJigsawGeneratePacket =
+        override fun decode(buffer: BytesBuffer): ServerboundJigsawGeneratePacket =
             throw UnsupportedOperationException()
     }
 }

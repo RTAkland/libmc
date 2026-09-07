@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -18,7 +18,7 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 public data class ServerboundSeenAdvancementsPacket(val action: AdvancementAction, val tabId: Identifier?) :
     MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSeenAdvancementsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSeenAdvancementsPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSeenAdvancementsPacket) {
             buffer.writeVarInt(value.action.id)
             if (value.action == AdvancementAction.OPENED_TAB) {
                 requireNotNull(value.tabId) { "tabId must not be null when action is OPENED_TAB" }
@@ -26,7 +26,7 @@ public data class ServerboundSeenAdvancementsPacket(val action: AdvancementActio
             } else require(value.tabId == null) { "tabId must be null when action is CLOSED_SCREEN" }
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSeenAdvancementsPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSeenAdvancementsPacket =
             throw UnsupportedOperationException()
     }
 }

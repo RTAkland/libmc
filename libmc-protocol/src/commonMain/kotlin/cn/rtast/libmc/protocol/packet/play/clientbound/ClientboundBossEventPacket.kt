@@ -16,13 +16,13 @@ import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarColor
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarDivision
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarFlags
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBarAction) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundBossEventPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundBossEventPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundBossEventPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundBossEventPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundBossEventPacket {
             val uuid = buffer.readUuid()
             val action = when (val actionId = buffer.readVarInt()) {
                 BossBarAction.ADD_ID -> {

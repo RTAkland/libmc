@@ -22,7 +22,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            implementation(project(":protocol-encrypt"))
+            implementation(project(":protocol-context"))
             implementation(libs.kotlinx.coroutines.test)
         }
 

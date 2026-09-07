@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -23,14 +23,14 @@ public data class ServerboundUseItemPacket(
     val pitch: Float,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundUseItemPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundUseItemPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundUseItemPacket) {
             buffer.writeVarInt(value.hand.id)
             buffer.writeVarInt(value.sequence)
             buffer.writeFloat(value.yaw)
             buffer.writeFloat(value.pitch)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundUseItemPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundUseItemPacket =
             throw UnsupportedOperationException()
     }
 }

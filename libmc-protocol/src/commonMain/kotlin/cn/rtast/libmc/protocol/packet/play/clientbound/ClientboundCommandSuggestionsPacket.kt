@@ -13,7 +13,7 @@ import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundCommandSuggestionsPacket(
     val id: Int,
@@ -23,8 +23,8 @@ public data class ClientboundCommandSuggestionsPacket(
 ) : MinecraftPacket {
     public data class CommandSuggestionMatch(val match: String, val tooltip: TextComponent?) {
         internal companion object Codec : PacketCodec<CommandSuggestionMatch> {
-            override suspend fun encode(buffer: BytesBuffer, value: CommandSuggestionMatch) {}
-            override suspend fun decode(buffer: BytesBuffer): CommandSuggestionMatch {
+            override fun encode(buffer: BytesBuffer, value: CommandSuggestionMatch) {}
+            override fun decode(buffer: BytesBuffer): CommandSuggestionMatch {
                 val match = buffer.readMcString()
                 val hasTooltip = buffer.readBoolean()
                 val tooltip = if (hasTooltip) buffer.readTextComponent() else null
@@ -34,8 +34,8 @@ public data class ClientboundCommandSuggestionsPacket(
     }
 
     internal companion object Codec : PacketCodec<ClientboundCommandSuggestionsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundCommandSuggestionsPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundCommandSuggestionsPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundCommandSuggestionsPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundCommandSuggestionsPacket {
             val id = buffer.readVarInt()
             val start = buffer.readVarInt()
             val length = buffer.readVarInt()

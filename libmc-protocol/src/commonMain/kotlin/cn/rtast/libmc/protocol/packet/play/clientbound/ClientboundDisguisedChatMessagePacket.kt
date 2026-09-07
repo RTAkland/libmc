@@ -16,7 +16,7 @@ import cn.rtast.libmc.protocol.protocol.game.chat.InlineChatType
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readInlineChatType
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundDisguisedChatMessagePacket(
     val message: TextComponent,
@@ -25,8 +25,8 @@ public data class ClientboundDisguisedChatMessagePacket(
     val targetName: TextComponent?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDisguisedChatMessagePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDisguisedChatMessagePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundDisguisedChatMessagePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundDisguisedChatMessagePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundDisguisedChatMessagePacket {
             val message = buffer.readTextComponent()
             val chatType = buffer.readIdOrX { readInlineChatType() }
             val senderName = buffer.readTextComponent()

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readPrefixed
@@ -20,8 +20,8 @@ public data class ClientboundUpdateSectionBlockPacket(
     val blockUpdates: List<BlockUpdateEntry>,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateSectionBlockPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateSectionBlockPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateSectionBlockPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateSectionBlockPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateSectionBlockPacket {
             val rawSectionPos = buffer.readLong()
             val sectionPos = ChunkSectionPos.fromRaw(rawSectionPos)
             val blockUpdates = buffer.readPrefixed {

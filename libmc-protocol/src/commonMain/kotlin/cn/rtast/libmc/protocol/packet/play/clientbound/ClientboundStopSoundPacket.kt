@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -24,8 +24,8 @@ public data class ClientboundStopSoundPacket(
         private const val MASK_HAS_SOURCE = 0x01
         private const val MASK_HAS_SOUND = 0x02
 
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundStopSoundPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundStopSoundPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundStopSoundPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundStopSoundPacket {
             val flags = buffer.readByte()
             val category =
                 if ((flags.toInt() and MASK_HAS_SOURCE) != 0) SoundCategory.fromID(buffer.readVarInt()) else null

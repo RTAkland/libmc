@@ -7,17 +7,17 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 
 public data class ServerboundChunkBatchReceivedPacket(val chunksPerTick: Float) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundChunkBatchReceivedPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundChunkBatchReceivedPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundChunkBatchReceivedPacket) {
             buffer.writeFloat(value.chunksPerTick)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundChunkBatchReceivedPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundChunkBatchReceivedPacket =
             throw UnsupportedOperationException()
     }
 }

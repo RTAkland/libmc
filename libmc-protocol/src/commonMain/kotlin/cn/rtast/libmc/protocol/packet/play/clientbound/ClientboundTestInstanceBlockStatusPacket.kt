@@ -12,7 +12,7 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readOptional
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundTestInstanceBlockStatusPacket(
     val status: TextComponent,
@@ -22,8 +22,8 @@ public data class ClientboundTestInstanceBlockStatusPacket(
     val sizeZ: Double?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundTestInstanceBlockStatusPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundTestInstanceBlockStatusPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundTestInstanceBlockStatusPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundTestInstanceBlockStatusPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundTestInstanceBlockStatusPacket {
             val status = buffer.readTextComponent()
             val hasSize = buffer.readBoolean()
             val sizeX = buffer.readOptional { readDouble() }  // ?

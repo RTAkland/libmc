@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -19,13 +19,13 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistry>) : MinecraftPacket {
     public data class TaggedRegistry(val registryId: Identifier, val tags: List<Tag>) {
         internal companion object Codec : PacketCodec<TaggedRegistry> {
-            override suspend fun encode(buffer: BytesBuffer, value: TaggedRegistry) {
+            override fun encode(buffer: BytesBuffer, value: TaggedRegistry) {
                 buffer.writeIdentifier(value.registryId)
                 buffer.writeVarInt(value.tags.size)
                 value.tags.forEach { Tag.encode(buffer, it) }
             }
 
-            override suspend fun decode(buffer: BytesBuffer): TaggedRegistry {
+            override fun decode(buffer: BytesBuffer): TaggedRegistry {
                 val id = buffer.readIdentifier()
                 val tagCount = buffer.readVarInt()
                 val tags = ArrayList<Tag>(tagCount)
@@ -37,13 +37,13 @@ public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistr
 
     public data class Tag(val name: Identifier, val entries: IntArray) {
         internal companion object Codec : PacketCodec<Tag> {
-            override suspend fun encode(buffer: BytesBuffer, value: Tag) {
+            override fun encode(buffer: BytesBuffer, value: Tag) {
                 buffer.writeIdentifier(value.name)
                 buffer.writeVarInt(value.entries.size)
                 value.entries.forEach { buffer.writeVarInt(it) }
             }
 
-            override suspend fun decode(buffer: BytesBuffer): Tag {
+            override fun decode(buffer: BytesBuffer): Tag {
                 val name = buffer.readIdentifier()
                 val entrySize = buffer.readVarInt()
                 val entries = ArrayList<Int>(entrySize)
@@ -69,8 +69,8 @@ public data class ClientboundUpdateTagsPacket(val registries: List<TaggedRegistr
     }
 
     internal companion object Codec : PacketCodec<ClientboundUpdateTagsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateTagsPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateTagsPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateTagsPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateTagsPacket {
             val registryCount = buffer.readVarInt()
             val registries = ArrayList<TaggedRegistry>(registryCount)
             repeat(registryCount) { registries.add(TaggedRegistry.decode(buffer)) }

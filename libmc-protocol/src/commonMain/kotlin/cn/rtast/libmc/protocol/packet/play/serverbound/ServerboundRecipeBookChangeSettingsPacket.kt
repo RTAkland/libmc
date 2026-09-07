@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -19,13 +19,13 @@ public data class ServerboundRecipeBookChangeSettingsPacket(
     val filterActive: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundRecipeBookChangeSettingsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundRecipeBookChangeSettingsPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundRecipeBookChangeSettingsPacket) {
             buffer.writeVarInt(value.bookId.id)
             buffer.writeBoolean(value.bookOpen)
             buffer.writeBoolean(value.filterActive)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundRecipeBookChangeSettingsPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundRecipeBookChangeSettingsPacket =
             throw UnsupportedOperationException()
     }
 }

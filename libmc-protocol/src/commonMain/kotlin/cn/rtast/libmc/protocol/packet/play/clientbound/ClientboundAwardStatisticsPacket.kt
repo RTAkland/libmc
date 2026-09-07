@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -18,8 +18,8 @@ import cn.rtast.libmc.protocol.protocol.game.StatisticsEntry
  */
 public data class ClientboundAwardStatisticsPacket(val stats: List<StatisticsEntry>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundAwardStatisticsPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundAwardStatisticsPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundAwardStatisticsPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundAwardStatisticsPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundAwardStatisticsPacket {
             val count = buffer.readVarInt()
             val stats = List(count) { StatisticsEntry.decode(buffer) }
             return ClientboundAwardStatisticsPacket(stats)

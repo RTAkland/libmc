@@ -21,11 +21,11 @@ class JvmAesCipher(sharedKey: ByteArray) : NetworkCipher {
         init(Cipher.DECRYPT_MODE, SecretKeySpec(sharedKey, "AES"), IvParameterSpec(sharedKey))
     }
 
-    override suspend fun encrypt(buffer: ByteArray, offset: Int, length: Int) {
+    override fun encrypt(buffer: ByteArray, offset: Int, length: Int) {
         encryptCipher.update(buffer, offset, length, buffer, offset)
     }
 
-    override suspend fun decrypt(buffer: ByteArray, offset: Int, length: Int) {
+    override fun decrypt(buffer: ByteArray, offset: Int, length: Int) {
         decryptCipher.update(buffer, offset, length, buffer, offset)
     }
 }

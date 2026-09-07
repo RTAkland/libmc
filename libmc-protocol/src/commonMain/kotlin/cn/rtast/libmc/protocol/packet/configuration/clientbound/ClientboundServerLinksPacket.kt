@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -15,8 +15,8 @@ import cn.rtast.libmc.protocol.protocol.game.registry.report.ServerLink
 
 public data class ClientboundServerLinksPacket(val links: List<ServerLink>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundServerLinksPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundServerLinksPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundServerLinksPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundServerLinksPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundServerLinksPacket {
             val count = buffer.readVarInt()
             val links = ArrayList<ServerLink>(count)
             repeat(count) { links.add(ServerLink.decode(buffer)) }

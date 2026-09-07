@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.Identifier
@@ -15,12 +15,12 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class ServerboundCustomPayloadPacket(val channel: Identifier, val data: ByteArray) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCustomPayloadPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundCustomPayloadPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundCustomPayloadPacket) {
             buffer.writeIdentifier(value.channel)
             buffer.writeBytes(value.data)  // ?
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundCustomPayloadPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundCustomPayloadPacket =
             throw UnsupportedOperationException()
     }
 

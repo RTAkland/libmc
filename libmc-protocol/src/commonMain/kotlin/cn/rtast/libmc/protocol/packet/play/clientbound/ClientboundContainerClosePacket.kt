@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -18,8 +18,8 @@ import cn.rtast.libmc.primitives.readVarInt
  */
 public data class ClientboundContainerClosePacket(val windowId: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundContainerClosePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundContainerClosePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundContainerClosePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundContainerClosePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundContainerClosePacket {
             return ClientboundContainerClosePacket(buffer.readVarInt())
         }
     }

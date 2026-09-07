@@ -7,15 +7,15 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
-public suspend fun BytesBuffer.writeUuid(uuid: Uuid): Unit = uuid.toLongs { mostSignificantBits, leastSignificantBits ->
+public fun BytesBuffer.writeUuid(uuid: Uuid): Unit = uuid.toLongs { mostSignificantBits, leastSignificantBits ->
     this.writeLong(mostSignificantBits)
     this.writeLong(leastSignificantBits)
 }
 
-public suspend fun BytesBuffer.readUuid(): Uuid {
+public fun BytesBuffer.readUuid(): Uuid {
     val most = this.readLong()
     val least = this.readLong()
     return Uuid.fromLongs(most, least)

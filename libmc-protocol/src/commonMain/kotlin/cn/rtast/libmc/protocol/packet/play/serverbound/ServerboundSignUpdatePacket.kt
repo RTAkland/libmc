@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeMcString
@@ -28,7 +28,7 @@ public data class ServerboundSignUpdatePacket(
     internal companion object Codec : PacketCodec<ServerboundSignUpdatePacket> {
         private const val MAX_LINE_LENGTH = 384
 
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSignUpdatePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSignUpdatePacket) {
             require(value.line1.length <= MAX_LINE_LENGTH) { "Line 1 exceeds maximum length of $MAX_LINE_LENGTH" }
             require(value.line2.length <= MAX_LINE_LENGTH) { "Line 2 exceeds maximum length of $MAX_LINE_LENGTH" }
             require(value.line3.length <= MAX_LINE_LENGTH) { "Line 3 exceeds maximum length of $MAX_LINE_LENGTH" }
@@ -41,7 +41,7 @@ public data class ServerboundSignUpdatePacket(
             buffer.writeMcString(value.line4)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSignUpdatePacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSignUpdatePacket =
             throw UnsupportedOperationException()
     }
 }

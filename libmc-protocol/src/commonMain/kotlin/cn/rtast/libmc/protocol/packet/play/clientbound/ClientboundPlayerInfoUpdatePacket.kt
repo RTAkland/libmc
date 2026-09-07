@@ -15,15 +15,15 @@ import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerInfoUpdateEntry
 import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerUpdateInfoAction
 import cn.rtast.libmc.protocol.protocol.game.player.action.SinglePlayerAction
 import cn.rtast.libmc.protocol.protocol.game.session.GameProfile
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundPlayerInfoUpdatePacket(
     val actions: Set<PlayerUpdateInfoAction>,
     val entries: List<PlayerInfoUpdateEntry>,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPlayerInfoUpdatePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerInfoUpdatePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerInfoUpdatePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerInfoUpdatePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundPlayerInfoUpdatePacket {
             val actionsMask = buffer.readUByte().toInt()
             val actionsSet = PlayerUpdateInfoAction.parseActions(actionsMask)
             val playerCount = buffer.readVarInt()

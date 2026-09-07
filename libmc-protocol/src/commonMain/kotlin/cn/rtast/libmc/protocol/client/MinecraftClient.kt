@@ -6,7 +6,6 @@
 
 package cn.rtast.libmc.protocol.client
 
-import cn.rtast.libmc.LibMCContext
 import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.crypto.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
@@ -24,22 +23,23 @@ import kotlin.uuid.Uuid
 
 public class MinecraftClient internal constructor(
     private val host: String,
-    private val port: Int = 25565,
+    private val port: Int,
     private val username: String,
     internal val uuid: Uuid,
     internal val accessToken: String?,
-    context: LibMCContext,
     parentJob: Job?,
     private val ioDispatcher: CoroutineDispatcher,
-    cryptoContext: ProtocolContext,
+    protocolContext: ProtocolContext,
 ) : PacketEventDispatcher(), CoroutineScope {
-    internal val rsa1024Encryptor = cryptoContext.rsaEncryptor
-    internal val serverIdHasher = cryptoContext.sha1Hasher
-    internal val authProvider = cryptoContext.authProvider
+    internal val rsa1024Encryptor = protocolContext.rsaEncryptor
+    internal val serverIdHasher = protocolContext.sha1Hasher
+    internal val authProvider = protocolContext.authProvider
     internal val stateMachine = ClientStateMachine()
 
     public val networkChannel: NetworkChannel = NetworkChannel(
-        host, port, context, stateMachine, cryptoContext.cipherFactory, this
+        host, port, stateMachine,
+        protocolContext.cipherFactory,
+        this, protocolContext
     )
 
     private val internalPacketDispatcher = InternalPacketDispatcher(this, authProvider)
@@ -95,21 +95,19 @@ public fun createMinecraftClient(
     username: String,
     uuid: Uuid = generateOfflineUuid(username),
     accessToken: String?,
-    context: LibMCContext = LibMCContext(),
     parentJob: Job? = null,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    crypto: ProtocolContextBuilder.() -> Unit,
+    contextBuilder: ProtocolContextBuilder.() -> Unit,
 ): MinecraftClient {
-    val cryptoContext = ProtocolContextBuilder(accessToken != null).apply(crypto).build()
+    val context = ProtocolContextBuilder(accessToken != null).apply(contextBuilder).build()
     return MinecraftClient(
         host = host,
         port = port,
         username = username,
         uuid = uuid,
         accessToken = accessToken,
-        context = context,
         parentJob = parentJob,
         ioDispatcher = ioDispatcher,
-        cryptoContext = cryptoContext
+        protocolContext = context
     )
 }

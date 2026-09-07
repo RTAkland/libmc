@@ -11,12 +11,12 @@ import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundSetActionBarTextPacket(val text: TextComponent) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetActionBarTextPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetActionBarTextPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSetActionBarTextPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSetActionBarTextPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSetActionBarTextPacket {
             return ClientboundSetActionBarTextPacket(buffer.readTextComponent())
         }
     }

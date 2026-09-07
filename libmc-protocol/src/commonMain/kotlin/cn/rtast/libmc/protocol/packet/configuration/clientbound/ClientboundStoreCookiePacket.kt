@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readPrefixedByteArray
@@ -22,8 +22,8 @@ public data class ClientboundStoreCookiePacket(
     val payload: ByteArray,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundStoreCookiePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundStoreCookiePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundStoreCookiePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundStoreCookiePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundStoreCookiePacket {
             val key = buffer.readIdentifier()
             val payload = buffer.readPrefixedByteArray()
             return ClientboundStoreCookiePacket(key, payload)

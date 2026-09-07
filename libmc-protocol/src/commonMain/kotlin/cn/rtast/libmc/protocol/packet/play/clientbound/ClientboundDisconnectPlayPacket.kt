@@ -11,12 +11,12 @@ import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundDisconnectPlayPacket(val reason: TextComponent) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDisconnectPlayPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundDisconnectPlayPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundDisconnectPlayPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundDisconnectPlayPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundDisconnectPlayPacket {
             return ClientboundDisconnectPlayPacket(reason = buffer.readTextComponent())
         }
     }

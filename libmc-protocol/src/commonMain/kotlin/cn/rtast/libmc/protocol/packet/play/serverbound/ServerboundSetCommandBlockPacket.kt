@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeMcString
@@ -29,7 +29,7 @@ public data class ServerboundSetCommandBlockPacket(
         private const val FLAG_CONDITIONAL = 0x02
         private const val FLAG_AUTOMATIC = 0x04
 
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetCommandBlockPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSetCommandBlockPacket) {
             var flags = 0
             if (value.trackOutput) flags = flags or FLAG_TRACK_OUTPUT
             if (value.conditional) flags = flags or FLAG_CONDITIONAL
@@ -40,7 +40,7 @@ public data class ServerboundSetCommandBlockPacket(
             buffer.writeByte(flags.toByte())
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSetCommandBlockPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSetCommandBlockPacket =
             throw UnsupportedOperationException()
     }
 }

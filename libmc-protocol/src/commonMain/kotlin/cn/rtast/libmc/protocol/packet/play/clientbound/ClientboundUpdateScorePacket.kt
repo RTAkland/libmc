@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ScoreNumberFormat
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundUpdateScorePacket(
     val entityName: String,
@@ -27,8 +27,8 @@ public data class ClientboundUpdateScorePacket(
     val numberFormat: ScoreNumberFormat?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUpdateScorePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUpdateScorePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUpdateScorePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUpdateScorePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUpdateScorePacket {
             val entityName = buffer.readMcString()
             val objectiveName = buffer.readMcString()
             val value = buffer.readVarInt()

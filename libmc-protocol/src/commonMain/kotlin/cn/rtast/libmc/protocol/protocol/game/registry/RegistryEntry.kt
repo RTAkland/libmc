@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.registry
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.game.Identifier
@@ -27,13 +27,13 @@ public data class RegistryEntry(
     val data: NBTCompound?,
 ) {
     internal companion object Codec : PacketCodec<RegistryEntry> {
-        override suspend fun encode(buffer: BytesBuffer, value: RegistryEntry) {
+        override fun encode(buffer: BytesBuffer, value: RegistryEntry) {
             buffer.writeIdentifier(value.id)
             buffer.writeBoolean(value.data != null)
             if (value.data != null) buffer.writeNetworkNBTCompound(value.data)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): RegistryEntry {
+        override fun decode(buffer: BytesBuffer): RegistryEntry {
             val id = buffer.readIdentifier()
             val hasData = buffer.readBoolean()
             val data = if (hasData) buffer.readNetworkNBTCompound() else null

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.gamerule
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.writeMcString
 import cn.rtast.libmc.protocol.protocol.game.Identifier
@@ -16,13 +16,13 @@ import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public data class GameRuleEntry(val name: Identifier, val value: String)
 
-internal suspend fun BytesBuffer.readGameRule(): GameRuleEntry {
+internal fun BytesBuffer.readGameRule(): GameRuleEntry {
     val name = readIdentifier()
     val value = readMcString()
     return GameRuleEntry(name, value)
 }
 
-internal suspend fun BytesBuffer.writeGameRule(entry: GameRuleEntry) {
+internal fun BytesBuffer.writeGameRule(entry: GameRuleEntry) {
     writeIdentifier(entry.name)
     writeMcString(entry.value)
 }

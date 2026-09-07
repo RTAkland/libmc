@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.primitives.IdOrX
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
@@ -17,8 +17,8 @@ import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 
 public data class ClientboundShowDialogPacket(val dialog: IdOrX<NBTCompound>) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundShowDialogPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundShowDialogPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundShowDialogPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundShowDialogPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundShowDialogPacket {
             return ClientboundShowDialogPacket(buffer.readIdOrX { this.readNetworkNBTCompound() })
         }
     }

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 
@@ -22,8 +22,8 @@ public data class ClientboundUnloadChunkPacket(
     val chunkX: Int,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundUnloadChunkPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundUnloadChunkPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundUnloadChunkPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundUnloadChunkPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundUnloadChunkPacket {
             val z = buffer.readInt()
             val x = buffer.readInt()
             return ClientboundUnloadChunkPacket(z, x)

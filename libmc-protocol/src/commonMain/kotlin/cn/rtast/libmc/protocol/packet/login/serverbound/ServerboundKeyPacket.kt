@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.login.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writePrefixedByteArray
@@ -17,12 +17,12 @@ import cn.rtast.libmc.primitives.writePrefixedByteArray
  */
 public data class ServerboundKeyPacket(val sharedSecret: ByteArray, val verifyToken: ByteArray) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundKeyPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundKeyPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundKeyPacket) {
             buffer.writePrefixedByteArray(value.sharedSecret)
             buffer.writePrefixedByteArray(value.verifyToken)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundKeyPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundKeyPacket =
             throw UnsupportedOperationException()
     }
 

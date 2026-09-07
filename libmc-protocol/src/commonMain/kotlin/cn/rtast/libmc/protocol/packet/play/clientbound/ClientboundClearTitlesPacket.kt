@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 
 public data class ClientboundClearTitlesPacket(val reset: Boolean) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundClearTitlesPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundClearTitlesPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundClearTitlesPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundClearTitlesPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundClearTitlesPacket {
             return ClientboundClearTitlesPacket(buffer.readBoolean())
         }
     }

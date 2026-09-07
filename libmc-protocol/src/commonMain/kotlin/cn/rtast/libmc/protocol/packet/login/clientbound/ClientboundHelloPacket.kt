@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
@@ -27,8 +27,8 @@ public data class ClientboundHelloPacket(
     val shouldAuthenticate: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundHelloPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundHelloPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundHelloPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundHelloPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundHelloPacket {
             val serverId = buffer.readMcString()
             val publicKey = buffer.readPrefixedByteArray()
             val verifyToken = buffer.readPrefixedByteArray()

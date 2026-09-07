@@ -49,3 +49,4 @@ bin/
 **/build/*
 /libmc-protocol/src/jvmTest/resources/accessToken.txt
 /libmc-protocol-encrypt/src/commonTest/resources/accessToken.txt
+/libmc-protocol-context/src/commonTest/resources/accessToken.txt

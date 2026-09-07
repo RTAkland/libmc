@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public sealed interface IdOrX<out T> {
     public data class Inline<T>(val value: T) : IdOrX<T>
     public data class Reference(val registryId: Int) : IdOrX<Nothing>
 }
 
-public suspend inline fun <T> BytesBuffer.writeIdOrX(value: IdOrX<T>, writeX: BytesBuffer.(T) -> Unit) {
+public inline fun <T> BytesBuffer.writeIdOrX(value: IdOrX<T>, writeX: BytesBuffer.(T) -> Unit) {
     when (value) {
         is IdOrX.Inline -> {
             this.writeVarInt(0)
@@ -25,7 +25,7 @@ public suspend inline fun <T> BytesBuffer.writeIdOrX(value: IdOrX<T>, writeX: By
     }
 }
 
-public suspend inline fun <T> BytesBuffer.readIdOrX(readX: BytesBuffer.() -> T): IdOrX<T> {
+public inline fun <T> BytesBuffer.readIdOrX(readX: BytesBuffer.() -> T): IdOrX<T> {
     val id = this.readVarInt()
     return if (id == 0) IdOrX.Inline(this.readX()) else IdOrX.Reference(id - 1)
 }

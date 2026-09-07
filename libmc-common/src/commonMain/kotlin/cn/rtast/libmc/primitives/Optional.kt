@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.primitives
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
-public suspend inline fun <T> BytesBuffer.readOptional(block: BytesBuffer.() -> T): T? {
+public inline fun <T> BytesBuffer.readOptional(block: BytesBuffer.() -> T): T? {
     val hasData = this.readBoolean()
     return if (hasData) block.invoke(this) else null
 }
@@ -17,7 +17,7 @@ public suspend inline fun <T> BytesBuffer.readOptional(block: BytesBuffer.() -> 
 /**
  * buffer.writeOptional(value.someValue) { writeBlockPos(it) }
  */
-public suspend inline fun <T> BytesBuffer.writeOptional(value: T?, block: BytesBuffer.(T) -> Unit) {
+public inline fun <T> BytesBuffer.writeOptional(value: T?, block: BytesBuffer.(T) -> Unit) {
     if (value != null) {
         this.writeBoolean(true)
         block.invoke(this, value)

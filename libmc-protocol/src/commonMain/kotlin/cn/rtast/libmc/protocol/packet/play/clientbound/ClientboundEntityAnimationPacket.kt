@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -19,8 +19,8 @@ import cn.rtast.libmc.protocol.protocol.game.Animations
 public data class ClientboundEntityAnimationPacket(val entityId: Int, val animation: Animations) :
     MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundEntityAnimationPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundEntityAnimationPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundEntityAnimationPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundEntityAnimationPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundEntityAnimationPacket {
             val entityId = buffer.readVarInt()
             val animation = Animations.fromID(buffer.readByte())
             return ClientboundEntityAnimationPacket(entityId, animation)

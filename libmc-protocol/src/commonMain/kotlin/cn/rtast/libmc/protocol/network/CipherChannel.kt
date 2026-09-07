@@ -8,8 +8,8 @@
 package cn.rtast.libmc.protocol.network
 
 import cn.rtast.libmc.crypto.NetworkCipher
-import cn.rtast.libmc.stream.ReadChannel
-import cn.rtast.libmc.stream.WriteChannel
+import cn.rtast.libmc.network.ReadChannel
+import cn.rtast.libmc.network.WriteChannel
 
 /**
  * AES-128-CFB8 ***ciphered*** read channel
@@ -17,7 +17,7 @@ import cn.rtast.libmc.stream.WriteChannel
 internal class CipherReadChannel(
     private val delegate: ReadChannel,
     private val crypto: NetworkCipher,
-) : ReadChannel() {
+) : ReadChannel {
     override suspend fun readFully(out: ByteArray, start: Int, end: Int) {
         delegate.readFully(out, start, end)
         val length = end - start
@@ -43,7 +43,7 @@ internal class CipherReadChannel(
 internal class CipherWriteChannel(
     private val delegate: WriteChannel,
     private val crypto: NetworkCipher,
-) : WriteChannel() {
+) : WriteChannel {
     override suspend fun writeFully(value: ByteArray, startIndex: Int, endIndex: Int) {
         val length = endIndex - startIndex
         if (length <= 0) return
@@ -52,7 +52,5 @@ internal class CipherWriteChannel(
         delegate.writeFully(encrypted, 0, length)
     }
 
-    override suspend fun flush() {
-        delegate.flush()
-    }
+    override suspend fun flush() = delegate.flush()
 }

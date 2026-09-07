@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
@@ -23,8 +23,8 @@ public data class ClientboundRegistryDataPacket(
     val entries: List<RegistryEntry>,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundRegistryDataPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundRegistryDataPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundRegistryDataPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundRegistryDataPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundRegistryDataPacket {
             val id = buffer.readIdentifier()
             val entryCount = buffer.readVarInt()
             val entries = ArrayList<RegistryEntry>(entryCount)

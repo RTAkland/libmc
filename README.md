@@ -346,12 +346,6 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 ---
 
-# libmc-mcping
-
-A lightweight module to query Minecraft Java and Bedrock server status, MOTD, and latency
-
-[Use mcping](https://repo.rtast.cn/packages/-/cn.rtast.libmc:mcping)
-
 # libmc-rconlib
 
 Send Command via rcon protocol

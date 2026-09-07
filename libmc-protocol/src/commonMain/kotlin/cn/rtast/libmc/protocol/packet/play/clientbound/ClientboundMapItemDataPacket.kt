@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.protocol.protocol.game.item.MapItemColorPatch
 import cn.rtast.libmc.protocol.protocol.game.item.MapItemIcon
 import cn.rtast.libmc.protocol.protocol.game.item.MapItemIconType
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundMapItemDataPacket(
     val mapId: Int,
@@ -27,8 +27,8 @@ public data class ClientboundMapItemDataPacket(
     val colorPatch: MapItemColorPatch?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundMapItemDataPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundMapItemDataPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundMapItemDataPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundMapItemDataPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundMapItemDataPacket {
             val mapId = buffer.readVarInt()
             val scale = buffer.readByte()
             val locked = buffer.readBoolean()

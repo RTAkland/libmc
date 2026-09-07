@@ -14,7 +14,7 @@ import cn.rtast.libmc.primitives.readUuid
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 /**
@@ -49,8 +49,8 @@ public data class ClientboundPlayerChatMessagePacket(
 
     public data class PreviousMessageEntry(val messageId: Int, val signature: ByteArray?) {
         internal companion object Codec : PacketCodec<PreviousMessageEntry> {
-            override suspend fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
-            override suspend fun decode(buffer: BytesBuffer): PreviousMessageEntry {
+            override fun encode(buffer: BytesBuffer, value: PreviousMessageEntry) {}
+            override fun decode(buffer: BytesBuffer): PreviousMessageEntry {
                 val messageId = buffer.readVarInt()
                 val signature = if (messageId == 0) buffer.readBytes(256) else null
                 return PreviousMessageEntry(messageId, signature)
@@ -74,8 +74,8 @@ public data class ClientboundPlayerChatMessagePacket(
     }
 
     internal companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
             val globalIndex = buffer.readVarInt()
             val sender = buffer.readUuid()
             val index = buffer.readVarInt()

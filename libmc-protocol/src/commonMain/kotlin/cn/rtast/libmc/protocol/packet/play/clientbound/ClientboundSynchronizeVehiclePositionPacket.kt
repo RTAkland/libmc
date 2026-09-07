@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -25,8 +25,8 @@ public data class ClientboundSynchronizeVehiclePositionPacket(
     val onGround: Boolean,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSynchronizeVehiclePositionPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSynchronizeVehiclePositionPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSynchronizeVehiclePositionPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSynchronizeVehiclePositionPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSynchronizeVehiclePositionPacket {
             val entityId = buffer.readVarInt()
             val position = buffer.readVec3d()!!
             val velocityPosition = buffer.readVec3d()!!

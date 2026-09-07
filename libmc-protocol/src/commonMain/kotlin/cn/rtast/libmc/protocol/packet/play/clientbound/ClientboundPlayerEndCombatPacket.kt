@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
@@ -16,8 +16,8 @@ import kotlin.time.Duration
 
 public data class ClientboundPlayerEndCombatPacket(val duration: Duration) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPlayerEndCombatPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundPlayerEndCombatPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundPlayerEndCombatPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundPlayerEndCombatPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundPlayerEndCombatPacket {
             return ClientboundPlayerEndCombatPacket(buffer.readVarInt().ticks)  // convert int to minecraft ticks
         }
     }

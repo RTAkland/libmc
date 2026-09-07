@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.login.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeOptionalPrefixedByteArray
@@ -15,12 +15,12 @@ import cn.rtast.libmc.primitives.writeVarInt
 
 public data class ServerboundCustomQueryAnswerPacket(val messageId: Int, val data: ByteArray?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCustomQueryAnswerPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundCustomQueryAnswerPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundCustomQueryAnswerPacket) {
             buffer.writeVarInt(value.messageId)
             buffer.writeOptionalPrefixedByteArray(value.data)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundCustomQueryAnswerPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundCustomQueryAnswerPacket =
             throw UnsupportedOperationException()
     }
 

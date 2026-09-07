@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.nbt
 
-import cn.rtast.libmc.stream.ByteOrder
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.ByteOrder
+import cn.rtast.libmc.network.BytesBuffer
 
 
 public class BytesBufferNBTOutput(
@@ -16,9 +16,9 @@ public class BytesBufferNBTOutput(
     override val root: NBTTag.CompoundTag,
     private val buffer: BytesBuffer,
 ) : NBTOutput {
-    override suspend fun writeByte(value: Byte): Unit = buffer.writeByte(value)
-    override suspend fun writeBytes(value: ByteArray): Unit = buffer.writeBytes(value)
-    override suspend fun toByteArray(): ByteArray = buffer.toByteArray()
+    override fun writeByte(value: Byte): Unit = buffer.writeByte(value)
+    override fun writeBytes(value: ByteArray): Unit = buffer.writeBytes(value)
+    override fun toByteArray(): ByteArray = buffer.toByteArray()
 }
 
 public fun BytesBuffer.toNBTOutput(

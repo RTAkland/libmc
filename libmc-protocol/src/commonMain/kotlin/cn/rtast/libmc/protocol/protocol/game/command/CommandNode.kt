@@ -13,7 +13,7 @@ import cn.rtast.libmc.primitives.writeMcString
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class CommandNode(
     val type: NodeType,
@@ -55,7 +55,7 @@ public data class CommandNode(
         private const val PARSER_RESOURCE_KEY = 47
         private const val PARSER_RESOURCE_SELECTOR = 48
 
-        override suspend fun encode(buffer: BytesBuffer, value: CommandNode) {
+        override fun encode(buffer: BytesBuffer, value: CommandNode) {
             var flags = value.type.id and NodeType.NODE_TYPE_MASK
             if (value.isExecutable) flags = flags or NodeType.IS_EXECUTABLE_MASK
             if (value.redirectNodeIndex != null) flags = flags or NodeType.HAS_REDIRECT_MASK
@@ -79,7 +79,7 @@ public data class CommandNode(
             if (value.suggestionsType != null) buffer.writeIdentifier(value.suggestionsType.id)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): CommandNode {
+        override fun decode(buffer: BytesBuffer): CommandNode {
             val flags = buffer.readByte().toInt() and 0xFF
             val nodeType = NodeType.fromID(flags and NodeType.NODE_TYPE_MASK)
             val isExecutable = (flags and NodeType.IS_EXECUTABLE_MASK) != 0
@@ -114,7 +114,7 @@ public data class CommandNode(
             )
         }
 
-        private suspend fun BytesBuffer.decodeProperties(parserId: Int): CommandArgumentProperties {
+        private fun BytesBuffer.decodeProperties(parserId: Int): CommandArgumentProperties {
             return when (parserId) {
                 PARSER_INTEGER -> {
                     val flags = readByte().toInt()
@@ -173,7 +173,7 @@ public data class CommandNode(
             }
         }
 
-        private suspend fun BytesBuffer.encodeProperties(properties: CommandArgumentProperties) {
+        private fun BytesBuffer.encodeProperties(properties: CommandArgumentProperties) {
             when (properties) {
                 is CommandArgumentProperties.IntProp -> {
                     var flags = 0

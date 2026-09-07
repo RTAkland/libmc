@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.game.Identifier
@@ -22,8 +22,8 @@ public data class ClientboundSetDefaultSpawnPositionPacket(
     val pitch: Float,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetDefaultSpawnPositionPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetDefaultSpawnPositionPacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundSetDefaultSpawnPositionPacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundSetDefaultSpawnPositionPacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundSetDefaultSpawnPositionPacket {
             val dimensionName = buffer.readIdentifier()
             val location = buffer.readBlockPos()
             val yaw = buffer.readFloat()

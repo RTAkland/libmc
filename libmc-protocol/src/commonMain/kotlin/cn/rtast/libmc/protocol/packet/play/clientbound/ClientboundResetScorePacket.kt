@@ -12,12 +12,12 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readOptional
 import cn.rtast.libmc.primitives.readPrefixed
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundResetScorePacket(val entityName: String, val objectiveName: String?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundResetScorePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ClientboundResetScorePacket) {}
-        override suspend fun decode(buffer: BytesBuffer): ClientboundResetScorePacket {
+        override fun encode(buffer: BytesBuffer, value: ClientboundResetScorePacket) {}
+        override fun decode(buffer: BytesBuffer): ClientboundResetScorePacket {
             val entityName = buffer.readMcString()
             val objectiveName = buffer.readPrefixed { readOptional { readMcString() } }.first() // ?
             return ClientboundResetScorePacket(entityName, objectiveName)

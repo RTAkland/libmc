@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
@@ -17,14 +17,14 @@ import cn.rtast.libmc.primitives.writeVarInt
  */
 public data class ServerboundSetBeaconPacket(val primaryEffect: Int?, val secondaryEffect: Int?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetBeaconPacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundSetBeaconPacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundSetBeaconPacket) {
             buffer.writeBoolean(value.primaryEffect != null)
             if (value.primaryEffect != null) buffer.writeVarInt(value.primaryEffect)
             buffer.writeBoolean(value.secondaryEffect != null)
             if (value.secondaryEffect != null) buffer.writeVarInt(value.secondaryEffect)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundSetBeaconPacket =
+        override fun decode(buffer: BytesBuffer): ServerboundSetBeaconPacket =
             throw UnsupportedOperationException()
     }
 }

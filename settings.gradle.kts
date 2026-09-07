@@ -5,10 +5,8 @@ plugins {
 rootProject.name = "libmc"
 
 includeSubModule(":common")
-includeSubModule(":mcping")
-includeSubModule(":rconlib")
 includeSubModule(":protocol")
-includeSubModule(":protocol-encrypt")
+includeSubModule(":protocol-context")
 includeSubModule(":nbt")
 //includeSubModule(":snbt")
 

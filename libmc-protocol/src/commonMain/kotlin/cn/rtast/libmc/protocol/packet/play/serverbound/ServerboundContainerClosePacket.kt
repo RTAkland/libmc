@@ -7,18 +7,18 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
 
 public data class ServerboundContainerClosePacket(val windowId: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundContainerClosePacket> {
-        override suspend fun encode(buffer: BytesBuffer, value: ServerboundContainerClosePacket) {
+        override fun encode(buffer: BytesBuffer, value: ServerboundContainerClosePacket) {
             buffer.writeVarInt(value.windowId)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): ServerboundContainerClosePacket =
+        override fun decode(buffer: BytesBuffer): ServerboundContainerClosePacket =
             throw UnsupportedOperationException()
     }
 }

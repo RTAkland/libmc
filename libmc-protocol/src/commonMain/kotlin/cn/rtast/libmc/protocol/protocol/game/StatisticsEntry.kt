@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game
 
-import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
@@ -17,13 +17,13 @@ import cn.rtast.libmc.primitives.writeVarInt
  */
 public data class StatisticsEntry(val categoryId: Int, val statisticId: Int, val value: Int) {
     internal companion object Codec : PacketCodec<StatisticsEntry> {
-        override suspend fun encode(buffer: BytesBuffer, value: StatisticsEntry) {
+        override fun encode(buffer: BytesBuffer, value: StatisticsEntry) {
             buffer.writeVarInt(value.categoryId)
             buffer.writeVarInt(value.statisticId)
             buffer.writeVarInt(value.value)
         }
 
-        override suspend fun decode(buffer: BytesBuffer): StatisticsEntry {
+        override fun decode(buffer: BytesBuffer): StatisticsEntry {
             val categoryId = buffer.readVarInt()
             val statisticId = buffer.readVarInt()
             val value = buffer.readVarInt()
