@@ -23,7 +23,7 @@ import cn.rtast.libmc.protocol.packet.status.serverbound.ServerboundStatusReques
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 import cn.rtast.libmc.protocol.protocol.state.ProtocolStateRegistry
 
-internal object GameProtocols {
+internal object GamePacketsProtocolCodec {
     val clientboundGameProtocols = ProtocolStateRegistry().apply {
         register(ProtocolState.STATUS) {
             register(0x00, ClientboundStatusResponsePacket)
@@ -111,7 +111,7 @@ internal object GameProtocols {
 //            register(0x30, ClientboundLightUpdatePacket)
             register(0x31, ClientboundLoginPlayPacket)
             register(0x32, ClientboundLowDiskSpaceWarningPacket)
-//            register(0x33, ClientboundMapItemDataPacket)
+            register(0x33, ClientboundMapItemDataPacket)
 //            register(0x34, ClientboundMerchantOffersPacket)
             register(0x35, ClientboundUpdateEntityPositionPacket)
             register(0x36, ClientboundUpdateEntityPositionAndRotationPacket)

@@ -14,7 +14,7 @@ import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.client.ClientStateMachine
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
-import cn.rtast.libmc.protocol.protocol.GameProtocols
+import cn.rtast.libmc.protocol.protocol.GamePacketsProtocolCodec
 import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.stream.wrap
 import cn.rtast.libmc.zlibCompress
@@ -53,7 +53,7 @@ public class NetworkChannel internal constructor(
         }
         val currentState = stateMachine.currentState
         val packetId = payloadBuf.readVarInt()
-        val packet = GameProtocols.clientboundGameProtocols
+        val packet = GamePacketsProtocolCodec.clientboundGameProtocols
             .getRegistry(currentState)
             .decodePacket(packetId, payloadBuf)
         dispatcher.dispatchReceive(packet)
@@ -67,7 +67,7 @@ public class NetworkChannel internal constructor(
      */
     public suspend fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
-        GameProtocols.serverboundGameProtocols
+        GamePacketsProtocolCodec.serverboundGameProtocols
             .getRegistry(stateMachine.currentState)
             .encodePacket(uncompressedBodyBuf, packet)
         val uncompressedData = uncompressedBodyBuf.toByteArray()

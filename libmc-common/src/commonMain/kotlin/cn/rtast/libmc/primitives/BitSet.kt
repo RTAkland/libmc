@@ -9,23 +9,25 @@ package cn.rtast.libmc.primitives
 
 import cn.rtast.libmc.stream.BytesBuffer
 
-public suspend fun BytesBuffer.readBitSet(): LongArray {
+public typealias BitSet = LongArray
+
+public suspend fun BytesBuffer.readBitSet(): BitSet {
     val count = this.readVarInt()
     return LongArray(count) { this.readLong() }
 }
 
-public suspend fun BytesBuffer.writeBitSet(data: LongArray) {
+public suspend fun BytesBuffer.writeBitSet(data: BitSet) {
     this.writeVarInt(data.size)
     for (i in data.indices) this.writeLong(data[i])
 }
 
-public fun LongArray.countSetBits(): Int {
+public fun BitSet.countSetBits(): Int {
     var count = 0
     for (i in indices) count += this[i].countOneBits()
     return count
 }
 
-public fun LongArray.getBit(bitIndex: Int): Boolean {
+public fun BitSet.getBit(bitIndex: Int): Boolean {
     val longIndex = bitIndex shr 6
     if (longIndex !in this.indices) return false
     val bitOffset = bitIndex and 63

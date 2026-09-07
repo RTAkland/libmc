@@ -45,6 +45,10 @@ public suspend fun BytesBuffer.writePrefixedStringArray(value: List<String>) {
 
 public suspend inline fun <T> BytesBuffer.readPrefixed(reader: BytesBuffer.() -> T): List<T> {
     val count = this.readVarInt()
+    require(count in 0..4096) {
+        "Prefixed array count $count is invalid (expected 0..4096). " +
+                "Stream offset is corrupted. Check Heightmaps/NBT encoding."
+    }
     val list = ArrayList<T>(count)
     repeat(count) { _ -> list.add(this.reader()) }
     return list

@@ -81,8 +81,8 @@ class TestClientTestInJvm {
             null,
             crypto = DefaultProtocolContext
         )
-//        cli.on { packet, direction -> println("$direction -> $packet") }
-        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it.content.content) }
+        cli.on { packet, direction -> println("$direction -> $packet") }
+//        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it.content.content) }
         cli.launch { cli.connect() }
         while (true) {
         }
