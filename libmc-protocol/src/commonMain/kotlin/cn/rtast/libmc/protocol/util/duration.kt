@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.tick
+package cn.rtast.libmc.protocol.util
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds

@@ -13,7 +13,7 @@ import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.effect.EntityEffectFlags
 import cn.rtast.libmc.protocol.protocol.game.effect.readEntityEffectFlags
-import cn.rtast.libmc.protocol.tick.ticks
+import cn.rtast.libmc.protocol.util.ticks
 import kotlin.time.Duration
 
 public data class ClientboundEntityEffectPacket(

@@ -11,7 +11,7 @@ import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.protocol.tick.ticks
+import cn.rtast.libmc.protocol.util.ticks
 import kotlin.time.Duration
 
 public data class ClientboundPlayerEndCombatPacket(val duration: Duration) : MinecraftPacket {
