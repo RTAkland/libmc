@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.registry.report
+package cn.rtast.libmc.protocol.protocol.game.registry.report
 
 public enum class BuiltinServerLinkType(public val id: Int) {
     BUG_REPORT(0),

@@ -11,7 +11,7 @@ import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
-import cn.rtast.libmc.protocol.registry.ClientAction
+import cn.rtast.libmc.protocol.protocol.game.registry.ClientAction
 
 public data class ServerboundClientActionPacket(val action: ClientAction) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundClientActionPacket> {

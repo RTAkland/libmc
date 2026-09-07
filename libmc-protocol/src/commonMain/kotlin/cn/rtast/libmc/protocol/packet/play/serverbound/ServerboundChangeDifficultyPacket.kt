@@ -10,7 +10,7 @@ package cn.rtast.libmc.protocol.packet.play.serverbound
 import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
-import cn.rtast.libmc.protocol.registry.GameDifficulty
+import cn.rtast.libmc.protocol.protocol.game.registry.GameDifficulty
 
 public data class ServerboundChangeDifficultyPacket(val newDifficulty: GameDifficulty) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundChangeDifficultyPacket> {

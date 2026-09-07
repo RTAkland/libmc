@@ -7,17 +7,17 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
+import cn.rtast.libmc.stream.BytesBuffer
 
-public data class ClientboundDisconnectConfigurationPacket(val reason: NBTCompound) : MinecraftPacket {
+public data class ClientboundDisconnectConfigurationPacket(val reason: TextComponent) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundDisconnectConfigurationPacket> {
         override suspend fun encode(buffer: BytesBuffer, value: ClientboundDisconnectConfigurationPacket) {}
         override suspend fun decode(buffer: BytesBuffer): ClientboundDisconnectConfigurationPacket {
-            return ClientboundDisconnectConfigurationPacket(reason = buffer.readNetworkNBTCompound())
+            return ClientboundDisconnectConfigurationPacket(reason = buffer.readTextComponent())
         }
     }
 }

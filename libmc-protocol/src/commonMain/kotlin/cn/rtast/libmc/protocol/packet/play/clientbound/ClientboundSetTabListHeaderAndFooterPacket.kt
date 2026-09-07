@@ -7,19 +7,19 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
+import cn.rtast.libmc.stream.BytesBuffer
 
-public data class ClientboundSetTabListHeaderAndFooterPacket(val header: NBTCompound, val footer: NBTCompound) :
+public data class ClientboundSetTabListHeaderAndFooterPacket(val header: TextComponent, val footer: TextComponent) :
     MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetTabListHeaderAndFooterPacket> {
         override suspend fun encode(buffer: BytesBuffer, value: ClientboundSetTabListHeaderAndFooterPacket) {}
         override suspend fun decode(buffer: BytesBuffer): ClientboundSetTabListHeaderAndFooterPacket {
-            val header = buffer.readNetworkNBTCompound()
-            val footer = buffer.readNetworkNBTCompound()
+            val header = buffer.readTextComponent()
+            val footer = buffer.readTextComponent()
             return ClientboundSetTabListHeaderAndFooterPacket(header, footer)
         }
     }

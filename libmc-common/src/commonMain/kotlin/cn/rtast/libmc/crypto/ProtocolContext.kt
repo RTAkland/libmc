@@ -11,7 +11,7 @@ public data class ProtocolContext(
     val rsaEncryptor: RSA1024Encryptor,
     val sha1Hasher: Sha1Hasher,
     val cipherFactory: (sharedKey: ByteArray) -> NetworkCipher,
-    val authProvider: AuthenticationProvider,
+    val authProvider: AuthenticationProvider?,
 )
 
 public class ProtocolContextBuilder(private val onlineMode: Boolean) {
@@ -25,8 +25,9 @@ public class ProtocolContextBuilder(private val onlineMode: Boolean) {
             rsaEncryptor = if (::rsaEncryptor.isInitialized) rsaEncryptor else error("rsaEncryptor is required"),
             sha1Hasher = if (::sha1Hasher.isInitialized) sha1Hasher else error("sha1Hasher is required"),
             cipherFactory = if (::cipherFactory.isInitialized) cipherFactory else error("cipherFactory is required"),
-            authProvider = if (::authProvider.isInitialized) if (onlineMode) authProvider
-            else error("authProvider is required") else error("authProvider is required")
+            authProvider = if (onlineMode) {
+                if (::authProvider.isInitialized) authProvider else error("authProvider is required in online mode")
+            } else if (::authProvider.isInitialized) authProvider else null
         )
 }
 

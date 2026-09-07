@@ -5,17 +5,17 @@
  */
 
 
-package cn.rtast.libmc.protocol.registry.report
+package cn.rtast.libmc.protocol.protocol.game.registry.report
 
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeMcString
 import cn.rtast.libmc.primitives.writeVarInt
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.writeTextComponent
 import cn.rtast.libmc.stream.BytesBuffer
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
-import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
 public data class ServerLink(val label: ServerLinkLabel, val url: String) {
     internal companion object Codec : PacketCodec<ServerLink> {
@@ -28,7 +28,7 @@ public data class ServerLink(val label: ServerLinkLabel, val url: String) {
 
                 is ServerLinkLabel.Custom -> {
                     buffer.writeBoolean(false)
-                    buffer.writeNetworkNBTCompound(value.label.text)
+                    buffer.writeTextComponent(value.label.text)
                 }
             }
             buffer.writeMcString(value.url)
@@ -37,7 +37,7 @@ public data class ServerLink(val label: ServerLinkLabel, val url: String) {
         override suspend fun decode(buffer: BytesBuffer): ServerLink {
             val isBuiltin = buffer.readBoolean()
             val label = if (isBuiltin) ServerLinkLabel.Builtin(BuiltinServerLinkType.fromID(buffer.readVarInt()))
-            else ServerLinkLabel.Custom(buffer.readNetworkNBTCompound())
+            else ServerLinkLabel.Custom(buffer.readTextComponent())
             val url = buffer.readMcString()
             return ServerLink(label, url)
         }
@@ -46,5 +46,5 @@ public data class ServerLink(val label: ServerLinkLabel, val url: String) {
 
 public sealed interface ServerLinkLabel {
     public data class Builtin(val type: BuiltinServerLinkType) : ServerLinkLabel
-    public data class Custom(val text: NBTCompound) : ServerLinkLabel
+    public data class Custom(val text: TextComponent) : ServerLinkLabel
 }

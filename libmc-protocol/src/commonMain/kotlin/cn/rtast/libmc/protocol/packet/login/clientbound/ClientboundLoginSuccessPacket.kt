@@ -11,7 +11,7 @@ import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readUuid
-import cn.rtast.libmc.protocol.session.GameProfile
+import cn.rtast.libmc.protocol.protocol.game.session.GameProfile
 import kotlin.uuid.Uuid
 
 public data class ClientboundLoginSuccessPacket(val gameProfile: GameProfile, val sessionId: Uuid) :

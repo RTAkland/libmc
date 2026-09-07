@@ -35,7 +35,7 @@ import cn.rtast.libmc.protocol.util.generateRandom16Bytes
  */
 public class InternalPacketDispatcher(
     private val client: MinecraftClient,
-    private val authProvider: AuthenticationProvider,
+    private val authProvider: AuthenticationProvider?,
 ) {
     public suspend fun handleIncomingPackets(packet: MinecraftPacket) {
         when (packet) {
@@ -51,7 +51,7 @@ public class InternalPacketDispatcher(
                 val sharedSecret = generateRandom16Bytes()
                 if (client.isOnlineMode) {
                     val serverHash = client.serverIdHasher.hash(packet.serverId, sharedSecret, packet.publicKey)
-                    authProvider.joinServer(
+                    authProvider!!.joinServer(
                         "https://sessionserver.mojang.com/session/minecraft/join",
                         client.accessToken!!,
                         client.uuid.toString().replace("-", ""),

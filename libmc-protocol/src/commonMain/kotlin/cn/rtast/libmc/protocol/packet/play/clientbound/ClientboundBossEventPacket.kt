@@ -7,7 +7,6 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readUuid
@@ -16,7 +15,8 @@ import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarAction
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarColor
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarDivision
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarFlags
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
+import cn.rtast.libmc.stream.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBarAction) : MinecraftPacket {
@@ -26,7 +26,7 @@ public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBar
             val uuid = buffer.readUuid()
             val action = when (val actionId = buffer.readVarInt()) {
                 BossBarAction.ADD_ID -> {
-                    val title = buffer.readNetworkNBTCompound()
+                    val title = buffer.readTextComponent()
                     val health = buffer.readFloat()
                     val color = BossBarColor.fromID(buffer.readVarInt())
                     val division = BossBarDivision.fromID(buffer.readVarInt())
@@ -35,7 +35,7 @@ public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBar
                 }
 
                 BossBarAction.REMOVE_ID -> BossBarAction.Remove
-                BossBarAction.UPDATE_TITLE_ID -> BossBarAction.UpdateTitle(buffer.readNetworkNBTCompound())
+                BossBarAction.UPDATE_TITLE_ID -> BossBarAction.UpdateTitle(buffer.readTextComponent())
                 BossBarAction.UPDATE_STYLE_ID -> {
                     val color = BossBarColor.fromID(buffer.readVarInt())
                     val division = BossBarDivision.fromID(buffer.readVarInt())
@@ -45,6 +45,8 @@ public data class ClientboundBossEventPacket(val uuid: Uuid, val action: BossBar
                 BossBarAction.UPDATE_FLAGS_ID -> {
                     BossBarAction.UpdateFlags(BossBarFlags.fromBitmask(buffer.readByte().toInt() and 0xFF))
                 }
+
+                BossBarAction.UPDATE_HEALTH_ID -> BossBarAction.UpdateHealth(buffer.readFloat())
 
                 else -> throw IllegalArgumentException("Unknown action $actionId")
             }

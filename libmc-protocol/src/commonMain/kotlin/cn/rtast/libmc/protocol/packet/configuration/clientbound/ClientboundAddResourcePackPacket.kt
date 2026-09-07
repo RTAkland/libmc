@@ -12,9 +12,9 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readUuid
 import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.stream.BytesBuffer
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import kotlin.uuid.Uuid
 
 public data class ClientboundAddResourcePackPacket(
@@ -22,7 +22,7 @@ public data class ClientboundAddResourcePackPacket(
     val url: String,
     val hash: String,
     val forced: Boolean,
-    val prompt: NBTCompound,
+    val prompt: TextComponent,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundAddResourcePackPacket> {
         override suspend fun encode(buffer: BytesBuffer, value: ClientboundAddResourcePackPacket) {}
@@ -32,7 +32,7 @@ public data class ClientboundAddResourcePackPacket(
             val hash = buffer.readMcString()
             val forced = buffer.readBoolean()
             buffer.readVarInt()  // ?
-            val prompt = buffer.readNetworkNBTCompound()  // ?
+            val prompt = buffer.readTextComponent()  // ?
             return ClientboundAddResourcePackPacket(uuid, url, hash, forced, prompt)
         }
     }

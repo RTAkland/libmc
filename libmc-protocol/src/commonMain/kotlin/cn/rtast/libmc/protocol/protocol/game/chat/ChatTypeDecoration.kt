@@ -17,7 +17,7 @@ import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 public data class ChatTypeDecoration(
     val translationKey: String,
     val parameters: List<ChatTypeParameter>,
-    val style: NBTCompound,
+    val style: NBTCompound,  // TODO TextComponent or Raw NBT Compound
 ) {
     public enum class ChatTypeParameter(public val id: Int) {
         Sender(0), Target(1), Content(2);

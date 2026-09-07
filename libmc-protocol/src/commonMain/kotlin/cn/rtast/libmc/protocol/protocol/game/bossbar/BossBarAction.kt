@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.protocol.game.bossbar
 
-import cn.rtast.libmc.nbt.NBTCompound
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 
 public sealed interface BossBarAction {
     public data class Add(
-        val title: NBTCompound,
+        val title: TextComponent,
         val health: Float,
         val color: BossBarColor,
         val division: BossBarDivision,
@@ -20,7 +20,7 @@ public sealed interface BossBarAction {
 
     public object Remove : BossBarAction
     public data class UpdateHealth(val health: Float) : BossBarAction
-    public data class UpdateTitle(val title: NBTCompound) : BossBarAction
+    public data class UpdateTitle(val title: TextComponent) : BossBarAction
     public data class UpdateStyle(val color: BossBarColor, val division: BossBarDivision) : BossBarAction
     public data class UpdateFlags(val flags: BossBarFlags) : BossBarAction
 

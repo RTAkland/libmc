@@ -7,16 +7,17 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.nbt.NBTTag
 import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.nbt.NBTTag
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ObjectivePayload
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ObjectiveRenderType
 import cn.rtast.libmc.protocol.protocol.game.scoreboard.ScoreNumberFormat
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class ClientboundUpdateObjectivePacket(
     val objectiveName: String,
@@ -31,14 +32,14 @@ public data class ClientboundUpdateObjectivePacket(
             val payload = when (mode.toInt()) {
                 1 -> ObjectivePayload.Remove
                 0, 2 -> {
-                    val displayName = buffer.readNetworkNBTCompound()
+                    val displayName = buffer.readTextComponent()
                     val renderType = ObjectiveRenderType.fromID(buffer.readVarInt())
                     val hasNumberFormat = buffer.readBoolean()
                     val numberFormat = if (hasNumberFormat) {
                         when (val type = buffer.readVarInt()) {
                             0 -> ScoreNumberFormat.Blank
                             1 -> ScoreNumberFormat.Styled(styling = buffer.readNetworkNBTCompound().element as NBTTag.CompoundTag)  // fix me
-                            2 -> ScoreNumberFormat.Fixed(content = buffer.readNetworkNBTCompound())  // ?
+                            2 -> ScoreNumberFormat.Fixed(content = buffer.readTextComponent())  // ?
                             else -> error("Unknown ScoreNumberFormat type: $type")
                         }
                     } else null

@@ -7,14 +7,14 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readUuid
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
+import cn.rtast.libmc.stream.BytesBuffer
 import kotlin.uuid.Uuid
 
 /**
@@ -29,12 +29,12 @@ public data class ClientboundPlayerChatMessagePacket(
     val timestamp: Long,
     val salt: Long,
     val previousMessages: List<PreviousMessageEntry>,
-    val unsignedContent: NBTCompound?,
+    val unsignedContent: TextComponent?,
     val filterType: ChatFilterType,
     val filterMaskBits: LongArray?,
     val chatType: Int,
-    val senderName: NBTCompound,
-    val targetName: NBTCompound?,
+    val senderName: TextComponent,
+    val targetName: TextComponent?,
 ) : MinecraftPacket {
     public enum class ChatFilterType(public val id: Int) {
         PASS_THROUGH(0),
@@ -90,7 +90,7 @@ public data class ClientboundPlayerChatMessagePacket(
             val prevMessages = List(prevMessageCount) { PreviousMessageEntry.decode(buffer) }
 
             val hasUnsignedContent = buffer.readBoolean()
-            val unsignedContent = if (hasUnsignedContent) buffer.readNetworkNBTCompound() else null  // ?
+            val unsignedContent = if (hasUnsignedContent) buffer.readTextComponent() else null  // ?
 
             val filterTypeId = buffer.readVarInt()
             val filterType = ChatFilterType.fromID(filterTypeId)
@@ -101,10 +101,10 @@ public data class ClientboundPlayerChatMessagePacket(
             } else null
 
             val chatType = buffer.readVarInt()
-            val senderName = buffer.readNetworkNBTCompound() // ?
+            val senderName = buffer.readTextComponent() // ?
 
             val hasTargetName = buffer.readBoolean()
-            val targetName = if (hasTargetName) buffer.readNetworkNBTCompound() else null // ?
+            val targetName = if (hasTargetName) buffer.readTextComponent() else null // ?
             return ClientboundPlayerChatMessagePacket(
                 globalIndex, sender, index,
                 messageSignature, message,

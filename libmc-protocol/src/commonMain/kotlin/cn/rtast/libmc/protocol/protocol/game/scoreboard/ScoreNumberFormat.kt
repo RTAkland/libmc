@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.protocol.game.scoreboard
 
-import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.nbt.NBTTag
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 
 public sealed interface ScoreNumberFormat {
     public object Blank : ScoreNumberFormat
     public data class Styled(val styling: NBTTag.CompoundTag) : ScoreNumberFormat
-    public data class Fixed(val content: NBTCompound) : ScoreNumberFormat
+    public data class Fixed(val content: TextComponent) : ScoreNumberFormat
 }

@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.registry
+package cn.rtast.libmc.protocol.protocol.game.registry
 
 public enum class ClientAction(public val actionID: Int) {
     /**

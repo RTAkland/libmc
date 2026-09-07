@@ -11,11 +11,9 @@ import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.primitives.writeMcString
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
 import cn.rtast.libmc.stream.BytesBuffer
-import cn.rtast.libmc.nbt.NBTCompound
-import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
-import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
 public data class ClientboundCommandSuggestionsPacket(
     val id: Int,
@@ -23,18 +21,13 @@ public data class ClientboundCommandSuggestionsPacket(
     val length: Int,
     val matches: List<CommandSuggestionMatch>,
 ) : MinecraftPacket {
-    public data class CommandSuggestionMatch(val match: String, val tooltip: NBTCompound?) {
+    public data class CommandSuggestionMatch(val match: String, val tooltip: TextComponent?) {
         internal companion object Codec : PacketCodec<CommandSuggestionMatch> {
-            override suspend fun encode(buffer: BytesBuffer, value: CommandSuggestionMatch) {
-                buffer.writeMcString(value.match)
-                buffer.writeBoolean(value.tooltip != null)
-                if (value.tooltip != null) buffer.writeNetworkNBTCompound(value.tooltip)
-            }
-
+            override suspend fun encode(buffer: BytesBuffer, value: CommandSuggestionMatch) {}
             override suspend fun decode(buffer: BytesBuffer): CommandSuggestionMatch {
                 val match = buffer.readMcString()
                 val hasTooltip = buffer.readBoolean()
-                val tooltip = if (hasTooltip) buffer.readNetworkNBTCompound() else null
+                val tooltip = if (hasTooltip) buffer.readTextComponent() else null
                 return CommandSuggestionMatch(match, tooltip)
             }
         }

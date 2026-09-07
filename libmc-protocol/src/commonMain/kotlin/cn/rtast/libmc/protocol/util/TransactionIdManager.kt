@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.session
+package cn.rtast.libmc.protocol.util
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

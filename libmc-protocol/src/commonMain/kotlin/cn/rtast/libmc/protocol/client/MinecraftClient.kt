@@ -16,7 +16,7 @@ import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginStartPacket
 import cn.rtast.libmc.protocol.protocol.state.HandshakeIntent
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
-import cn.rtast.libmc.protocol.session.TransactionIdManager
+import cn.rtast.libmc.protocol.util.TransactionIdManager
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

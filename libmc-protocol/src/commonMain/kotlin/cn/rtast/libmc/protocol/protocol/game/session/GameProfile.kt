@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.session
+package cn.rtast.libmc.protocol.protocol.game.session
 
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readMcString

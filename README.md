@@ -21,17 +21,16 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 ## Implementation details
 
-- [x] **Online Mode Authentication & Encryption**: See [Implement Encryption](docs/implement-encryption.md) 
-- [ ] **Structured `TextComponent` Parser**: Rich Chat Component AST decoder (currently falling back to raw
-  `NBTCompound`).
-- [ ] **Command Tree Parser (0x10)**: Full binary graph decoder for brigadier nodes, argument types, and suggestions.
+- [x] **Online Mode Authentication & Encryption**: See [Implement Encryption](docs/implement-encryption.md)
+- [x] **Structured `TextComponent` Parser**: TextComponent AST decoder (Some packets fallback to Raw NBTCompound)
+- [x] **Command Tree Parser (0x10)**: Full binary graph decoder for brigadier nodes, argument types, and suggestions
 - [ ] **Recipe Book & Recipe Data (0x3F, 0x4A, 0x4B, 0x4C, 0x85)**: Recipe layout declarations and client-side recipe
-  settings.
+  settings
 - [ ] **Chunk & World Data (0x2D)**: Level Chunk Data with Light decoder (Bitsets, Paletted Containers, Direct/Indirect
-  Palettes).
-- [ ] **Light Engine Update (0x30)**: Sky & Block light nibble array parser.
-- [ ] **Explosion Event Decoder (0x24)**: Knockback vectors and destroyed block offsets array.
-- [ ] **Debug Packets Parsing (0x1A - 0x1E)**: Debug subs, block/entity states, and game performance sample events.
+  Palettes)
+- [ ] **Light Engine Update (0x30)**: Sky & Block light nibble array parser
+- [ ] **Explosion Event Decoder (0x24)**: Knockback vectors and destroyed block offsets array
+- [ ] **Debug Packets Parsing (0x1A - 0x1E)**: Debug subs, block/entity states, and game performance sample events
 - [ ] **Particle Parsing**
 - [ ] **Slot Data Parsing**
 

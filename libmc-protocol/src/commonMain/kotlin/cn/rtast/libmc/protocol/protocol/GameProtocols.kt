@@ -76,7 +76,7 @@ internal object GameProtocols {
             register(0x0d, ClientboundChunksBiomesPacket)
             register(0x0e, ClientboundClearTitlesPacket)
             register(0x0f, ClientboundCommandSuggestionsPacket)
-//            register(0x10, ClientboundCommandsPacket)
+            register(0x10, ClientboundCommandsPacket)
             register(0x11, ClientboundContainerClosePacket)
 //            register(0x12, ClientboundContainerSetContentPacket)
             register(0x13, ClientboundContainerSetDataPacket)

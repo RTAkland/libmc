@@ -14,6 +14,8 @@ import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.*
+import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
+import cn.rtast.libmc.protocol.protocol.game.chat.writeTextComponent
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
 
@@ -27,7 +29,7 @@ public data class ServerboundTestInstanceBlockActionPacket(
     val rotation: TestInstanceRotation,
     val ignoreEntities: Boolean,
     val status: TestInstanceStatus,
-    val errorMessage: NBTCompound?,
+    val errorMessage: TextComponent?,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundTestInstanceBlockActionPacket> {
         override suspend fun encode(buffer: BytesBuffer, value: ServerboundTestInstanceBlockActionPacket) {
@@ -42,7 +44,7 @@ public data class ServerboundTestInstanceBlockActionPacket(
             buffer.writeBoolean(value.ignoreEntities)
             buffer.writeVarInt(value.status.id)
             buffer.writeBoolean(value.errorMessage != null)
-            if (value.errorMessage != null) buffer.writeNetworkNBTCompound(value.errorMessage)  // TODO to fix
+            if (value.errorMessage != null) buffer.writeTextComponent(value.errorMessage)  // TODO to fix
         }
 
         override suspend fun decode(buffer: BytesBuffer): ServerboundTestInstanceBlockActionPacket =
