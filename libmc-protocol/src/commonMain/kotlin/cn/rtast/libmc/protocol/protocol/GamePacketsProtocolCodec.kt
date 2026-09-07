@@ -198,7 +198,7 @@ internal object GamePacketsProtocolCodec {
             register(0x87, ClientboundProjectilePowerPacket)
             register(0x88, ClientboundCustomReportDetailsPacket)
             register(0x89, ClientboundServerLinksPacket)
-//            register(0x8a, ClientboundWaypointPacket)
+            register(0x8a, ClientboundWaypointPacket)
             register(0x8b, ClientboundClearDialogPacket)
             register(0x8c, ClientboundShowDialogPacket)
         }
