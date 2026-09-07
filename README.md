@@ -1,23 +1,18 @@
 # libmc
 
-A lightweight minecraft client-side protocol library and related library, including `rcon client`, `motd ping`,
-`nbt parser`. All module require `kotlin-stdlib`, `libmc-protocol` require `kotlin-stdlib` and `kotlinx-coroutines`
+A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 
 # Supported targets
 
-- JVM 1.8
-- MingwX64
-- LinuxArm64
-- LinuxX64
-- MacosArm64
+| Platform    | Target                | Support Tier         |
+|:------------|:----------------------|:---------------------|
+| **Java**    | JVM 1.8               | **Mainly Supported** |
+| **Windows** | MinGW X64             | **Mainly Supported** |
+| **Linux**   | Linux X64             | **Mainly Supported** |
+|             | Linux ARM64           | **Not Tested**       |
+| **macOS**   | macOS ARM64 (Silicon) | **Not Tested**       |
 
-# libmc-protocol
-
-[Use libmc-protocol](https://repo.rtast.cn/packages/-/cn.rtast.libmc:protocol)
-
----
-
-# Minecraft Protocol Library Status & Roadmap
+# Minecraft Protocol Library Status
 
 ## Implementation details
 
@@ -343,23 +338,6 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 </details>
 
-
----
-
-# libmc-rconlib
-
-Send Command via rcon protocol
-
-[Use rconlib](https://repo.rtast.cn/packages/-/cn.rtast.libmc:rconlib)
-
-# libmc-nbt
-
-NBT reader and writer, compat with network NBT
-
-# libmc-snbt
-
-> Not completed
-
 # Open Source
 
-Open source under [Apache-2.0](LICENSE)
+Licensed under [Apache-2.0](LICENSE)
