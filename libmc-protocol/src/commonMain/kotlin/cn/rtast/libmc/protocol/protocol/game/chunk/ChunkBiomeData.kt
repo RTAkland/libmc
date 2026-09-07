@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chunk
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readPrefixedByteArray
-import cn.rtast.libmc.common.primitives.writePrefixedByteArray
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readPrefixedByteArray
+import cn.rtast.libmc.primitives.writePrefixedByteArray
 
 public data class ChunkBiomeData(val chunkZ: Int, val chunkX: Int, val data: ByteArray) {
     internal companion object Codec : PacketCodec<ChunkBiomeData> {

@@ -1,6 +1,6 @@
 # libmc-protocol-encrypt
 
-This module implemented `ProtocolCryptoContext` and provided a `DefaultProtocolCryptoContext`.
+This module implemented `ProtocolContext` and provided a `DefaultProtocolContext`.
 
 ## Get started
 
@@ -15,7 +15,7 @@ This module implemented `ProtocolCryptoContext` and provided a `DefaultProtocolC
 fun main() {
     val cli = createMinecraftClient(
         // ... other paramater
-        crypto = DefaultProtocolCryptoContext
+        crypto = DefaultProtocolContext
     )
 }
 ```

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.util
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.nbt.*
 
 internal suspend fun BytesBuffer.readNBTCompound(): NBTCompound =

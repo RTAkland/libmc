@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.clientbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readMcString
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readMcString
 
 public data class ClientboundCodeOfConductPacket(val codeOfConduct: String) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundCodeOfConductPacket> {

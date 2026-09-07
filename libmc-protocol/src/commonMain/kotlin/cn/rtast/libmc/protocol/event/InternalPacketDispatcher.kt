@@ -7,19 +7,25 @@
 
 package cn.rtast.libmc.protocol.event
 
-import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.crypto.AuthenticationProvider
+import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.packet.configuration.clientbound.*
 import cn.rtast.libmc.protocol.packet.configuration.serverbound.*
-import cn.rtast.libmc.protocol.packet.login.clientbound.*
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundDisconnectLoginPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundHelloPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
+import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundSetCompressionPacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundKeyPacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginAcknowledgedPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.*
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundDisconnectPlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundKeepAlivePlayPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPingPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStartConfigurationPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundConfigurationAcknowledgedPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundKeepAlivePlayPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundPongPlayPacket
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
-import cn.rtast.libmc.common.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.util.generateRandom16Bytes
 
 public class InternalPacketDispatcher(
@@ -27,7 +33,6 @@ public class InternalPacketDispatcher(
     private val authProvider: AuthenticationProvider,
 ) {
     private suspend fun dispatchEvent(packet: MinecraftPacket) = client.dispatch(packet)
-
     public suspend fun handleIncomingPackets(packet: MinecraftPacket) {
         this.dispatchEvent(packet)
         when (packet) {
@@ -53,7 +58,7 @@ public class InternalPacketDispatcher(
                 val encryptedSecret = client.rsa1024Encryptor.encrypt(packet.publicKey, sharedSecret)
                 val encryptedVerifyToken = client.rsa1024Encryptor.encrypt(packet.publicKey, packet.verifyToken)
                 client.networkChannel.sendPacket(ServerboundKeyPacket(encryptedSecret, encryptedVerifyToken))
-                client.session.enableEncryption(sharedSecret)
+                client.networkChannel.session.enableEncryption(sharedSecret)
             }
 
             // configuration
@@ -83,6 +88,7 @@ public class InternalPacketDispatcher(
                 client.networkChannel.sendPacket(ServerboundConfigurationAcknowledgedPacket)
                 client.stateMachine.transitionTo(ProtocolState.CONFIGURATION)
             }
+
             else -> {}
         }
     }

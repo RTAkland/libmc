@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.signature
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readMcString
-import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.writeMcString
 
 public data class ArgumentSignature(val name: String, val signature: ByteArray) {
     init {

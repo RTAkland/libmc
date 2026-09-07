@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.protocol.game.block
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
 
 /**
  * An integer/block position: x (-33 554 432 to 33 554 431), z (-33 554 432 to 33 554 431), y (-2048 to 2047)

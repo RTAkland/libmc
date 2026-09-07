@@ -6,9 +6,9 @@
 
 package cn.rtast.libmc.protocol.client
 
-import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common.crypto.ProtocolContext
-import cn.rtast.libmc.common.crypto.ProtocolContextBuilder
+import cn.rtast.libmc.LibMCContext
+import cn.rtast.libmc.crypto.ProtocolContext
+import cn.rtast.libmc.crypto.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
 import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
@@ -38,7 +38,7 @@ public class MinecraftClient internal constructor(
     internal val authProvider = cryptoContext.authProvider
     internal val stateMachine = ClientStateMachine()
 
-    internal val networkChannel = NetworkChannel(
+    public val networkChannel: NetworkChannel = NetworkChannel(
         host = host,
         port = port,
         context = context,
@@ -46,15 +46,12 @@ public class MinecraftClient internal constructor(
         cipherProvider = cryptoContext.cipherFactory
     )
 
-    internal val session get() = networkChannel.session
     private val internalPacketDispatcher = InternalPacketDispatcher(this, authProvider)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
 
     public val isOnlineMode: Boolean get() = accessToken != null
     public val transactionManager: TransactionIdManager = TransactionIdManager()
-    override val coroutineContext: CoroutineContext
-        get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")
 
     public suspend fun connect(protocolVersion: Int = 776) {
         networkChannel.connect()
@@ -67,13 +64,10 @@ public class MinecraftClient internal constructor(
     }
 
     public fun setCompression(threshold: Int): Unit = networkChannel.setCompression(threshold)
-
     private fun startListening() {
         listenJob = launch {
             try {
-                while (isActive) {
-                    internalPacketDispatcher.handleIncomingPackets(networkChannel.readNextPacket())
-                }
+                while (isActive) internalPacketDispatcher.handleIncomingPackets(networkChannel.readNextPacket())
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 if (isActive) {
@@ -89,6 +83,9 @@ public class MinecraftClient internal constructor(
         networkChannel.close()
         clientJob.cancel()
     }
+
+    public override val coroutineContext: CoroutineContext
+        get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")
 }
 
 public fun createMinecraftClient(

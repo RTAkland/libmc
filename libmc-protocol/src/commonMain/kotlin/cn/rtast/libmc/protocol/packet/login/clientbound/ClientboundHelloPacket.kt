@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.login.clientbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readMcString
-import cn.rtast.libmc.common.primitives.readPrefixedByteArray
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.readPrefixedByteArray
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Encryption_Request

@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.common.stream.ByteOrder
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.readVarInt
-import cn.rtast.libmc.common.primitives.writeVarInt
+import cn.rtast.libmc.stream.ByteOrder
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.primitives.writeVarInt
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.max

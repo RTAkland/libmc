@@ -7,9 +7,14 @@
 
 package cn.rtast.libmc.protocol.session
 
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.*
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.readUuid
+import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.primitives.writeMcString
+import cn.rtast.libmc.primitives.writeUuid
+import cn.rtast.libmc.primitives.writeVarInt
+import cn.rtast.libmc.stream.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class GameProfile(

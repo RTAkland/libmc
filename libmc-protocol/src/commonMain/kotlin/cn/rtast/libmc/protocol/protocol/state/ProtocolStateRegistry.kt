@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.state
 
-import cn.rtast.libmc.common.packet.PacketRegistry
+import cn.rtast.libmc.packet.PacketRegistry
 import kotlin.enums.enumEntries
 
 public class ProtocolStateRegistry {

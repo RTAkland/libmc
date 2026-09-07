@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.nbt
 
-import cn.rtast.libmc.common.gzipCompress
-import cn.rtast.libmc.common.gzipDecompress
-import cn.rtast.libmc.common.zlibCompress
-import cn.rtast.libmc.common.zlibDecompress
+import cn.rtast.libmc.gzipCompress
+import cn.rtast.libmc.gzipDecompress
+import cn.rtast.libmc.zlibCompress
+import cn.rtast.libmc.zlibDecompress
 
 public sealed interface NbtCompressor {
     public fun compress(input: ByteArray): ByteArray

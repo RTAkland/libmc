@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
 
 public data class ClientboundPingPacket(val id: Int) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundPingPacket> {

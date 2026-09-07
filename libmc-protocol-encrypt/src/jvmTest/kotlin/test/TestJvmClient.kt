@@ -6,10 +6,9 @@
 
 package test
 
+import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.crypto.DefaultProtocolCryptoContext
-import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSystemChatMessagePacket
+import cn.rtast.libmc.protocol.crypto.DefaultProtocolContext
 import kotlinx.coroutines.launch
 import org.junit.Test
 import java.io.File
@@ -30,10 +29,11 @@ class TestJvmClient {
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
 //            null,
             accessToken,
-            crypto = DefaultProtocolCryptoContext
+            crypto = DefaultProtocolContext
         )
-        cli.on<ClientboundSystemChatMessagePacket> { println(it) }
-        cli.on<ClientboundLoginSuccessPacket> { println(it) }
+//        cli.on<ClientboundSystemChatMessagePacket> { println(it) }
+//        cli.on<ClientboundLoginSuccessPacket> { println(it) }
+        cli.on<MinecraftPacket> { println(it) }
         cli.launch { cli.connect() }
         while (true) {
         }

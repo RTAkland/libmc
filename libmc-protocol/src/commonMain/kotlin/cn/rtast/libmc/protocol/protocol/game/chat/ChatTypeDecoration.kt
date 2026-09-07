@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chat
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.readMcString
-import cn.rtast.libmc.common.primitives.readPrefixed
-import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.readPrefixed
+import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 

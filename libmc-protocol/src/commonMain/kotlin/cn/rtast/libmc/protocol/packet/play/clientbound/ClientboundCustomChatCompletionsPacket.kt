@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.primitives.readPrefixedStringArray
-import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.primitives.readPrefixedStringArray
+import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.ChatAction
 
 public data class ClientboundCustomChatCompletionsPacket(val action: ChatAction, val entries: List<String>) :

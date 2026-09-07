@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.writeMcString
-import cn.rtast.libmc.common.primitives.writePrefixedStringArray
-import cn.rtast.libmc.common.primitives.writeVarInt
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.writeMcString
+import cn.rtast.libmc.primitives.writePrefixedStringArray
+import cn.rtast.libmc.primitives.writeVarInt
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class ServerboundEditBookPacket(val slot: Int, val entries: List<String>, val title: String?) :
     MinecraftPacket {

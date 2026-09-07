@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.mcping.rconlib
 
-import cn.rtast.libmc.common.stream.ByteOrder
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.stream.ReadChannel
-import cn.rtast.libmc.common.stream.WriteChannel
+import cn.rtast.libmc.stream.ByteOrder
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.stream.ReadChannel
+import cn.rtast.libmc.stream.WriteChannel
 
 internal abstract class Packet {
     abstract val requestId: Int

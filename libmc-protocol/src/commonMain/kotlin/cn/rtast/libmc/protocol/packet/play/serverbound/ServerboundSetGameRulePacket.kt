@@ -7,10 +7,10 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.primitives.writePrefixed
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.primitives.writePrefixed
 import cn.rtast.libmc.protocol.protocol.game.gamerule.GameRuleEntry
 import cn.rtast.libmc.protocol.protocol.game.gamerule.writeGameRule
 

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.nbt
 
-import cn.rtast.libmc.common.stream.ByteOrder
+import cn.rtast.libmc.stream.ByteOrder
 
 public interface NBTOutput {
     public val order: ByteOrder

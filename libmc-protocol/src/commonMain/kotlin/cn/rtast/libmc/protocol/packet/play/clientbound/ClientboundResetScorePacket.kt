@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readMcString
-import cn.rtast.libmc.common.primitives.readOptional
-import cn.rtast.libmc.common.primitives.readPrefixed
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.readOptional
+import cn.rtast.libmc.primitives.readPrefixed
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class ClientboundResetScorePacket(val entityName: String, val objectiveName: String?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundResetScorePacket> {

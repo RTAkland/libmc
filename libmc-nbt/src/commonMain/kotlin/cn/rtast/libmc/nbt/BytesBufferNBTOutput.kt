@@ -7,8 +7,9 @@
 
 package cn.rtast.libmc.nbt
 
-import cn.rtast.libmc.common.stream.ByteOrder
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.ByteOrder
+import cn.rtast.libmc.stream.BytesBuffer
+
 
 public class BytesBufferNBTOutput(
     override val order: ByteOrder,

@@ -9,9 +9,9 @@
 package cn.rtast.libmc.mcping.rconlib
 
 import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common.stream.ReadChannel
-import cn.rtast.libmc.common.stream.Socket
-import cn.rtast.libmc.common.stream.WriteChannel
+import cn.rtast.libmc.stream.ReadChannel
+import cn.rtast.libmc.stream.Socket
+import cn.rtast.libmc.stream.WriteChannel
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 

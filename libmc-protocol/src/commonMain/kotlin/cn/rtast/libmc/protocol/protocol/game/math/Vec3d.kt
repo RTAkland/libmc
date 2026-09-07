@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class Vec3d(val x: Double, val y: Double, val z: Double) {
     public companion object {

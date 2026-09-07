@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.effect
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class EntityEffectFlags(
     val isAmbient: Boolean = false,

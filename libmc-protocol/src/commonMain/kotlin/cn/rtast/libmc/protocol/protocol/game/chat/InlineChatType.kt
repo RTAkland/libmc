@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.chat
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 
 public data class InlineChatType(
     val chat: ChatTypeDecoration,

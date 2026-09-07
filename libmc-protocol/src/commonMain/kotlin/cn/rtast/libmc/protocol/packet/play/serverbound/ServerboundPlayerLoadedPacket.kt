@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
 
 public data object ServerboundPlayerLoadedPacket : MinecraftPacket, PacketCodec<ServerboundPlayerLoadedPacket> {
     override suspend fun encode(buffer: BytesBuffer, value: ServerboundPlayerLoadedPacket) {}

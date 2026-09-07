@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.math
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 import kotlin.jvm.JvmInline
 
 /**

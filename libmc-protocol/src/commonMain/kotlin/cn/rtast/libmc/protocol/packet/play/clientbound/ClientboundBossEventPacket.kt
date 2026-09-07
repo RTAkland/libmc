@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.readUuid
-import cn.rtast.libmc.common.primitives.readVarInt
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.readUuid
+import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarAction
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarColor
 import cn.rtast.libmc.protocol.protocol.game.bossbar.BossBarDivision

@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.primitives.writePrefixedByteArray
-import cn.rtast.libmc.common.primitives.writeUuid
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.primitives.writePrefixedByteArray
+import cn.rtast.libmc.primitives.writeUuid
 import kotlin.uuid.Uuid
 
 public data class ServerboundUpdateChatSessionPacket(

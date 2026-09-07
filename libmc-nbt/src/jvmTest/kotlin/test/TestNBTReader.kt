@@ -7,7 +7,7 @@
 
 package test
 
-import cn.rtast.libmc.common.stream.wrap
+import cn.rtast.libmc.stream.wrap
 import cn.rtast.libmc.nbt.NbtReader
 import org.junit.Test
 import java.io.File

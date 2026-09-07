@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.entity
 
-import cn.rtast.libmc.common.stream.BytesBuffer
+import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.protocol.protocol.game.math.Angle
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readAngle

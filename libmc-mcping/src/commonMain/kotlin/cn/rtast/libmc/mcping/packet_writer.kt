@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.mcping
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.VarIntCodec
-import cn.rtast.libmc.common.stream.WriteChannel
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.writeBuffer
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.VarIntCodec
+import cn.rtast.libmc.stream.WriteChannel
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.writeBuffer
 
 public suspend fun <T : MinecraftPacket> WriteChannel.sendPacket(packet: T, packetId: Int, codec: PacketCodec<T>) {
     val bodyBuffer = BytesBuffer()

@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.packet.configuration.serverbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.MinecraftPacket
 
 public data class ServerboundKeepAliveConfigurationPacket(val id: Long) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundKeepAliveConfigurationPacket> {

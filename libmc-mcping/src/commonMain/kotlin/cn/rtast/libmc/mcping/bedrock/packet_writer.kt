@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.mcping.bedrock
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.stream.UdpSocket
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.stream.UdpSocket
 
 
 internal suspend fun <T : MinecraftBedrockPacket> UdpSocket.sendPacket(packet: T, codec: PacketCodec<T>): ByteArray {

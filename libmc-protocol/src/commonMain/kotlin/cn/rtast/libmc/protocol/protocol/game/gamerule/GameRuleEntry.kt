@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.protocol.game.gamerule
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.readMcString
-import cn.rtast.libmc.common.primitives.writeMcString
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.readMcString
+import cn.rtast.libmc.primitives.writeMcString
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier

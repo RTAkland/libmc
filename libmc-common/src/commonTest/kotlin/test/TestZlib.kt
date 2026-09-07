@@ -7,8 +7,8 @@
 
 package test
 
-import cn.rtast.libmc.common.zlibCompress
-import cn.rtast.libmc.common.zlibDecompress
+import cn.rtast.libmc.zlibCompress
+import cn.rtast.libmc.zlibDecompress
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals

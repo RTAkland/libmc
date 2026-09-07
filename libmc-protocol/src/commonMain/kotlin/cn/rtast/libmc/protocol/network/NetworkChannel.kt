@@ -6,39 +6,36 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.common.*
-import cn.rtast.libmc.common.crypto.NetworkCipher
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.packet.writeBuffer
-import cn.rtast.libmc.common.primitives.readVarInt
-import cn.rtast.libmc.common.primitives.writeVarInt
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.stream.wrap
+import cn.rtast.libmc.LibMCContext
+import cn.rtast.libmc.crypto.NetworkCipher
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.writeBuffer
+import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.client.ClientStateMachine
 import cn.rtast.libmc.protocol.protocol.GameProtocols
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.stream.wrap
+import cn.rtast.libmc.zlibCompress
+import cn.rtast.libmc.zlibDecompress
 import kotlin.concurrent.Volatile
 
-internal class NetworkChannel(
+public class NetworkChannel internal constructor(
     host: String,
     port: Int,
     context: LibMCContext,
     private val stateMachine: ClientStateMachine,
     cipherProvider: (ByteArray) -> NetworkCipher,
 ) {
-    val session: NetworkSession = NetworkSession(host, port, context, cipherProvider)
+    internal val session: NetworkSession = NetworkSession(host, port, context, cipherProvider)
 
     @Volatile
     private var threshold = -1
 
-    fun connect() {
-        session.connect()
-    }
+    public fun connect(): Unit = session.connect()
+    public fun setCompression(threshold: Int): Unit = run { this.threshold = threshold }
 
-    fun setCompression(threshold: Int) {
-        this.threshold = threshold
-    }
-
-    suspend fun readNextPacket(): MinecraftPacket {
+    public suspend fun readNextPacket(): MinecraftPacket {
         val packetLength = session.readVarInt()
         val rawFrameBytes = session.readBytes(packetLength)
         val frameBuf = rawFrameBytes.wrap()
@@ -54,7 +51,7 @@ internal class NetworkChannel(
             .decodePacket(packetId, payloadBuf)
     }
 
-    suspend fun sendPacket(packet: MinecraftPacket) {
+    public suspend fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
         GameProtocols.serverboundGameProtocols
             .getRegistry(stateMachine.currentState)
@@ -80,7 +77,5 @@ internal class NetworkChannel(
         session.writeFully(frameBuffer.toByteArray())
     }
 
-    fun close() {
-        session.close()
-    }
+    public fun close(): Unit = session.close()
 }

@@ -7,9 +7,9 @@
 
 package cn.rtast.libmc.protocol.protocol.game.sound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.readOptional
-import cn.rtast.libmc.common.primitives.writeOptional
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.readOptional
+import cn.rtast.libmc.primitives.writeOptional
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier

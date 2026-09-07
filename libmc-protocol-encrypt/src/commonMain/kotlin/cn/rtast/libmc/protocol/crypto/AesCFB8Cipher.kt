@@ -9,7 +9,7 @@
 
 package cn.rtast.libmc.protocol.crypto
 
-import cn.rtast.libmc.common.crypto.NetworkCipher
+import cn.rtast.libmc.crypto.NetworkCipher
 import dev.whyoleg.cryptography.DelicateCryptographyApi
 import dev.whyoleg.cryptography.algorithms.AES
 

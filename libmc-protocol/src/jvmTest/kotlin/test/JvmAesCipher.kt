@@ -7,7 +7,7 @@
 
 package test
 
-import cn.rtast.libmc.common.crypto.NetworkCipher
+import cn.rtast.libmc.crypto.NetworkCipher
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec

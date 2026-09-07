@@ -6,13 +6,13 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.common.LibMCContext
-import cn.rtast.libmc.common.stream.ReadChannel
-import cn.rtast.libmc.common.stream.Socket
-import cn.rtast.libmc.common.stream.WriteChannel
-import cn.rtast.libmc.common.crypto.NetworkCipher
+import cn.rtast.libmc.LibMCContext
+import cn.rtast.libmc.crypto.NetworkCipher
+import cn.rtast.libmc.stream.ReadChannel
+import cn.rtast.libmc.stream.Socket
+import cn.rtast.libmc.stream.WriteChannel
 
-internal class NetworkSession(
+public class NetworkSession internal constructor(
     private val host: String,
     private val port: Int,
     private val context: LibMCContext,
@@ -20,20 +20,20 @@ internal class NetworkSession(
 ) {
     private var socket: Socket? = null
 
-    var readChannel: ReadChannel? = null
+    public var readChannel: ReadChannel? = null
         private set
 
-    var writeChannel: WriteChannel? = null
+    public var writeChannel: WriteChannel? = null
         private set
 
-    fun connect() {
+    public fun connect() {
         val sk = Socket(host, port, context)
         this.socket = sk
         this.readChannel = sk.openReadChannel()
         this.writeChannel = sk.openWriteChannel()
     }
 
-    fun enableEncryption(sharedKey: ByteArray) {
+    public fun enableEncryption(sharedKey: ByteArray) {
         val currentRead = requireNotNull(readChannel) { "ReadChannel not connected" }
         val currentWrite = requireNotNull(writeChannel) { "WriteChannel not connected" }
         val cipher = cipherProvider(sharedKey)
@@ -41,17 +41,17 @@ internal class NetworkSession(
         this.writeChannel = CipherWriteChannel(currentWrite, cipher)
     }
 
-    suspend fun readByte(): Byte {
+    internal suspend fun readByte(): Byte {
         val channel = requireNotNull(readChannel) { "ReadChannel not connected" }
         return channel.readByte()
     }
 
-    suspend fun readBytes(length: Int): ByteArray {
+    internal suspend fun readBytes(length: Int): ByteArray {
         val channel = requireNotNull(readChannel) { "ReadChannel not connected" }
         return channel.readBytes(length)
     }
 
-    suspend fun readVarInt(): Int {
+    internal suspend fun readVarInt(): Int {
         var numRead = 0
         var result = 0
         var read: Byte
@@ -65,13 +65,13 @@ internal class NetworkSession(
         return result
     }
 
-    suspend fun writeFully(data: ByteArray) {
+    internal suspend fun writeFully(data: ByteArray) {
         val channel = requireNotNull(writeChannel) { "WriteChannel not connected" }
         channel.writeFully(data, 0, data.size)
         channel.flush()
     }
 
-    fun close() {
+    internal fun close() {
         socket?.close()
     }
 }

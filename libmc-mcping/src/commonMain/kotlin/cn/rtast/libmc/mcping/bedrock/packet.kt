@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.mcping.bedrock
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
 import kotlin.random.Random
 
 private val RAKNET_MAGIC = byteArrayOf(

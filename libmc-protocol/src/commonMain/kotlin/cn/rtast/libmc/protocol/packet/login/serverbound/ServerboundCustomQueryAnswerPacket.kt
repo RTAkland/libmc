@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.protocol.packet.login.serverbound
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
-import cn.rtast.libmc.common.primitives.writeOptionalPrefixedByteArray
-import cn.rtast.libmc.common.primitives.writeVarInt
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.primitives.writeOptionalPrefixedByteArray
+import cn.rtast.libmc.primitives.writeVarInt
 
 public data class ServerboundCustomQueryAnswerPacket(val messageId: Int, val data: ByteArray?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundCustomQueryAnswerPacket> {

@@ -7,11 +7,11 @@
 
 package cn.rtast.libmc.mcping.java
 
-import cn.rtast.libmc.common.stream.BytesBuffer
-import cn.rtast.libmc.common.primitives.McStringCodec
-import cn.rtast.libmc.common.packet.PacketCodec
-import cn.rtast.libmc.common.primitives.VarIntCodec
-import cn.rtast.libmc.common.packet.MinecraftPacket
+import cn.rtast.libmc.stream.BytesBuffer
+import cn.rtast.libmc.primitives.McStringCodec
+import cn.rtast.libmc.packet.PacketCodec
+import cn.rtast.libmc.primitives.VarIntCodec
+import cn.rtast.libmc.packet.MinecraftPacket
 
 // ref https://minecraft.wiki/w/Java_Edition_protocol/Packets#Handshake
 internal data class HandshakePacket(
