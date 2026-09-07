@@ -8,7 +8,6 @@
 package test
 
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAwardStatisticsPacket
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -28,7 +27,7 @@ class TestClient {
 //            rsaEncryptor = RSA1024Encryptor { data, sharedKey -> }
         }
         cli.launch { cli.connect() }
-        cli.on<ClientboundAwardStatisticsPacket> { println(it) }
+        cli.on { packet, direction -> println("${direction} -> $packet") }
         while (true) {
         }
     }

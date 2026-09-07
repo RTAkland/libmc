@@ -13,6 +13,7 @@ import cn.rtast.libmc.packet.writeBuffer
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.client.ClientStateMachine
+import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.protocol.GameProtocols
 import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.stream.wrap
@@ -26,6 +27,7 @@ public class NetworkChannel internal constructor(
     context: LibMCContext,
     private val stateMachine: ClientStateMachine,
     cipherProvider: (ByteArray) -> NetworkCipher,
+    private val dispatcher: PacketEventDispatcher,
 ) {
     internal val session: NetworkSession = NetworkSession(host, port, context, cipherProvider)
 
@@ -35,6 +37,11 @@ public class NetworkChannel internal constructor(
     public fun connect(): Unit = session.connect()
     public fun setCompression(threshold: Int): Unit = run { this.threshold = threshold }
 
+    /**
+     * This function receive all inbound packets, and dispatch as a packet event
+     * See [PacketEventDispatcher.dispatchReceive],
+     * Use [PacketEventDispatcher.onPacket] to get packet event
+     */
     public suspend fun readNextPacket(): MinecraftPacket {
         val packetLength = session.readVarInt()
         val rawFrameBytes = session.readBytes(packetLength)
@@ -46,11 +53,18 @@ public class NetworkChannel internal constructor(
         }
         val currentState = stateMachine.currentState
         val packetId = payloadBuf.readVarInt()
-        return GameProtocols.clientboundGameProtocols
+        val packet = GameProtocols.clientboundGameProtocols
             .getRegistry(currentState)
             .decodePacket(packetId, payloadBuf)
+        dispatcher.dispatchReceive(packet)
+        return packet
     }
 
+    /**
+     * This function will dispatch a packet event when packet was sent.
+     * See [PacketEventDispatcher.dispatchSent],
+     * Use [PacketEventDispatcher.onSent] to get packet event
+     */
     public suspend fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
         GameProtocols.serverboundGameProtocols
@@ -75,6 +89,7 @@ public class NetworkChannel internal constructor(
             frameBuffer.writeBuffer(contentBuf)
         }
         session.writeFully(frameBuffer.toByteArray())
+        dispatcher.dispatchSent(packet)
     }
 
     public fun close(): Unit = session.close()

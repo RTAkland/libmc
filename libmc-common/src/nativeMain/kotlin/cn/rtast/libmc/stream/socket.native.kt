@@ -6,7 +6,7 @@
 
 package cn.rtast.libmc.stream
 
-import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.LibMCContext
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.runBlocking

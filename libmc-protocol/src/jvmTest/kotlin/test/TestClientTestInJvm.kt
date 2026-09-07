@@ -7,12 +7,11 @@
 
 package test
 
-import cn.rtast.libmc.protocol.client.createMinecraftClient
+import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.crypto.RSA1024Encryptor
 import cn.rtast.libmc.crypto.Sha1Hasher
-import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundLoginSuccessPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSystemChatMessagePacket
-import cn.rtast.libmc.crypto.AuthenticationProvider
+import cn.rtast.libmc.protocol.client.createMinecraftClient
+import cn.rtast.libmc.protocol.crypto.DefaultProtocolContext
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.launch
 import org.junit.Test
@@ -28,7 +27,6 @@ import kotlin.uuid.Uuid
 
 
 class TestClientTestInJvm {
-
     val accessToken = File("src/jvmTest/resources/accessToken.txt").readText()
 
     fun encrypt(publicKeyBytes: ByteArray, data: ByteArray): ByteArray {
@@ -63,25 +61,27 @@ class TestClientTestInJvm {
 //            generateOfflineUuid("RTAkland"),
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
 //            null,
-            accessToken
-        ) {
-            rsaEncryptor = RSA1024Encryptor { key, data -> encrypt(key, data) }
-            sha1Hasher =
-                Sha1Hasher { serverId, secretKey, publicKey -> minecraftServerIdHash(serverId, secretKey, publicKey) }
-            cipherFactory = { key -> JvmAesCipher(key) }
-
-            authProvider = AuthenticationProvider { url, accessToken, uuid, serverIdHash ->
-                val connection = URL(url).openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"
-                connection.doOutput = true
-                connection.setRequestProperty("Content-Type", "application/json")
-                connection.getOutputStream()
-                    .use { it.write("{\"accessToken\":\"$accessToken\", \"selectedProfile\":\"$uuid\", \"serverId\":\"$serverIdHash\"}".encodeToByteArray()) }
-                connection.disconnect()
-            }
-        }
-        cli.on<ClientboundSystemChatMessagePacket> { println(it) }
-        cli.on<ClientboundLoginSuccessPacket> { println(it) }
+            accessToken,
+            crypto = DefaultProtocolContext
+        )
+//        {
+//            rsaEncryptor = RSA1024Encryptor { key, data -> encrypt(key, data) }
+//            sha1Hasher =
+//                Sha1Hasher { serverId, secretKey, publicKey -> minecraftServerIdHash(serverId, secretKey, publicKey) }
+//            cipherFactory = { key -> JvmAesCipher(key) }
+//            authProvider = AuthenticationProvider { url, accessToken, uuid, serverIdHash ->
+//                val connection = URL(url).openConnection() as HttpURLConnection
+//                connection.requestMethod = "POST"
+//                connection.doOutput = true
+//                connection.setRequestProperty("Content-Type", "application/json")
+//                connection.getOutputStream()
+//                    .use { it.write("{\"accessToken\":\"$accessToken\", \"selectedProfile\":\"$uuid\", \"serverId\":\"$serverIdHash\"}".encodeToByteArray()) }
+//                connection.disconnect()
+//            }
+//        }
+//        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it) }
+//        cli.onPacket<ClientboundLoginSuccessPacket> { println(it) }
+        cli.on { packet, direction -> println("${direction} -> $packet") }
         cli.launch { cli.connect() }
         while (true) {
         }

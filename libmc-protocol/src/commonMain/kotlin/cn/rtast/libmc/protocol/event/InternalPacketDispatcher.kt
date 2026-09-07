@@ -28,13 +28,16 @@ import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundPongPlayPacket
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 import cn.rtast.libmc.protocol.util.generateRandom16Bytes
 
+/**
+ * Internal simple state machine trigger,
+ * Auto respond packets the server needed.
+ * Only including `Handshake`, `Login` and `Configuration` State
+ */
 public class InternalPacketDispatcher(
     private val client: MinecraftClient,
     private val authProvider: AuthenticationProvider,
 ) {
-    private suspend fun dispatchEvent(packet: MinecraftPacket) = client.dispatch(packet)
     public suspend fun handleIncomingPackets(packet: MinecraftPacket) {
-        this.dispatchEvent(packet)
         when (packet) {
             // login
             is ClientboundDisconnectLoginPacket -> client.close()

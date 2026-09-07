@@ -10,7 +10,7 @@ includeSubModule(":rconlib")
 includeSubModule(":protocol")
 includeSubModule(":protocol-encrypt")
 includeSubModule(":nbt")
-includeSubModule(":snbt")
+//includeSubModule(":snbt")
 
 fun includeSubModule(name: String, path: String? = null) = include(name).also {
     project(name).projectDir = file(path ?: "libmc-${name.removePrefix(":")}")

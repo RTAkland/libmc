@@ -8,7 +8,7 @@
 
 package cn.rtast.libmc.mcping.rconlib
 
-import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.LibMCContext
 import cn.rtast.libmc.stream.ReadChannel
 import cn.rtast.libmc.stream.Socket
 import cn.rtast.libmc.stream.WriteChannel

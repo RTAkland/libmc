@@ -15,9 +15,7 @@ public class PacketRegistry {
     private val idToCodec = mutableMapOf<Int, PacketCodec<out MinecraftPacket>>()
     private val classToInfo = mutableMapOf<KClass<out MinecraftPacket>, RegisteredPacket<*>>()
 
-    private data class RegisteredPacket<P : MinecraftPacket>(
-        val id: Int, val codec: PacketCodec<P>,
-    )
+    private data class RegisteredPacket<P : MinecraftPacket>(val id: Int, val codec: PacketCodec<P>)
 
     public fun <T : MinecraftPacket> register(id: Int, kClass: KClass<T>, codec: PacketCodec<T>) {
         idToCodec[id] = codec

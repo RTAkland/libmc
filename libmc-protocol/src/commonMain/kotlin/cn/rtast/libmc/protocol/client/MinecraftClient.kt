@@ -39,11 +39,7 @@ public class MinecraftClient internal constructor(
     internal val stateMachine = ClientStateMachine()
 
     public val networkChannel: NetworkChannel = NetworkChannel(
-        host = host,
-        port = port,
-        context = context,
-        stateMachine = stateMachine,
-        cipherProvider = cryptoContext.cipherFactory
+        host, port, context, stateMachine, cryptoContext.cipherFactory, this
     )
 
     private val internalPacketDispatcher = InternalPacketDispatcher(this, authProvider)
@@ -57,13 +53,18 @@ public class MinecraftClient internal constructor(
         networkChannel.connect()
         startListening()
         networkChannel.sendPacket(
-            ServerboundHandshakePacket(protocolVersion, host, port.toUShort(), HandshakeIntent.LOGIN)
+            ServerboundHandshakePacket(
+                protocolVersion,
+                host, port.toUShort(),
+                HandshakeIntent.LOGIN
+            )
         )
         stateMachine.transitionTo(ProtocolState.LOGIN)
         networkChannel.sendPacket(ServerboundLoginStartPacket(username, uuid))
     }
 
     public fun setCompression(threshold: Int): Unit = networkChannel.setCompression(threshold)
+
     private fun startListening() {
         listenJob = launch {
             try {

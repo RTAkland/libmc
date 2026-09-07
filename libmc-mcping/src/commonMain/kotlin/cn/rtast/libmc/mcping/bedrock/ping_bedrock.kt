@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.mcping.bedrock
 
-import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.LibMCContext
 import cn.rtast.libmc.stream.UdpSocket
 import cn.rtast.libmc.stream.wrap
 import cn.rtast.libmc.mcping.PingResponse

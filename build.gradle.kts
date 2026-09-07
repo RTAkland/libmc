@@ -7,7 +7,7 @@ allprojects {
     group = "cn.rtast.libmc"
     val libVersion = getProperty("libVersion")
     version = when (name) {
-        "protocol" -> "${getProperty("protocolVersion")}-$libVersion"
+        "protocol" -> getProperty("protocolVersion")
         else -> libVersion
     }
 

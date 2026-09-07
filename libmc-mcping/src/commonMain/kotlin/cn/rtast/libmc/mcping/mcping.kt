@@ -9,7 +9,7 @@
 
 package cn.rtast.libmc.mcping
 
-import cn.rtast.libmc.common.LibMCContext
+import cn.rtast.libmc.LibMCContext
 import cn.rtast.libmc.mcping.bedrock.pingBedrockServer
 import cn.rtast.libmc.mcping.java.pingJavaServer
 import kotlin.jvm.JvmName

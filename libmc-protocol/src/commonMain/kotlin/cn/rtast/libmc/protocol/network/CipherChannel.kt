@@ -11,6 +11,9 @@ import cn.rtast.libmc.crypto.NetworkCipher
 import cn.rtast.libmc.stream.ReadChannel
 import cn.rtast.libmc.stream.WriteChannel
 
+/**
+ * AES-128-CFB8 ***ciphered*** read channel
+ */
 internal class CipherReadChannel(
     private val delegate: ReadChannel,
     private val crypto: NetworkCipher,
@@ -34,6 +37,9 @@ internal class CipherReadChannel(
     }
 }
 
+/**
+ * AES-128-CFB8 ***ciphered*** write channel
+ */
 internal class CipherWriteChannel(
     private val delegate: WriteChannel,
     private val crypto: NetworkCipher,

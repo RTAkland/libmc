@@ -40,8 +40,3 @@ public expect class BytesBuffer {
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ByteArray.wrap(): BytesBuffer = BytesBuffer(this)
-
-public suspend fun ReadChannel.readPacketFrame(): BytesBuffer {
-    val length = this.readVarInt()
-    return this.readBytes(length).wrap()
-}

@@ -13,6 +13,8 @@ A lightweight minecraft client-side protocol library and related library, includ
 
 # libmc-protocol
 
+[Use libmc-protocol](https://repo.rtast.cn/packages/-/cn.rtast.libmc:protocol)
+
 ---
 
 # Minecraft Protocol Library Status & Roadmap

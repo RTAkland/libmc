@@ -7,6 +7,6 @@
 
 package cn.rtast.libmc.protocol.protocol
 
-internal enum class PacketDirection {
+public enum class PacketDirection {
     SERVERBOUND, CLIENTBOUND
 }

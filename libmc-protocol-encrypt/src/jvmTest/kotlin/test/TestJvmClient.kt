@@ -33,7 +33,7 @@ class TestJvmClient {
         )
 //        cli.on<ClientboundSystemChatMessagePacket> { println(it) }
 //        cli.on<ClientboundLoginSuccessPacket> { println(it) }
-        cli.on<MinecraftPacket> { println(it) }
+        cli.onPacket<MinecraftPacket> { println(it) }
         cli.launch { cli.connect() }
         while (true) {
         }

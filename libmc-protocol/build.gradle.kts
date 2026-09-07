@@ -22,11 +22,24 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(project(":protocol-encrypt"))
             implementation(libs.kotlinx.coroutines.test)
         }
 
         jvmTest.dependencies {
-            implementation(project(":protocol-encrypt"))
+            implementation(libs.ktor.client.okhttp)
+        }
+
+        linuxTest.dependencies {
+            implementation(libs.ktor.client.curl)
+        }
+
+        mingwTest.dependencies {
+            implementation(libs.ktor.client.winhttp)
+        }
+
+        appleTest.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
