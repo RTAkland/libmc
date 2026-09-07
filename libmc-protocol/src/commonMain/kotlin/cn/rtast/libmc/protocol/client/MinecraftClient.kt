@@ -97,9 +97,9 @@ public fun createMinecraftClient(
     accessToken: String?,
     parentJob: Job? = null,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    contextBuilder: ProtocolContextBuilder.() -> Unit,
+    context: ProtocolContextBuilder.() -> Unit,
 ): MinecraftClient {
-    val context = ProtocolContextBuilder(accessToken != null).apply(contextBuilder).build()
+    val context = ProtocolContextBuilder(accessToken != null).apply(context).build()
     return MinecraftClient(
         host = host,
         port = port,

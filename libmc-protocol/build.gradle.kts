@@ -24,6 +24,7 @@ kotlin {
             implementation(kotlin("test"))
             implementation(project(":protocol-context"))
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.network)
         }
 
         jvmTest.dependencies {

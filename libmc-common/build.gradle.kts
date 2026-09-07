@@ -18,10 +18,6 @@ kotlin {
 
         jvmMain.dependencies {}
 
-//        nativeMain.dependencies {
-//            implementation(libs.ktor.network)
-//        }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)

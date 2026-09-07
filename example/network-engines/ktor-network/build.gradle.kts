@@ -11,11 +11,9 @@ kotlin {
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {
-        commonMain.dependencies {
-            api(project(":common"))
-            implementation(libs.cryptography.core)
-            implementation(libs.cryptography.provider.optimal)
-            implementation(libs.ktor.client.core)
+        jvmMain.dependencies {
+            api(project(":protocol"))
+            api(libs.ktor.network)
         }
     }
 }

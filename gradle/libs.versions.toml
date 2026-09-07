@@ -6,8 +6,7 @@ coroutines-test = "1.11.0"
 kotlinx-coroutines = "1.11.0"
 ktor-core = "3.5.2"
 cryptography-core = "0.6.0"
-kotlinx-atomicfu = "0.33.0"
-#kotlinx-serialization = "1.11.0"
+netty = "4.2.17.Final"
 
 [libraries]
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
@@ -21,12 +20,9 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-winhttp = { module = "io.ktor:ktor-client-winhttp", version.ref = "ktor-core" }
 ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor-core" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-core" }
-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
-#kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
-#kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+netty-handler = { module = "io.netty:netty-transport", version.ref = "netty" }
+netty-buffer = { module = "io.netty:netty-buffer", version.ref = "netty" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 maven-publish = { id = "maven-publish" }
-kotlinx-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kotlinx-atomicfu" }
-#kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

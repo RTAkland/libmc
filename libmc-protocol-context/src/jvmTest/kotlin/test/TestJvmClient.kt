@@ -8,7 +8,7 @@ package test
 
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.crypto.DefaultProtocolContext
+import cn.rtast.libmc.protocol.context.DefaultProtocolContext
 import kotlinx.coroutines.launch
 import org.junit.Test
 import java.io.File

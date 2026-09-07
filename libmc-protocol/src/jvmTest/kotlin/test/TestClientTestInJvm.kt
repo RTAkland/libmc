@@ -7,9 +7,10 @@
 
 package test
 
+import cn.rtast.libmc.network.withCustom
 import cn.rtast.libmc.packet.ClientboundUnknownPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.crypto.DefaultProtocolContext
+import cn.rtast.libmc.protocol.context.DefaultProtocolContext
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundChatMessagePacket
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
@@ -63,7 +64,7 @@ class TestClientTestInJvm {
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
 //            null,
             accessToken,
-            contextBuilder = DefaultProtocolContext
+            context = DefaultProtocolContext
         )
 //        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it) }
 //        cli.onPacket<ClientboundLoginSuccessPacket> { println(it) }
@@ -81,8 +82,11 @@ class TestClientTestInJvm {
             "11",
             generateOfflineUuid("11"),
             null,
-            contextBuilder = DefaultProtocolContext
+            context = DefaultProtocolContext.withCustom {
+                socketEngine = KtorNetworkEngine()
+            }
         )
+
 //        cli.on { packet, direction ->
 //            if (packet !is ClientboundWaypointPacket)
 //            println("$direction -> $packet")

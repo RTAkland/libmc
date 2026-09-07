@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.crypto
+package cn.rtast.libmc.protocol.context
 
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.crypto.ProtocolContextBuilder
@@ -15,7 +15,7 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-private val httpClient = HttpClient()
+public val httpClient: HttpClient = HttpClient()
 
 public val DefaultProtocolContext: ProtocolContextBuilder.() -> Unit = {
     rsaEncryptor = RSA1024Encryptor { key, data -> rsaEncrypt(key, data) }
@@ -28,5 +28,4 @@ public val DefaultProtocolContext: ProtocolContextBuilder.() -> Unit = {
         }.status
         require(status == HttpStatusCode.NoContent)
     }
-    socketEngine = KtorNetworkEngine()
 }

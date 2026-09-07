@@ -4,12 +4,16 @@ plugins {
 
 rootProject.name = "libmc"
 
-includeSubModule(":common")
-includeSubModule(":protocol")
-includeSubModule(":protocol-context")
-includeSubModule(":nbt")
-//includeSubModule(":snbt")
+includeSubModule("common")
+includeSubModule("protocol")
+includeSubModule("protocol-context")
+includeSubModule("nbt")
+includeSubModule("snbt")
 
-fun includeSubModule(name: String, path: String? = null) = include(name).also {
-    project(name).projectDir = file(path ?: "libmc-${name.removePrefix(":")}")
+//includeSubModule("protocol-engine-netty", path = "libmc-network-engines/netty")
+//includeSubModule("protocol-engine-ktor-network", path = "libmc-network-engines/ktor-network")
+
+fun includeSubModule(name: String, path: String? = null) {
+    include(":$name")
+    project(":$name").projectDir = file(path ?: "libmc-$name")
 }

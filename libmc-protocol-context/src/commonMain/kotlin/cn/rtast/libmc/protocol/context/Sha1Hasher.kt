@@ -7,7 +7,7 @@
 
 @file:OptIn(DelicateCryptographyApi::class)
 
-package cn.rtast.libmc.protocol.crypto
+package cn.rtast.libmc.protocol.context
 
 import dev.whyoleg.cryptography.DelicateCryptographyApi
 import dev.whyoleg.cryptography.algorithms.SHA1

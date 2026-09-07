@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.crypto
+package test
 
 import cn.rtast.libmc.network.RawSocket
 import cn.rtast.libmc.network.ReadChannel
@@ -17,11 +17,11 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
-public class KtorNetworkEngine : SocketEngine {
+class KtorNetworkEngine : SocketEngine {
     override fun create(host: String, port: Int): RawSocket = KtorNetworkSocket(host, port)
 }
 
-public class KtorNetworkSocket(private val host: String, private val port: Int) : RawSocket {
+class KtorNetworkSocket(private val host: String, private val port: Int) : RawSocket {
     private val sm = SelectorManager(Dispatchers.IO)
     private lateinit var socket: Socket
 
@@ -34,14 +34,14 @@ public class KtorNetworkSocket(private val host: String, private val port: Int) 
     }
 }
 
-public class KtorReadChannel(private val readChannel: ByteReadChannel) : ReadChannel {
+class KtorReadChannel(private val readChannel: ByteReadChannel) : ReadChannel {
     override suspend fun readByte(): Byte = readChannel.readByte()
     override suspend fun readBytes(length: Int): ByteArray = readChannel.readByteArray(length)
     override suspend fun readFully(out: ByteArray, start: Int, end: Int): Unit =
         readChannel.readFully(out, start, end)
 }
 
-public class KtorWriteChannel(private val writeChannel: ByteWriteChannel) : WriteChannel {
+class KtorWriteChannel(private val writeChannel: ByteWriteChannel) : WriteChannel {
     override suspend fun writeFully(value: ByteArray, startIndex: Int, endIndex: Int) {
         writeChannel.writeFully(value, startIndex, endIndex)
     }
