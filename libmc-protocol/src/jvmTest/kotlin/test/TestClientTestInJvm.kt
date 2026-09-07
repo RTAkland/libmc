@@ -7,12 +7,11 @@
 
 package test
 
+import cn.rtast.libmc.packet.ClientboundUnknownPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
 import cn.rtast.libmc.protocol.crypto.DefaultProtocolContext
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundCommandsPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundDisconnectPlayPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundDisguisedChatMessagePacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSystemChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerInfoUpdatePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundWaypointPacket
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.launch
 import org.junit.Test
@@ -81,8 +80,12 @@ class TestClientTestInJvm {
             null,
             crypto = DefaultProtocolContext
         )
-        cli.on { packet, direction -> println("$direction -> $packet") }
-//        cli.onPacket<ClientboundSystemChatMessagePacket> { println(it.content.content) }
+//        cli.on { packet, direction ->
+//            if (packet !is ClientboundWaypointPacket)
+//            println("$direction -> $packet")
+//        }
+//        cli.onPacket<ClientboundUnknownPacket> { println(it) }
+        cli.onPacket<ClientboundPlayerInfoUpdatePacket> { println(it) }
         cli.launch { cli.connect() }
         while (true) {
         }

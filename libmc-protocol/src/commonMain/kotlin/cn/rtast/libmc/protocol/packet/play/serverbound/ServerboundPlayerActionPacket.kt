@@ -14,7 +14,7 @@ import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.block.BlockFace
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.writeBlockPos
-import cn.rtast.libmc.protocol.protocol.game.player.PlayerActionStatus
+import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerActionStatus
 
 /**
  * ref: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Player_Action

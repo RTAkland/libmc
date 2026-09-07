@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.protocol.game.player
+package cn.rtast.libmc.protocol.protocol.game.player.action
 
 public enum class PlayerActionStatus(public val id: Int) {
     STARTED_DIGGING(0),

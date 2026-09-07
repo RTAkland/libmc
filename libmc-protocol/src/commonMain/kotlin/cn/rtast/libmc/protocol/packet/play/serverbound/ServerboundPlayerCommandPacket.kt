@@ -11,7 +11,7 @@ import cn.rtast.libmc.stream.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.writeVarInt
-import cn.rtast.libmc.protocol.protocol.game.player.PlayerCommandAction
+import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerCommandAction
 
 public data class ServerboundPlayerCommandPacket(
     val entityId: Int,

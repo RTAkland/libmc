@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.protocol.protocol.game.player
+package cn.rtast.libmc.protocol.protocol.game.player.action
 
 public enum class PlayerCommandAction(public val id: Int) {
     LEAVE_BED(0),
