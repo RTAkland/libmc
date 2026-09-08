@@ -11,6 +11,7 @@ import cn.rtast.libmc.network.RawSocket
 import cn.rtast.libmc.network.ReadChannel
 import cn.rtast.libmc.network.WriteChannel
 import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.protocol.crypto.Aes128Cfb8ChannelCipher
 
 public class NetworkSession internal constructor(
     private val host: String,
@@ -18,7 +19,6 @@ public class NetworkSession internal constructor(
     private val context: ProtocolContext,
 ) {
     private var socket: RawSocket? = null
-
     public var readChannel: ReadChannel? = null
         private set
 
@@ -36,7 +36,7 @@ public class NetworkSession internal constructor(
     public fun enableEncryption(sharedKey: ByteArray) {
         val currentRead = requireNotNull(readChannel)
         val currentWrite = requireNotNull(writeChannel)
-        val cipher = context.cipherFactory!!.invoke(sharedKey)
+        val cipher = Aes128Cfb8ChannelCipher(sharedKey)
         this.readChannel = CipherReadChannel(currentRead, cipher)
         this.writeChannel = CipherWriteChannel(currentWrite, cipher)
     }

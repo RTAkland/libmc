@@ -5,7 +5,7 @@
  */
 
 
-package test
+package client
 
 import cn.rtast.libmc.primitives.FixedBitSet20
 import cn.rtast.libmc.primitives.createFixedBitSet20

@@ -6,7 +6,6 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.crypto.NetworkCipher
 import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.network.wrap

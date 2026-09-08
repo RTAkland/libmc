@@ -9,6 +9,8 @@ package cn.rtast.libmc.protocol.event
 
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.MinecraftClient
+import cn.rtast.libmc.protocol.crypto.minecraftServerIdHash
+import cn.rtast.libmc.protocol.crypto.rsaEncrypt
 import cn.rtast.libmc.protocol.packet.configuration.clientbound.*
 import cn.rtast.libmc.protocol.packet.configuration.serverbound.*
 import cn.rtast.libmc.protocol.packet.login.clientbound.ClientboundDisconnectLoginPacket
@@ -46,8 +48,7 @@ public class InternalPacketDispatcher(private val client: MinecraftClient) {
             is ClientboundHelloPacket -> {
                 val sharedSecret = generateRandom16Bytes()
                 if (client.isOnlineMode) {
-                    val serverHash = client.protocolContext.sha1Hasher!!
-                        .hash(packet.serverId, sharedSecret, packet.publicKey)
+                    val serverHash = minecraftServerIdHash(packet.serverId, sharedSecret, packet.publicKey)
                     client.protocolContext.authProvider!!.joinServer(
                         "https://sessionserver.mojang.com/session/minecraft/join",
                         client.accessToken!!,
@@ -55,9 +56,8 @@ public class InternalPacketDispatcher(private val client: MinecraftClient) {
                         serverHash
                     )
                 }
-                val encryptedSecret = client.protocolContext.rsaEncryptor!!.encrypt(packet.publicKey, sharedSecret)
-                val encryptedVerifyToken =
-                    client.protocolContext.rsaEncryptor!!.encrypt(packet.publicKey, packet.verifyToken)
+                val encryptedSecret = rsaEncrypt(packet.publicKey, sharedSecret)
+                val encryptedVerifyToken = rsaEncrypt(packet.publicKey, packet.verifyToken)
                 client.networkChannel.sendPacket(ServerboundKeyPacket(encryptedSecret, encryptedVerifyToken))
                 client.networkChannel.session.enableEncryption(sharedSecret)
             }

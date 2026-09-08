@@ -16,31 +16,23 @@ kotlin {
             api(project(":nbt"))
         }
 
-        jvmMain.dependencies {
-
-        }
+        jvmMain.dependencies {}
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            implementation(project(":protocol-context"))
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.network)
+            implementation(libs.ktor.client.core)
         }
 
         jvmTest.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
 
-        linuxTest.dependencies {
+        nativeTest.dependencies {
             implementation(libs.ktor.client.curl)
         }
-
-        mingwTest.dependencies {
-            implementation(libs.ktor.client.winhttp)
-        }
-
-        appleTest.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
     }
+
+    compilerOptions.freeCompilerArgs.addAll("-Xexpect-actual-classes")
 }

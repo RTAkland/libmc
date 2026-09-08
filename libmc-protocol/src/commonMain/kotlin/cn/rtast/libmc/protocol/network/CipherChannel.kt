@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.crypto.NetworkCipher
+import cn.rtast.libmc.crypto.NetworkChannelCipher
 import cn.rtast.libmc.network.ReadChannel
 import cn.rtast.libmc.network.WriteChannel
 
@@ -16,7 +16,7 @@ import cn.rtast.libmc.network.WriteChannel
  */
 internal class CipherReadChannel(
     private val delegate: ReadChannel,
-    private val crypto: NetworkCipher,
+    private val crypto: NetworkChannelCipher,
 ) : ReadChannel {
     override suspend fun readFully(out: ByteArray, start: Int, end: Int) {
         delegate.readFully(out, start, end)
@@ -42,7 +42,7 @@ internal class CipherReadChannel(
  */
 internal class CipherWriteChannel(
     private val delegate: WriteChannel,
-    private val crypto: NetworkCipher,
+    private val crypto: NetworkChannelCipher,
 ) : WriteChannel {
     override suspend fun writeFully(value: ByteArray, startIndex: Int, endIndex: Int) {
         val length = endIndex - startIndex

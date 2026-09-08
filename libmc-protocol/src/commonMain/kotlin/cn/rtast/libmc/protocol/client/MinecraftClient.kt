@@ -32,7 +32,6 @@ public class MinecraftClient internal constructor(
     internal val protocolContext: ProtocolContext,
 ) : PacketEventDispatcher(), CoroutineScope {
     internal val stateMachine = ClientStateMachine()
-
     public val networkChannel: NetworkChannel = NetworkChannel(
         host, port, stateMachine,
         this, protocolContext
@@ -107,3 +106,5 @@ public fun createMinecraftClient(
         protocolContext = context
     )
 }
+
+internal const val CURRENT_MINECRAFT_PROTOCOL_VERSION: Int = 776
