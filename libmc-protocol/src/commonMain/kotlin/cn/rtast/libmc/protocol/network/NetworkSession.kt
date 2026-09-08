@@ -6,7 +6,6 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.crypto.NetworkCipher
 import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.network.RawSocket
 import cn.rtast.libmc.network.ReadChannel
@@ -16,7 +15,6 @@ import cn.rtast.libmc.primitives.readVarInt
 public class NetworkSession internal constructor(
     private val host: String,
     private val port: Int,
-    private var cipherProvider: (ByteArray) -> NetworkCipher,
     private val context: ProtocolContext,
 ) {
     private var socket: RawSocket? = null
@@ -38,7 +36,7 @@ public class NetworkSession internal constructor(
     public fun enableEncryption(sharedKey: ByteArray) {
         val currentRead = requireNotNull(readChannel)
         val currentWrite = requireNotNull(writeChannel)
-        val cipher = cipherProvider(sharedKey)
+        val cipher = context.cipherFactory!!.invoke(sharedKey)
         this.readChannel = CipherReadChannel(currentRead, cipher)
         this.writeChannel = CipherWriteChannel(currentWrite, cipher)
     }

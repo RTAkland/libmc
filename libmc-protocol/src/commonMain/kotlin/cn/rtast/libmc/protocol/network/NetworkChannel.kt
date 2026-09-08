@@ -26,11 +26,10 @@ public class NetworkChannel internal constructor(
     host: String,
     port: Int,
     private val stateMachine: ClientStateMachine,
-    cipherProvider: (ByteArray) -> NetworkCipher,
     private val dispatcher: PacketEventDispatcher,
     protocolContext: ProtocolContext,
 ) {
-    internal val session: NetworkSession = NetworkSession(host, port, cipherProvider, protocolContext)
+    internal val session: NetworkSession = NetworkSession(host, port, protocolContext)
 
     @Volatile
     private var threshold = -1

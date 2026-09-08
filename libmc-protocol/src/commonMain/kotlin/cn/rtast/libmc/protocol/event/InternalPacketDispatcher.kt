@@ -7,7 +7,6 @@
 
 package cn.rtast.libmc.protocol.event
 
-import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.packet.configuration.clientbound.*
@@ -33,10 +32,7 @@ import cn.rtast.libmc.protocol.util.generateRandom16Bytes
  * Auto respond packets the server needed.
  * Only including `Handshake`, `Login` and `Configuration` State
  */
-public class InternalPacketDispatcher(
-    private val client: MinecraftClient,
-    private val authProvider: AuthenticationProvider?,
-) {
+public class InternalPacketDispatcher(private val client: MinecraftClient) {
     public suspend fun handleIncomingPackets(packet: MinecraftPacket) {
         when (packet) {
             // login
@@ -50,16 +46,18 @@ public class InternalPacketDispatcher(
             is ClientboundHelloPacket -> {
                 val sharedSecret = generateRandom16Bytes()
                 if (client.isOnlineMode) {
-                    val serverHash = client.serverIdHasher.hash(packet.serverId, sharedSecret, packet.publicKey)
-                    authProvider!!.joinServer(
+                    val serverHash = client.protocolContext.sha1Hasher!!
+                        .hash(packet.serverId, sharedSecret, packet.publicKey)
+                    client.protocolContext.authProvider!!.joinServer(
                         "https://sessionserver.mojang.com/session/minecraft/join",
                         client.accessToken!!,
                         client.uuid.toString().replace("-", ""),
                         serverHash
                     )
                 }
-                val encryptedSecret = client.rsa1024Encryptor.encrypt(packet.publicKey, sharedSecret)
-                val encryptedVerifyToken = client.rsa1024Encryptor.encrypt(packet.publicKey, packet.verifyToken)
+                val encryptedSecret = client.protocolContext.rsaEncryptor!!.encrypt(packet.publicKey, sharedSecret)
+                val encryptedVerifyToken =
+                    client.protocolContext.rsaEncryptor!!.encrypt(packet.publicKey, packet.verifyToken)
                 client.networkChannel.sendPacket(ServerboundKeyPacket(encryptedSecret, encryptedVerifyToken))
                 client.networkChannel.session.enableEncryption(sharedSecret)
             }

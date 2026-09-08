@@ -15,7 +15,7 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-public val httpClient: HttpClient = HttpClient()
+private val httpClient: HttpClient = HttpClient()
 
 public val DefaultProtocolContext: ProtocolContextBuilder.() -> Unit = {
     rsaEncryptor = RSA1024Encryptor { key, data -> rsaEncrypt(key, data) }

@@ -29,27 +29,23 @@ public class MinecraftClient internal constructor(
     internal val accessToken: String?,
     parentJob: Job?,
     private val ioDispatcher: CoroutineDispatcher,
-    protocolContext: ProtocolContext,
+    internal val protocolContext: ProtocolContext,
 ) : PacketEventDispatcher(), CoroutineScope {
-    internal val rsa1024Encryptor = protocolContext.rsaEncryptor
-    internal val serverIdHasher = protocolContext.sha1Hasher
-    internal val authProvider = protocolContext.authProvider
     internal val stateMachine = ClientStateMachine()
 
     public val networkChannel: NetworkChannel = NetworkChannel(
         host, port, stateMachine,
-        protocolContext.cipherFactory,
         this, protocolContext
     )
 
-    private val internalPacketDispatcher = InternalPacketDispatcher(this, authProvider)
+    private val internalPacketDispatcher = InternalPacketDispatcher(this)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
 
-    public val isOnlineMode: Boolean get() = accessToken != null
+    public val isOnlineMode: Boolean = accessToken != null
     public val transactionManager: TransactionIdManager = TransactionIdManager()
 
-    public suspend fun connect(protocolVersion: Int = 776) {
+    public suspend fun connect(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION) {
         networkChannel.connect()
         startListening()
         networkChannel.sendPacket(

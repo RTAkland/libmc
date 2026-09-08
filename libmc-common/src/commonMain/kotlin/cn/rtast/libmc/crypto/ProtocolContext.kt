@@ -11,9 +11,9 @@ import cn.rtast.libmc.network.SocketContext
 import cn.rtast.libmc.network.SocketEngine
 
 public data class ProtocolContext(
-    val rsaEncryptor: RSA1024Encryptor,
-    val sha1Hasher: Sha1Hasher,
-    val cipherFactory: (sharedKey: ByteArray) -> NetworkCipher,
+    val rsaEncryptor: RSA1024Encryptor?,
+    val sha1Hasher: Sha1Hasher?,
+    val cipherFactory: ((sharedKey: ByteArray) -> NetworkCipher)?,
     val authProvider: AuthenticationProvider?,
     override val engine: SocketEngine,
 ) : SocketContext()
@@ -27,12 +27,22 @@ public class ProtocolContextBuilder(private val onlineMode: Boolean) {
 
     public fun build(): ProtocolContext =
         ProtocolContext(
-            rsaEncryptor = if (::rsaEncryptor.isInitialized) rsaEncryptor else error("rsaEncryptor is required"),
-            sha1Hasher = if (::sha1Hasher.isInitialized) sha1Hasher else error("sha1Hasher is required"),
-            cipherFactory = if (::cipherFactory.isInitialized) cipherFactory else error("cipherFactory is required"),
+            rsaEncryptor = if (onlineMode) {
+                if (::rsaEncryptor.isInitialized) rsaEncryptor else error("rsaEncryptor is required in online mode")
+            } else if (::rsaEncryptor.isInitialized) rsaEncryptor else null,
+
+            sha1Hasher = if (onlineMode) {
+                if (::sha1Hasher.isInitialized) sha1Hasher else error("sha1Hasher is required in online mode")
+            } else if (::sha1Hasher.isInitialized) sha1Hasher else null,
+
+            cipherFactory = if (onlineMode) {
+                if (::cipherFactory.isInitialized) cipherFactory else error("cipherFactory is required in online mode")
+            } else if (::cipherFactory.isInitialized) cipherFactory else null,
+
             authProvider = if (onlineMode) {
                 if (::authProvider.isInitialized) authProvider else error("authProvider is required in online mode")
             } else if (::authProvider.isInitialized) authProvider else null,
+
             engine = if (::socketEngine.isInitialized) socketEngine else error("SocketEngine is not configured")
         )
 }

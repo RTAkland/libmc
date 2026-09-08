@@ -10,6 +10,10 @@ package cn.rtast.libmc.protocol.util
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/**
+ * Client-side managed transaction id manager,
+ * managed an auto-increment transaction id
+ */
 public class TransactionIdManager internal constructor() {
     private var queryTransactionCounter: Int = 1
     private var commandSuggestionTransactionCounter: Int = 1
