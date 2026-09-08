@@ -53,7 +53,7 @@ public class NBTListBuilder(
 
     public fun compound(block: CompoundBuilder.() -> Unit) {
         checkType(NBTType.Compound)
-        elements += nbtCompound(block)
+        elements += buildNBT(block)
     }
 
     public fun list(elementType: NBTType, block: NBTListBuilder.() -> Unit) {

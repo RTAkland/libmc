@@ -56,7 +56,7 @@ public class CompoundBuilder {
     }
 
     public infix fun String.compound(block: CompoundBuilder.() -> Unit) {
-        tags[this] = nbtCompound(block)
+        tags[this] = buildNBT(block)
     }
 
     @Suppress("FunctionName")
@@ -76,7 +76,7 @@ public class CompoundBuilder {
     public fun build(): NBTTag.CompoundTag = NBTTag.CompoundTag(tags)
 }
 
-public fun nbtCompound(block: CompoundBuilder.() -> Unit): NBTTag.CompoundTag {
+public fun buildNBT(block: CompoundBuilder.() -> Unit): NBTTag.CompoundTag {
     val builder = CompoundBuilder()
     builder.block()
     return builder.build()

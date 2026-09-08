@@ -7,8 +7,9 @@
 
 package test
 
+import cn.rtast.libmc.nbt.readNBTRootCompound
+import cn.rtast.libmc.nbt.toNBTInput
 import cn.rtast.libmc.network.wrap
-import cn.rtast.libmc.nbt.NbtReader
 import org.junit.Test
 import java.io.File
 
@@ -18,7 +19,7 @@ class TestNBTReader {
 
     @Test
     fun `test read java nbt`() {
-        val readRoot = NbtReader(javaNBTBuffer).readRoot()
+        val readRoot = javaNBTBuffer.toNBTInput().readNBTRootCompound()
         println(readRoot)
     }
 }

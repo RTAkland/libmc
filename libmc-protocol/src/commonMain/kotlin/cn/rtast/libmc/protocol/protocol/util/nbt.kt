@@ -11,7 +11,7 @@ import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.nbt.*
 
 internal fun BytesBuffer.readNBTCompound(): NBTCompound =
-    this.toNBTInput().readRootCompound()
+    this.toNBTInput().readNBTRootCompound()
 
 internal fun BytesBuffer.readNetworkNBTCompound(): NBTCompound =
     this.toNBTInput().readNetworkCompound()

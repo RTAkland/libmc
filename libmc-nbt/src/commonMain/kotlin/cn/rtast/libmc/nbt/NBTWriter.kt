@@ -56,7 +56,7 @@ public fun NBTOutput.writeTagPayload(tag: NBTTag) {
     }
 }
 
-public fun NBTOutput.writeRootNBTCompound(name: String = ""): ByteArray {
+public fun NBTOutput.writeNBTRootCompound(name: String = ""): ByteArray {
     writeByte(NBTType.Compound.id)
     writeStringTag(name)
     writeTagPayload(root)

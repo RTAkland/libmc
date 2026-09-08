@@ -1,5 +1,7 @@
 # libmc
 
+[中文](zh/README-zh.md)
+
 A lightweight, modern Minecraft client protocol library designed for Kotlin Native & JVM. The core protocol library
 module relies on the following dependencies:
 
@@ -19,11 +21,17 @@ module relies on the following dependencies:
 
 # Get started
 
+# Protocol
+
 > `libmc-protocol` is current under development. It only supports the latest Minecraft version
 > (Current supported Minecraft version: `26.2`, Protocol Version: `776`)
 
-[Start using libmc-protocol](Get-started.md)
+[Start using libmc-protocol](en/Get-started.md)
 
 # Assemble all context APIs
 
-[Assemble context APIs](Assemble-context.md)
+[Assemble context APIs](en/Assemble-context.md)
+
+## NBT & SNBT
+
+[NBT & SNBT](en/NBT-SNBT.md)

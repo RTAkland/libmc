@@ -8,7 +8,7 @@ includeSubModule("common")
 includeSubModule("protocol")
 includeSubModule("protocol-context")
 includeSubModule("nbt")
-includeSubModule("snbt")
+//includeSubModule("snbt")
 
 //includeSubModule("protocol-engine-netty", path = "libmc-network-engines/netty")
 //includeSubModule("protocol-engine-ktor-network", path = "libmc-network-engines/ktor-network")

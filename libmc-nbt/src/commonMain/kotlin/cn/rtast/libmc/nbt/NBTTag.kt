@@ -15,7 +15,7 @@ public sealed class NBTTag(public val type: NBTType) {
     public data class FloatTag(val value: Float) : NBTTag(NBTType.Float)
     public data class DoubleTag(val value: Double) : NBTTag(NBTType.Double)
     public data class StringTag(val value: String) : NBTTag(NBTType.String)
-    public data class CompoundTag(val value: MutableMap<String, NBTTag>) : NBTTag(NBTType.Compound)
+    public data class CompoundTag(val value: Map<String, NBTTag>) : NBTTag(NBTType.Compound)
     public data class ListTag(val elementType: NBTType, val value: MutableList<NBTTag>) : NBTTag(NBTType.List) {
         public val length: Int get() = value.size
     }

@@ -67,7 +67,7 @@ public fun NBTInput.readCompound(): NBTTag {
     return NBTTag.ListTag(NBTType.Compound, map.values.toMutableList())
 }
 
-public fun NBTInput.readRootCompound(): NBTCompound {
+public fun NBTInput.readNBTRootCompound(): NBTCompound {
     val rootType = NBTType.fromID(readByte().toInt())
     require(rootType == NBTType.Compound) { "Root tag must be TAG_Compound" }
     val nameLen = readShort().toInt() and 0xFFFF
