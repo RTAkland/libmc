@@ -20,7 +20,7 @@ public fun main() = runBlocking {
 > In the example code above, a `MinecraftClient` is created. This client will connect to an offline server at
 > `127.0.0.1:25565` using `MyBot` as the player name, and replaces the underlying TCP Socket
 > implementation with a `ktor-network` based TCP Socket. (For details on how to create a SocketEngine, please refer
-> to [Implementing TCP Socket](Impl-TCP-Socket.md). For details on how to
+> to [Implementing TCP Socket](Impl-tcp-socket.md). For details on how to
 > create a Context, please refer to [Required APIs](README.md#required-apis))
 > MinecraftClient implements CoroutineScope, and calling `client.connect()` will execute the connection on a background
 > thread. Blocking thread to prevent the application from exiting

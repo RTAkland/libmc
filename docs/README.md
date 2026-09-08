@@ -9,19 +9,18 @@ module relies on the following dependencies:
 
 ## Required APIs
 
-| Module Name  | Required    | Notes                                                                                                                                                           |
-|:-------------|:------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| TCP Socket   | Yes         | The `protocol` module does not have a built-in TCP Socket implementation. [Implement TCP Socket](Impl-TCP-Socket.md)                                            |
-| HTTP Client  | Conditional | Required only when logging into an `online-mode` server to send join request to mojang's session server. [Implement HTTP Client](Impl-HTTP-Client.md)           |
+| Module Name | Required    | Notes                                                                                                                                                 |
+|:------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
+| TCP Socket  | Yes         | The `protocol` module does not have a built-in TCP Socket implementation. [Implement TCP Socket](Impl-tcp-socket.md)                                  |
+| HTTP Client | Conditional | Required only when logging into an `online-mode` server to send join request to mojang's session server. [Implement HTTP Client](Impl-http-client.md) |
 
 # Get started
 
 # Protocol
 
 > `libmc-protocol` is current under development. It only supports the latest Minecraft version
-> (Current supported Minecraft version: `26.2`, Protocol Version: `776`)
-
+> (Current supported Minecraft version: `26.2`, Protocol Version Number: `776`)
 
 ## NBT & SNBT
 
-[NBT & SNBT](en/NBT-SNBT.md)
+[NBT & SNBT](nbt-snbt.md)
