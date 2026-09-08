@@ -33,6 +33,28 @@ subprojects {
                 }
             }
         }
+        publications.withType<MavenPublication> {
+            pom {
+                name = "libmc"
+                description = "Lightweight Minecraft client-side protocol library"
+                url = "https://github.com/RTAkland/libmc"
+                licenses {
+                    license {
+                        name = "Apache-2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "rtakland"
+                        name = "RTAkland"
+                    }
+                }
+                scm {
+                    url = "https://github.com/RTAkland/libmc.git"
+                }
+            }
+        }
     }
 }
 
