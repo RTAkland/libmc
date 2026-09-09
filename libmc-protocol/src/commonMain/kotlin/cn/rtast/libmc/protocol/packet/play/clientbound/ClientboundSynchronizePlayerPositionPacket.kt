@@ -27,8 +27,8 @@ public data class ClientboundSynchronizePlayerPositionPacket(
         override fun encode(buffer: BytesBuffer, value: ClientboundSynchronizePlayerPositionPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundSynchronizePlayerPositionPacket {
             val teleportId = buffer.readVarInt()
-            val position = buffer.readVec3d()!!
-            val velocity = buffer.readVec3d()!!
+            val position = buffer.readVec3d()
+            val velocity = buffer.readVec3d()
             val yaw = buffer.readFloat()
             val pitch = buffer.readFloat()
             val rawFlags = buffer.readInt()

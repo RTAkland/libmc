@@ -10,6 +10,7 @@ package cn.rtast.libmc.protocol.packet.play.clientbound
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.primitives.readPrefixOptional
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readVec3d
@@ -30,7 +31,7 @@ public data class ClientboundDamageEventPacket(
             val sourceCauseId = if (rawCauseId > 0) rawCauseId - 1 else null
             val rawDirectId = buffer.readVarInt()
             val sourceDirectId = if (rawDirectId > 0) rawDirectId - 1 else null
-            val position = buffer.readVec3d(true)
+            val position = buffer.readPrefixOptional { readVec3d() }
             return ClientboundDamageEventPacket(entityId, sourceTypeId, sourceCauseId, sourceDirectId, position)
         }
     }

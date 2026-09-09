@@ -28,8 +28,8 @@ public data class ClientboundSynchronizeVehiclePositionPacket(
         override fun encode(buffer: BytesBuffer, value: ClientboundSynchronizeVehiclePositionPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundSynchronizeVehiclePositionPacket {
             val entityId = buffer.readVarInt()
-            val position = buffer.readVec3d()!!
-            val velocityPosition = buffer.readVec3d()!!
+            val position = buffer.readVec3d()
+            val velocityPosition = buffer.readVec3d()
             val yaw = buffer.readFloat()
             val pitch = buffer.readFloat()
             val flags = TeleportFlags.fromInt(buffer.readInt())

@@ -15,21 +15,15 @@ public data class Vec3d(val x: Double, val y: Double, val z: Double) {
     }
 }
 
-internal fun BytesBuffer.readVec3d(optional: Boolean = false): Vec3d? {
-    if (optional && !this.readBoolean()) return null
+internal fun BytesBuffer.readVec3d(): Vec3d {
     val x = this.readDouble()
     val y = this.readDouble()
     val z = this.readDouble()
     return Vec3d(x, y, z)
 }
 
-internal fun BytesBuffer.writeVec3d(vec3d: Vec3d?, optional: Boolean = false) {
-    if (optional) {
-        this.writeBoolean(vec3d != null)
-        if (vec3d == null) return
-    }
-    val value = requireNotNull(vec3d) { "Vec3d cannot be null when optional is false" }
-    this.writeDouble(value.x)
-    this.writeDouble(value.y)
-    this.writeDouble(value.z)
+internal fun BytesBuffer.writeVec3d(vec3d: Vec3d) {
+    this.writeDouble(vec3d.x)
+    this.writeDouble(vec3d.y)
+    this.writeDouble(vec3d.z)
 }

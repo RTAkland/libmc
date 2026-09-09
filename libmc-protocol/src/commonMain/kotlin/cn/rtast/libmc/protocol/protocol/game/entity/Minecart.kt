@@ -22,8 +22,8 @@ public data class MinecartStep(
 )
 
 internal fun BytesBuffer.readMinecartStep(): MinecartStep {
-    val position = readVec3d()!!
-    val velocity = readVec3d()!!
+    val position = readVec3d()
+    val velocity = readVec3d()
     val yaw = readAngle()
     val pitch = readAngle()
     val weight = readFloat()

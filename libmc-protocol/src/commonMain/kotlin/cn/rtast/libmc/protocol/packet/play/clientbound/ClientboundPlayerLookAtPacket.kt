@@ -29,7 +29,7 @@ public data class ClientboundPlayerLookAtPacket(
         override fun encode(buffer: BytesBuffer, value: ClientboundPlayerLookAtPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundPlayerLookAtPacket {
             val fromAnchor = AnchorPoint.fromID(buffer.readVarInt())
-            val targetPosition = buffer.readVec3d()!!
+            val targetPosition = buffer.readVec3d()
             val isEntity = buffer.readBoolean()
             val entityTarget = if (isEntity) {
                 val entityId = buffer.readVarInt()

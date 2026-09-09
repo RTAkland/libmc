@@ -32,8 +32,8 @@ public data class ClientboundTeleportEntityPacket(
         override fun encode(buffer: BytesBuffer, value: ClientboundTeleportEntityPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundTeleportEntityPacket {
             val entityId = buffer.readVarInt()
-            val position = buffer.readVec3d()!!
-            val velocityPosition = buffer.readVec3d()!!
+            val position = buffer.readVec3d()
+            val velocityPosition = buffer.readVec3d()
             val yaw = buffer.readFloat()
             val pitch = buffer.readFloat()
             val onGround = buffer.readBoolean()

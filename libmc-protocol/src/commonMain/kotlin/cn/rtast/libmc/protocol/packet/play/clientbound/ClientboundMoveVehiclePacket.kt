@@ -18,7 +18,7 @@ public data class ClientboundMoveVehiclePacket(val position: Vec3d, val yaw: Flo
     internal companion object Codec : PacketCodec<ClientboundMoveVehiclePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundMoveVehiclePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundMoveVehiclePacket {
-            val position = buffer.readVec3d()!!
+            val position = buffer.readVec3d()
             val yaw = buffer.readFloat()
             val pitch = buffer.readFloat()
             return ClientboundMoveVehiclePacket(position, yaw, pitch)

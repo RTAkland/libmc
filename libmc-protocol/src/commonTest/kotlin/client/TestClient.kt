@@ -10,7 +10,11 @@ package client
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.packet.ClientboundUnknownPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLevelParticlePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundRecipeBookRemovePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundRecipeBookSettingsPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundChatMessagePacket
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import io.ktor.client.*
@@ -67,21 +71,20 @@ class TestClient {
                 socketEngine = KtorNetworkEngine()
             }
         )
-        cli.onPacket<ClientboundUnknownPacket> {
-            println(it)
-            val snapshot = chatTracker.prepareForOutgoingMessage()
-            cli.networkChannel.sendPacket(
-                ServerboundChatMessagePacket(
-                    "114514", Clock.System.now().toEpochMilliseconds(),
-                    Random.nextLong(),
-                    null, snapshot.messageCount, createAcknowledgedBitSet(snapshot.lastSeenSignatures).toByteArray(),
-                    ChatPacketUtils.computePacketChecksum(snapshot.lastSeenSignatures)
-                )
-            )
-        }
-        cli.onPacket<ClientboundPlayerChatMessagePacket> {
-            chatTracker.onReceivePlayerChat(it.messageSignature)
-        }
+//        cli.onPacket<ClientboundUnknownPacket> {
+//            println(it)
+//            val snapshot = chatTracker.prepareForOutgoingMessage()
+//            cli.networkChannel.sendPacket(
+//                ServerboundChatMessagePacket(
+//                    "114514", Clock.System.now().toEpochMilliseconds(),
+//                    Random.nextLong(),
+//                    null, snapshot.messageCount, createAcknowledgedBitSet(snapshot.lastSeenSignatures).toByteArray(),
+//                    ChatPacketUtils.computePacketChecksum(snapshot.lastSeenSignatures)
+//                )
+//            )
+//        }
+        cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
+        cli.onPacket<ClientboundStepTickPacket> { println(it) }
         cli.launch { cli.connect() }
         while (true) {
         }
