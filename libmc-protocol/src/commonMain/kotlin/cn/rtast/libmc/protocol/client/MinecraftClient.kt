@@ -8,8 +8,6 @@ package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.crypto.ProtocolContextBuilder
-import cn.rtast.libmc.protocol.event.InternalPacketDispatcher
-import cn.rtast.libmc.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.network.NetworkChannel
 import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
 import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginStartPacket
@@ -32,21 +30,26 @@ public class MinecraftClient internal constructor(
     internal val protocolContext: ProtocolContext,
 ) : PacketEventDispatcher(), CoroutineScope {
     internal val stateMachine = ClientStateMachine()
-    public val networkChannel: NetworkChannel = NetworkChannel(
-        host, port, stateMachine,
-        this, protocolContext
-    )
-
-    private val internalPacketDispatcher = InternalPacketDispatcher(this)
+    public val networkChannel: NetworkChannel = NetworkChannel(host, port, stateMachine, this, protocolContext)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
 
     public val isOnlineMode: Boolean = accessToken != null
+
     public val transactionManager: TransactionIdManager = TransactionIdManager()
+    public val clientTickingLoop: ClientTickingLoop = ClientTickingLoop(this)
+
+    /**
+     * Register a client ticking event callback.
+     * NOTE: Blocking operations will **block** the bot thread.
+     * Using #launch to avoid blocking.
+     */
+    public fun onTick(action: suspend (Long) -> Unit): Unit = run { clientTickingLoop.registerListener(action) }
 
     public suspend fun connect(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION) {
         networkChannel.connect()
         startListening()
+        clientTickingLoop.start()
         networkChannel.sendPacket(
             ServerboundHandshakePacket(
                 protocolVersion,
@@ -63,7 +66,7 @@ public class MinecraftClient internal constructor(
     private fun startListening() {
         listenJob = launch {
             try {
-                while (isActive) internalPacketDispatcher.handleIncomingPackets(networkChannel.readNextPacket())
+                while (isActive) networkChannel.readNextPacket()
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 if (isActive) {
@@ -77,6 +80,7 @@ public class MinecraftClient internal constructor(
 
     public fun close() {
         networkChannel.close()
+        clientTickingLoop.stop()
         clientJob.cancel()
     }
 

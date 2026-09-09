@@ -9,7 +9,7 @@ package cn.rtast.libmc.protocol.protocol.game.math
 
 import cn.rtast.libmc.network.BytesBuffer
 
-public data class Vec3d(val x: Double, val y: Double, val z: Double) {
+public data class Vec3d(var x: Double, var y: Double, var z: Double) {
     public companion object {
         public val ZERO: Vec3d = Vec3d(0.0, 0.0, 0.0)
     }

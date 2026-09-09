@@ -4,7 +4,7 @@
  * Date: 2026/9/5
  */
 
-package cn.rtast.libmc.protocol.event
+package cn.rtast.libmc.protocol.client
 
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.protocol.PacketDirection
@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 private typealias Handler = suspend (MinecraftPacket) -> Unit
 private typealias DirectionalHandler = suspend (MinecraftPacket, PacketDirection) -> Unit
 
-public open class PacketEventDispatcher {
+public abstract class PacketEventDispatcher {
     @Volatile
     @PublishedApi
     internal var receiveHandlers: Map<KClass<out MinecraftPacket>, List<Handler>> = emptyMap()

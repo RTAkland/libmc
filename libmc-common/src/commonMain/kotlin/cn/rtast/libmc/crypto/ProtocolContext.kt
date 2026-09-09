@@ -25,7 +25,7 @@ public class ProtocolContextBuilder(private val onlineMode: Boolean) {
                 if (::authProvider.isInitialized) authProvider else error("authProvider is required in online mode")
             } else if (::authProvider.isInitialized) authProvider else null,
 
-            engine = if (::socketEngine.isInitialized) socketEngine else error("SocketEngine is not configured")
+            engine = if (::socketEngine.isInitialized) socketEngine else error("SocketEngine is not configured"),
         )
 }
 

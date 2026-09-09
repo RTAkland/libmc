@@ -8,22 +8,25 @@
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
-import cn.rtast.libmc.protocol.protocol.game.player.PlayerPositionFlag
+import cn.rtast.libmc.packet.PacketCodec
 
 public data class ServerboundSetPlayerPositionPacket(
     val x: Double,
     val feetY: Double,
     val z: Double,
-    val flags: PlayerPositionFlag,
+    val onGround: Boolean,
+    val pushingAgainstWall: Boolean = false,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundSetPlayerPositionPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundSetPlayerPositionPacket) {
             buffer.writeDouble(value.x)
             buffer.writeDouble(value.feetY)
             buffer.writeDouble(value.z)
-            buffer.writeByte(value.flags.flag)
+            var flags = 0
+            if (value.onGround) flags = flags or 0x01
+            if (value.pushingAgainstWall) flags = flags or 0x02
+            buffer.writeByte(flags.toByte())
         }
 
         override fun decode(buffer: BytesBuffer): ServerboundSetPlayerPositionPacket =

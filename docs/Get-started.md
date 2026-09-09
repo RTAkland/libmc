@@ -80,3 +80,53 @@ client.networkChannel.sendPacket(
     ServerboundChatCommandPacket(command = "say Hello from libmc")
 )
 ```
+
+# Respond velocity and update client motion
+
+> This part uses math calculations
+
+When joined to the level(aka `world`), the server will send a packet 
+`ClientboundSetEntityVelocityPacket` to the client, packet contains a vec3 and entity id,
+The client sync this data to the player and sends it to the server during the next tick loop
+to inform the server: "Hi, I know my current position; here is the result of my calculations. I'm sending it to you".
+
+```kotlin
+private var entityId = -1
+private var motionX = 0
+private var motionY = 0
+private var motionZ = 0
+private var isOnGround = false
+
+fun main() {
+    // Set entity id
+    client.onPacket<ClientboundLoginPlayPacket> { entityId = it.entityId }
+
+    client.onPacket<ClientboundSetEntityVelocityPacket> {
+        if (it.entityId == entityId) {
+            motionX = it.velocity.x / 8000.0
+            motionY = it.velocity.y / 8000.0
+            motionZ = it.velocity.z / 8000.0
+            if (client.motionY > 0) client.isOnGround = false
+        }
+    }
+
+    // Update current position and velocity 
+    client.onTick {
+        if (client.stateMachine.currentState != ProtocolState.PLAY) return@registerListener
+        syncPlayerPosition()
+    }
+}
+
+internal suspend fun syncPlayerPosition() {
+    position.x += motionX
+    position.y += motionY
+    position.z += motionZ
+    motionX *= 0.91
+    motionY *= 0.98
+    motionZ *= 0.91
+    if (!isOnGround) motionY -= 0.08 else {
+        if (motionY < 0) motionY = 0.0
+    }
+    networkChannel.sendPacket(ServerboundSetPlayerPositionPacket(position.x, position.y, position.z, isOnGround))
+}
+```

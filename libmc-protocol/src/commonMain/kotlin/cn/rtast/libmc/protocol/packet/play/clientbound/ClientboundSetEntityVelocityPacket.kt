@@ -11,10 +11,10 @@ import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.protocol.protocol.game.math.LpVec3
+import cn.rtast.libmc.protocol.protocol.game.math.LpVec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readLpVec3
 
-public data class ClientboundSetEntityVelocityPacket(val entityId: Int, val velocity: LpVec3) : MinecraftPacket {
+public data class ClientboundSetEntityVelocityPacket(val entityId: Int, val velocity: LpVec3d) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundSetEntityVelocityPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundSetEntityVelocityPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundSetEntityVelocityPacket {

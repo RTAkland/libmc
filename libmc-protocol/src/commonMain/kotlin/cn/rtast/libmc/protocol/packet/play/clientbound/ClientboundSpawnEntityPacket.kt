@@ -13,7 +13,7 @@ import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readUuid
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.math.Angle
-import cn.rtast.libmc.protocol.protocol.game.math.LpVec3
+import cn.rtast.libmc.protocol.protocol.game.math.LpVec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readAngle
 import cn.rtast.libmc.protocol.protocol.game.math.readLpVec3
 import kotlin.uuid.Uuid
@@ -28,7 +28,7 @@ public data class ClientboundSpawnEntityPacket(
     val x: Double,
     val y: Double,
     val z: Double,
-    val velocity: LpVec3,
+    val velocity: LpVec3d,
     val pitch: Angle,
     val yaw: Angle,
     val headYaw: Angle,
