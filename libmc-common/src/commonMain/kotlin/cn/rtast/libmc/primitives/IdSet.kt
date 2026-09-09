@@ -16,12 +16,10 @@ public sealed interface IdSet {
 
 public fun BytesBuffer.readIdSet(): IdSet {
     val type = this.readVarInt()
-    return if (type == 0) {
-        IdSet.Tag(tagName = this.readMcString())
-    } else {
+    return if (type == 0) IdSet.Tag(tagName = this.readMcString()) else {
         val count = type - 1
         val ids = ArrayList<Int>(count)
-        (0 until count).forEach { _ -> ids.add(this.readVarInt()) }
+        repeat(count) { ids.add(this.readVarInt()) }
         IdSet.Entries(ids)
     }
 }

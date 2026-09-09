@@ -42,7 +42,6 @@ public fun BytesBuffer.writePrefixedStringArray(value: List<String>) {
 }
 
 
-
 public inline fun <T> BytesBuffer.readPrefixed(reader: BytesBuffer.() -> T): List<T> {
     val count = this.readVarInt()
     require(count in 0..4096) {
@@ -57,4 +56,14 @@ public inline fun <T> BytesBuffer.readPrefixed(reader: BytesBuffer.() -> T): Lis
 public inline fun <T> BytesBuffer.writePrefixed(list: List<T>, writer: BytesBuffer.(T) -> Unit) {
     this.writeVarInt(list.size)
     for (item in list) this.writer(item)
+}
+
+public fun <T> BytesBuffer.readPrefixOptional(reader: BytesBuffer.() -> T): T? {
+    val hasValue = readBoolean()
+    return if (hasValue) reader() else null
+}
+
+public fun <T> BytesBuffer.writePrefixedOptional(value: T?, writer: BytesBuffer.(T) -> Unit) {
+    writeBoolean(value != null)
+    if (value != null) writer(value)
 }
