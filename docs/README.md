@@ -18,6 +18,8 @@ module relies on the following dependencies:
 
 # Protocol
 
+[Protocol](Protocol.md)
+
 > `libmc-protocol` is current under development. It only supports the latest Minecraft version
 > (Current supported Minecraft version: `26.2`, Protocol Version Number: `776`)
 

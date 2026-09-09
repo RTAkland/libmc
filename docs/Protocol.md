@@ -92,11 +92,11 @@ fun main() {
             socketEngine = KtorNetworkEngine()
         }
     )
-    cli.session.onEvent<SessionEvent.ConnectedEvent> {
+    cli.onEvent<SessionEvent.ConnectedEvent> {
         println(status())
         disconnect()
     }
-    cli.session.onEvent<SessionEvent.DisconnectedEvent> {
+    cli.onEvent<SessionEvent.DisconnectedEvent> {
         println(it.reason.toJsonString())
     }
     cli.connect()

@@ -12,6 +12,10 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 |             | Linux ARM64           | **Not Tested**       |
 | **macOS**   | macOS ARM64 (Silicon) | **Not Tested**       |
 
+# Get started
+
+[LibMC Document](docs/README.md)
+
 # Minecraft Protocol Library Status
 
 ## Implementation details
