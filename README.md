@@ -19,7 +19,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] **Online Mode Authentication & Encryption/Decryption**: See [Embedded cryptography](docs/Embedded-cryptography.md)
 - [x] **Structured `TextComponent` Parser**: TextComponent AST decoder
 - [x] **Command Tree Parser**: Full binary graph decoder for brigadier nodes, argument types, and suggestions
-- [ ] **Recipe Book & Recipe Data**: Recipe layout declarations and client-side recipe settings
+- [x] **Recipe Book & Recipe Data**
 - [ ] **Chunk & World Data**: Level Chunk Data with Light decoder (Paletted Containers, Direct/Indirect Palettes)
 - [ ] **Light Engine Update**: Sky & Block light nibble array parser
 - [ ] **Explosion Event Decoder**: Knockback vectors and destroyed block offsets array

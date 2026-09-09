@@ -6,7 +6,7 @@ public fun main() = runBlocking {
         "127.0.0.1", 25566, "MyBot",
         generateOfflineUuid("MyBot"),
         accessToken = null,
-        context = DefaultProtocolContext.withCustom {
+        context = {
             socketEngine = KtorNetworkEngine()
         }
     )
@@ -81,11 +81,34 @@ client.networkChannel.sendPacket(
 )
 ```
 
+# Get server MOTD
+
+```kotlin
+fun main() {
+    val cli = createMinecraftClient(
+        "127.0.0.1", 25566, "11",
+        generateOfflineUuid("11"), null,
+        context = {
+            socketEngine = KtorNetworkEngine()
+        }
+    )
+    cli.session.onEvent<SessionEvent.ConnectedEvent> {
+        println(status())
+        disconnect()
+    }
+    cli.session.onEvent<SessionEvent.DisconnectedEvent> {
+        println(it.reason.toJsonString())
+    }
+    cli.connect()
+    awaitCancellation()
+}
+```
+
 # Respond velocity and update client motion
 
 > This part uses math calculations
 
-When joined to the level(aka `world`), the server will send a packet 
+When joined to the level (aka `world`), the server will send a packet
 `ClientboundSetEntityVelocityPacket` to the client, packet contains a vec3 and entity id,
 The client sync this data to the player and sends it to the server during the next tick loop
 to inform the server: "Hi, I know my current position; here is the result of my calculations. I'm sending it to you".

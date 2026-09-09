@@ -8,28 +8,23 @@
 package client
 
 import cn.rtast.libmc.crypto.AuthenticationProvider
-import cn.rtast.libmc.packet.ClientboundUnknownPacket
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLevelParticlePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundRecipeBookRemovePacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundRecipeBookSettingsPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
-import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundChatMessagePacket
+import cn.rtast.libmc.protocol.protocol.session.SessionEvent
+import cn.rtast.libmc.protocol.protocol.session.onEvent
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
 import kotlinx.io.buffered
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import test.KtorNetworkEngine
-import kotlin.random.Random
 import kotlin.test.Test
-import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
 
@@ -40,7 +35,7 @@ class TestClient {
     private val httpClient = HttpClient()
 
     @Test
-    fun `test client`() {
+    fun `test client`() = runTest {
         val cli = createMinecraftClient(
             "127.0.0.1", 25565, "RTAkland",
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
@@ -56,14 +51,25 @@ class TestClient {
                 }
             }
         )
+        cli.onEvent<SessionEvent.ConnectedEvent> {
+//            println(status())
+            login()
+//            disconnect()
+        }
+        cli.onEvent<SessionEvent.DisconnectedEvent> {
+            println(it.reason.toJsonString())
+        }
+        cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
+        cli.onPacket<ClientboundStepTickPacket> { println(it) }
         cli.on { packet, direction -> println("$direction -> $packet") }
-        cli.launch { cli.connect() }
+        cli.connect()
+//        awaitCancellation()
         while (true) {
         }
     }
 
     @Test
-    fun `test client offline mode`() {
+    fun `test client offline mode`() = runTest {
         val cli = createMinecraftClient(
             "127.0.0.1", 25566, "11",
             generateOfflineUuid("11"), null,
@@ -83,9 +89,20 @@ class TestClient {
 //                )
 //            )
 //        }
+
+        cli.onEvent<SessionEvent.ConnectedEvent> {
+//            println(status())
+            login()
+//            disconnect()
+        }
+        cli.onEvent<SessionEvent.DisconnectedEvent> {
+            println(it.reason.toJsonString())
+        }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
         cli.onPacket<ClientboundStepTickPacket> { println(it) }
-        cli.launch { cli.connect() }
+        cli.on { packet, direction -> println("$direction -> $packet") }
+        cli.connect()
+//        awaitCancellation()
         while (true) {
         }
     }

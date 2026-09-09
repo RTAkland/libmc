@@ -9,10 +9,11 @@ package cn.rtast.libmc.protocol.protocol.game.chat
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.nbt.NBTTag
 import cn.rtast.libmc.nbt.NBTType
+import cn.rtast.libmc.nbt.toJsonString
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound
-import cn.rtast.libmc.network.BytesBuffer
 import kotlin.uuid.Uuid
 
 public data class TextComponent(
@@ -223,6 +224,8 @@ public data class TextComponent(
         }
     }
 
+    public fun toJsonString(): String = this.toNBTCompound().toJsonString()
+
     public companion object {
         public fun of(text: String): TextComponent = TextComponent(content = Content.PlainText(text))
     }
@@ -259,6 +262,117 @@ public fun NBTTag.toTextComponent(): TextComponent {
 
         else -> TextComponent.of(this.toString())
     }
+}
+
+public fun TextComponent.toNBTCompound(): NBTTag.CompoundTag {
+    val map = mutableMapOf<String, NBTTag>()
+    when (val c = this.content) {
+        is TextComponent.Content.PlainText -> {
+            map["type"] = NBTTag.StringTag("text")
+            map["text"] = NBTTag.StringTag(c.text)
+        }
+
+        is TextComponent.Content.Translatable -> {
+            map["type"] = NBTTag.StringTag("translatable")
+            map["translate"] = NBTTag.StringTag(c.key)
+            c.fallback?.let { map["fallback"] = NBTTag.StringTag(it) }
+            if (c.args.isNotEmpty()) {
+                map["with"] = NBTTag.ListTag(NBTType.List, c.args.map { it.toNBTCompound() as NBTTag }.toMutableList())
+            }
+        }
+
+        is TextComponent.Content.Score -> {
+            map["type"] = NBTTag.StringTag("score")
+            map["score"] = NBTTag.CompoundTag(
+                mutableMapOf(
+                    "name" to NBTTag.StringTag(c.name),
+                    "objective" to NBTTag.StringTag(c.objective)
+                )
+            )
+        }
+
+        is TextComponent.Content.Selector -> {
+            map["type"] = NBTTag.StringTag("selector")
+            map["selector"] = NBTTag.StringTag(c.selector)
+            c.separator?.let { map["separator"] = it.toNBTCompound() }
+        }
+
+        is TextComponent.Content.Keybind -> {
+            map["type"] = NBTTag.StringTag("keybind")
+            map["keybind"] = NBTTag.StringTag(c.keybind)
+        }
+
+        is TextComponent.Content.Nbt -> {
+            map["type"] = NBTTag.StringTag("nbt")
+            map["nbt"] = NBTTag.StringTag(c.path)
+            map["interpret"] = NBTTag.ByteTag(if (c.interpret) 1 else 0)
+            map["plain"] = NBTTag.ByteTag(if (c.plain) 1 else 0)
+            c.separator?.let { map["separator"] = it.toNBTCompound() }
+            when (val s = c.source) {
+                is TextComponent.Content.Nbt.NbtSource.Entity -> map["entity"] = NBTTag.StringTag(s.selector)
+                is TextComponent.Content.Nbt.NbtSource.Block -> map["block"] = NBTTag.StringTag(s.coordinates)
+                is TextComponent.Content.Nbt.NbtSource.Storage -> map["storage"] = NBTTag.StringTag(s.id.toString())
+            }
+        }
+
+        is TextComponent.Content.ObjectContent.Atlas -> {
+            map["type"] = NBTTag.StringTag("object")
+            map["object"] = NBTTag.StringTag("atlas")
+            map["sprite"] = NBTTag.StringTag(c.sprite.toString())
+            map["atlas"] = NBTTag.StringTag(c.atlas.toString())
+        }
+
+        is TextComponent.Content.ObjectContent.Player -> {
+            map["type"] = NBTTag.StringTag("object")
+            map["object"] = NBTTag.StringTag("player")
+            map["hat"] = NBTTag.ByteTag(if (c.hat) 1 else 0)
+            when (val p = c.profile) {
+                is TextComponent.PlayerProfile.Name -> map["player"] = NBTTag.StringTag(p.name)
+                is TextComponent.PlayerProfile.FullProfile -> {
+                    val pMap = mutableMapOf<String, NBTTag>()
+                    p.name?.let { pMap["name"] = NBTTag.StringTag(it) }
+                    p.id?.let { pMap["id"] = NBTTag.StringTag(it.toString()) }
+                    map["player"] = NBTTag.CompoundTag(pMap)
+                }
+            }
+        }
+    }
+
+    this.style.color?.let {
+        map["color"] = NBTTag.StringTag(
+            when (it) {
+                is TextComponent.TextColor.Named -> it.name
+                is TextComponent.TextColor.Hex -> it.hex
+            }
+        )
+    }
+    this.style.font?.let { map["font"] = NBTTag.StringTag(it.toString()) }
+    this.style.bold?.let { map["bold"] = NBTTag.ByteTag(if (it) 1 else 0) }
+    this.style.italic?.let { map["italic"] = NBTTag.ByteTag(if (it) 1 else 0) }
+    this.style.underlined?.let { map["underlined"] = NBTTag.ByteTag(if (it) 1 else 0) }
+    this.style.strikethrough?.let { map["strikethrough"] = NBTTag.ByteTag(if (it) 1 else 0) }
+    this.style.obfuscated?.let { map["obfuscated"] = NBTTag.ByteTag(if (it) 1 else 0) }
+    this.style.shadowColor?.let {
+        when (it) {
+            is TextComponent.ShadowColor.ArgbInt -> map["shadow_color"] = NBTTag.IntTag(it.argb.toInt())
+            is TextComponent.ShadowColor.RgbaFloat -> map["shadow_color"] = NBTTag.ListTag(
+                NBTType.List, mutableListOf(
+                    NBTTag.FloatTag(it.red),
+                    NBTTag.FloatTag(it.green),
+                    NBTTag.FloatTag(it.blue),
+                    NBTTag.FloatTag(it.alpha)
+                )
+            )
+        }
+    }
+
+    if (this.extra.isNotEmpty()) map["extra"] =
+        NBTTag.ListTag(NBTType.List, this.extra.map { it.toNBTCompound() as NBTTag }.toMutableList())
+    this.insertion?.let { map["insertion"] = NBTTag.StringTag(it) }
+    this.clickEvent?.let { map["click_event"] = encodeClickEventToNbt(it) }
+    this.hoverEvent?.let { map["hover_event"] = encodeHoverEventToNbt(it) }
+
+    return NBTTag.CompoundTag(map)
 }
 
 private fun parseContentFromNbt(tag: NBTTag.CompoundTag): TextComponent.Content {
@@ -437,117 +551,6 @@ private fun parseHoverEventFromNbt(tag: NBTTag.CompoundTag): TextComponent.Hover
     }
 }
 
-public fun TextComponent.toNbt(): NBTTag.CompoundTag {
-    val map = mutableMapOf<String, NBTTag>()
-    when (val c = this.content) {
-        is TextComponent.Content.PlainText -> {
-            map["type"] = NBTTag.StringTag("text")
-            map["text"] = NBTTag.StringTag(c.text)
-        }
-
-        is TextComponent.Content.Translatable -> {
-            map["type"] = NBTTag.StringTag("translatable")
-            map["translate"] = NBTTag.StringTag(c.key)
-            c.fallback?.let { map["fallback"] = NBTTag.StringTag(it) }
-            if (c.args.isNotEmpty()) {
-                map["with"] = NBTTag.ListTag(NBTType.List, c.args.map { it.toNbt() as NBTTag }.toMutableList())
-            }
-        }
-
-        is TextComponent.Content.Score -> {
-            map["type"] = NBTTag.StringTag("score")
-            map["score"] = NBTTag.CompoundTag(
-                mutableMapOf(
-                    "name" to NBTTag.StringTag(c.name),
-                    "objective" to NBTTag.StringTag(c.objective)
-                )
-            )
-        }
-
-        is TextComponent.Content.Selector -> {
-            map["type"] = NBTTag.StringTag("selector")
-            map["selector"] = NBTTag.StringTag(c.selector)
-            c.separator?.let { map["separator"] = it.toNbt() }
-        }
-
-        is TextComponent.Content.Keybind -> {
-            map["type"] = NBTTag.StringTag("keybind")
-            map["keybind"] = NBTTag.StringTag(c.keybind)
-        }
-
-        is TextComponent.Content.Nbt -> {
-            map["type"] = NBTTag.StringTag("nbt")
-            map["nbt"] = NBTTag.StringTag(c.path)
-            map["interpret"] = NBTTag.ByteTag(if (c.interpret) 1 else 0)
-            map["plain"] = NBTTag.ByteTag(if (c.plain) 1 else 0)
-            c.separator?.let { map["separator"] = it.toNbt() }
-            when (val s = c.source) {
-                is TextComponent.Content.Nbt.NbtSource.Entity -> map["entity"] = NBTTag.StringTag(s.selector)
-                is TextComponent.Content.Nbt.NbtSource.Block -> map["block"] = NBTTag.StringTag(s.coordinates)
-                is TextComponent.Content.Nbt.NbtSource.Storage -> map["storage"] = NBTTag.StringTag(s.id.toString())
-            }
-        }
-
-        is TextComponent.Content.ObjectContent.Atlas -> {
-            map["type"] = NBTTag.StringTag("object")
-            map["object"] = NBTTag.StringTag("atlas")
-            map["sprite"] = NBTTag.StringTag(c.sprite.toString())
-            map["atlas"] = NBTTag.StringTag(c.atlas.toString())
-        }
-
-        is TextComponent.Content.ObjectContent.Player -> {
-            map["type"] = NBTTag.StringTag("object")
-            map["object"] = NBTTag.StringTag("player")
-            map["hat"] = NBTTag.ByteTag(if (c.hat) 1 else 0)
-            when (val p = c.profile) {
-                is TextComponent.PlayerProfile.Name -> map["player"] = NBTTag.StringTag(p.name)
-                is TextComponent.PlayerProfile.FullProfile -> {
-                    val pMap = mutableMapOf<String, NBTTag>()
-                    p.name?.let { pMap["name"] = NBTTag.StringTag(it) }
-                    p.id?.let { pMap["id"] = NBTTag.StringTag(it.toString()) }
-                    map["player"] = NBTTag.CompoundTag(pMap)
-                }
-            }
-        }
-    }
-
-    this.style.color?.let {
-        map["color"] = NBTTag.StringTag(
-            when (it) {
-                is TextComponent.TextColor.Named -> it.name
-                is TextComponent.TextColor.Hex -> it.hex
-            }
-        )
-    }
-    this.style.font?.let { map["font"] = NBTTag.StringTag(it.toString()) }
-    this.style.bold?.let { map["bold"] = NBTTag.ByteTag(if (it) 1 else 0) }
-    this.style.italic?.let { map["italic"] = NBTTag.ByteTag(if (it) 1 else 0) }
-    this.style.underlined?.let { map["underlined"] = NBTTag.ByteTag(if (it) 1 else 0) }
-    this.style.strikethrough?.let { map["strikethrough"] = NBTTag.ByteTag(if (it) 1 else 0) }
-    this.style.obfuscated?.let { map["obfuscated"] = NBTTag.ByteTag(if (it) 1 else 0) }
-    this.style.shadowColor?.let {
-        when (it) {
-            is TextComponent.ShadowColor.ArgbInt -> map["shadow_color"] = NBTTag.IntTag(it.argb.toInt())
-            is TextComponent.ShadowColor.RgbaFloat -> map["shadow_color"] = NBTTag.ListTag(
-                NBTType.List, mutableListOf(
-                    NBTTag.FloatTag(it.red),
-                    NBTTag.FloatTag(it.green),
-                    NBTTag.FloatTag(it.blue),
-                    NBTTag.FloatTag(it.alpha)
-                )
-            )
-        }
-    }
-
-    if (this.extra.isNotEmpty()) map["extra"] =
-        NBTTag.ListTag(NBTType.List, this.extra.map { it.toNbt() as NBTTag }.toMutableList())
-    this.insertion?.let { map["insertion"] = NBTTag.StringTag(it) }
-    this.clickEvent?.let { map["click_event"] = encodeClickEventToNbt(it) }
-    this.hoverEvent?.let { map["hover_event"] = encodeHoverEventToNbt(it) }
-
-    return NBTTag.CompoundTag(map)
-}
-
 private fun encodeClickEventToNbt(event: TextComponent.ClickEvent): NBTTag.CompoundTag {
     val map = mutableMapOf<String, NBTTag>("action" to NBTTag.StringTag(event.action.text))
     when (event) {
@@ -575,7 +578,7 @@ private fun encodeClickEventToNbt(event: TextComponent.ClickEvent): NBTTag.Compo
 private fun encodeHoverEventToNbt(event: TextComponent.HoverEvent): NBTTag.CompoundTag {
     val map = mutableMapOf<String, NBTTag>("action" to NBTTag.StringTag(event.action.text))
     when (event) {
-        is TextComponent.HoverEvent.ShowText -> map["value"] = event.component.toNbt()
+        is TextComponent.HoverEvent.ShowText -> map["value"] = event.component.toNBTCompound()
         is TextComponent.HoverEvent.ShowItem -> {
             map["id"] = NBTTag.StringTag(event.id.toString())
             map["count"] = NBTTag.IntTag(event.count)
@@ -590,7 +593,7 @@ private fun encodeHoverEventToNbt(event: TextComponent.HoverEvent): NBTTag.Compo
                     intArrayOf(u.i1, u.i2, u.i3, u.i4)
                 )
             }
-            event.name?.let { map["name"] = it.toNbt() }
+            event.name?.let { map["name"] = it.toNBTCompound() }
         }
     }
     return NBTTag.CompoundTag(map)
@@ -617,6 +620,6 @@ internal fun BytesBuffer.readTextComponent(): TextComponent =
     this.readNetworkNBTCompound().element.toTextComponent()
 
 internal fun BytesBuffer.writeTextComponent(component: TextComponent) {
-    val nbt = component.toNbt()
+    val nbt = component.toNBTCompound()
     this.writeNetworkNBTCompound(NBTCompound("", nbt))
 }

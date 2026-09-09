@@ -9,10 +9,10 @@ package cn.rtast.libmc.protocol.client
 import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.crypto.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.network.NetworkChannel
-import cn.rtast.libmc.protocol.packet.handshake.ServerboundHandshakePacket
-import cn.rtast.libmc.protocol.packet.login.serverbound.ServerboundLoginStartPacket
-import cn.rtast.libmc.protocol.protocol.state.HandshakeIntent
-import cn.rtast.libmc.protocol.protocol.state.ProtocolState
+import cn.rtast.libmc.protocol.protocol.event.PacketEventDispatcher
+import cn.rtast.libmc.protocol.protocol.session.Session
+import cn.rtast.libmc.protocol.protocol.session.SessionEvent
+import cn.rtast.libmc.protocol.protocol.session.SessionImpl
 import cn.rtast.libmc.protocol.util.TransactionIdManager
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlinx.coroutines.*
@@ -20,68 +20,51 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 
 public class MinecraftClient internal constructor(
-    private val host: String,
-    private val port: Int,
-    private val username: String,
+    internal val host: String,
+    internal val port: Int,
+    internal val username: String,
     internal val uuid: Uuid,
     internal val accessToken: String?,
     parentJob: Job?,
     private val ioDispatcher: CoroutineDispatcher,
     internal val protocolContext: ProtocolContext,
-) : PacketEventDispatcher(), CoroutineScope {
+    public val session: SessionImpl = SessionImpl(),
+) : PacketEventDispatcher(), CoroutineScope, Session by session {
     internal val stateMachine = ClientStateMachine()
-    public val networkChannel: NetworkChannel = NetworkChannel(host, port, stateMachine, this, protocolContext)
+    public val networkChannel: NetworkChannel = NetworkChannel(this)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
-
-    public val isOnlineMode: Boolean = accessToken != null
-
     public val transactionManager: TransactionIdManager = TransactionIdManager()
-    public val clientTickingLoop: ClientTickingLoop = ClientTickingLoop(this)
 
-    /**
-     * Register a client ticking event callback.
-     * NOTE: Blocking operations will **block** the bot thread.
-     * Using #launch to avoid blocking.
-     */
-    public fun onTick(action: suspend (Long) -> Unit): Unit = run { clientTickingLoop.registerListener(action) }
-
-    public suspend fun connect(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION) {
-        networkChannel.connect()
-        startListening()
-        clientTickingLoop.start()
-        networkChannel.sendPacket(
-            ServerboundHandshakePacket(
-                protocolVersion,
-                host, port.toUShort(),
-                HandshakeIntent.LOGIN
-            )
-        )
-        stateMachine.transitionTo(ProtocolState.LOGIN)
-        networkChannel.sendPacket(ServerboundLoginStartPacket(username, uuid))
+    init {
+        session.attachClient(this)
     }
 
-    public fun setCompression(threshold: Int): Unit = networkChannel.setCompression(threshold)
+    public suspend fun connect() {
+        networkChannel.connect()
+        startListening()
+        session.init()
+        session.emitEvent(SessionEvent.ConnectedEvent)
+    }
 
     private fun startListening() {
         listenJob = launch {
             try {
                 while (isActive) networkChannel.readNextPacket()
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-                if (isActive) {
-                    e.printStackTrace()
-                    println("Network read loop exception: ${e.message}")
-                    close()
-                }
+            } catch (e: Throwable) {
+                if (e is CancellationException) return@launch
+                println("Network read loop exception: ${e.message}")
+            } finally {
+                networkChannel.close()
             }
         }
     }
 
     public fun close() {
         networkChannel.close()
-        clientTickingLoop.stop()
+        listenJob?.cancel()
         clientJob.cancel()
+        cancel()
     }
 
     public override val coroutineContext: CoroutineContext

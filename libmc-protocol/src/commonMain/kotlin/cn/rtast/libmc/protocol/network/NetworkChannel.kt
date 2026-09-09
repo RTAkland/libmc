@@ -6,34 +6,27 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.network.wrap
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.writeBuffer
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
-import cn.rtast.libmc.protocol.client.ClientStateMachine
-import cn.rtast.libmc.protocol.client.PacketEventDispatcher
+import cn.rtast.libmc.protocol.client.MinecraftClient
+import cn.rtast.libmc.protocol.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.protocol.GamePacketsProtocolCodec.clientboundGameProtocols
 import cn.rtast.libmc.protocol.protocol.GamePacketsProtocolCodec.serverboundGameProtocols
 import cn.rtast.libmc.zlibCompress
 import cn.rtast.libmc.zlibDecompress
 import kotlin.concurrent.Volatile
 
-public class NetworkChannel internal constructor(
-    host: String,
-    port: Int,
-    private val stateMachine: ClientStateMachine,
-    private val dispatcher: PacketEventDispatcher,
-    protocolContext: ProtocolContext,
-) {
-    internal val session: NetworkSession = NetworkSession(host, port, protocolContext)
+public class NetworkChannel internal constructor(private val client: MinecraftClient) {
+    internal val networkSession: NetworkSession = NetworkSession(client)
 
     @Volatile
     private var threshold = -1
 
-    public suspend fun connect(): Unit = session.connect()
+    public suspend fun connect(): Unit = networkSession.connect()
     public fun setCompression(threshold: Int): Unit = run { this.threshold = threshold }
 
     /**
@@ -42,8 +35,8 @@ public class NetworkChannel internal constructor(
      * Use [PacketEventDispatcher.onPacket] to get packet event
      */
     public suspend fun readNextPacket(): MinecraftPacket {
-        val packetLength = session.readVarInt()
-        val frameBuf = session.readBytes(packetLength).wrap()
+        val packetLength = networkSession.readVarInt()
+        val frameBuf = networkSession.readBytes(packetLength).wrap()
         val payloadBuf = if (threshold < 0) frameBuf else {
             val dataLength = frameBuf.readVarInt()
             if (dataLength == 0) frameBuf else {
@@ -51,10 +44,10 @@ public class NetworkChannel internal constructor(
                 compressedBytes.zlibDecompress(dataLength).wrap()
             }
         }
-        val currentState = stateMachine.currentState
+        val currentState = client.stateMachine.currentState
         val packetId = payloadBuf.readVarInt()
         val packet = clientboundGameProtocols.getRegistry(currentState).decodePacket(packetId, payloadBuf)
-        dispatcher.dispatchReceive(packet)
+        client.dispatchReceive(packet, client.session)
         return packet
     }
 
@@ -65,7 +58,7 @@ public class NetworkChannel internal constructor(
      */
     public suspend fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
-        serverboundGameProtocols.getRegistry(stateMachine.currentState).encodePacket(uncompressedBodyBuf, packet)
+        serverboundGameProtocols.getRegistry(client.stateMachine.currentState).encodePacket(uncompressedBodyBuf, packet)
         val uncompressedData = uncompressedBodyBuf.toByteArray()
         val frameBuffer = BytesBuffer()
         if (threshold < 0) {
@@ -84,9 +77,9 @@ public class NetworkChannel internal constructor(
             frameBuffer.writeVarInt(contentBuf.size)
             frameBuffer.writeBuffer(contentBuf)
         }
-        session.writeFully(frameBuffer.toByteArray())
-        dispatcher.dispatchSent(packet)
+        networkSession.writeFully(frameBuffer.toByteArray())
+        client.dispatchSent(packet, client.session)
     }
 
-    public fun close(): Unit = session.close()
+    public fun close(): Unit = networkSession.close()
 }

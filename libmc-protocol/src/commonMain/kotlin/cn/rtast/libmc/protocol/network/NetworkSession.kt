@@ -6,18 +6,14 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.crypto.ProtocolContext
 import cn.rtast.libmc.network.RawSocket
 import cn.rtast.libmc.network.ReadChannel
 import cn.rtast.libmc.network.WriteChannel
 import cn.rtast.libmc.primitives.readVarInt
+import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.crypto.Aes128Cfb8ChannelCipher
 
-public class NetworkSession internal constructor(
-    private val host: String,
-    private val port: Int,
-    private val context: ProtocolContext,
-) {
+public class NetworkSession internal constructor(private val client: MinecraftClient) {
     private var socket: RawSocket? = null
     public var readChannel: ReadChannel? = null
         private set
@@ -26,7 +22,7 @@ public class NetworkSession internal constructor(
         private set
 
     public suspend fun connect() {
-        val sk = context.createSocket(host, port)
+        val sk = client.protocolContext.createSocket(client.host, client.port)
         sk.connect()
         this.socket = sk
         this.readChannel = sk.openReadChannel()
