@@ -8,8 +8,8 @@
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readOptional
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.GameMode
@@ -45,8 +45,8 @@ public data class ClientboundRespawnPacket(
             val isDebug = buffer.readBoolean()
             val isFlat = buffer.readBoolean()
             val hasDeathLocation = buffer.readBoolean()
-            val deathDimensionName = buffer.readOptional { readIdentifier() }
-            val deathLocation = buffer.readOptional { readBlockPos() }
+            val deathDimensionName = buffer.readOptional(hasDeathLocation) { readIdentifier() }
+            val deathLocation = buffer.readOptional(hasDeathLocation) { readBlockPos() }
             val portalCooldown = buffer.readVarInt()
             val seaLevel = buffer.readVarInt()
             val dataKept = RespawnDataToKeep.fromByte(buffer.readByte())

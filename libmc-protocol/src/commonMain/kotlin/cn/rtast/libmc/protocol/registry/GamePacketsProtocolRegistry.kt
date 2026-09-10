@@ -4,7 +4,7 @@
  * Date: 2026/9/5
  */
 
-package cn.rtast.libmc.protocol.protocol
+package cn.rtast.libmc.protocol.registry
 
 import cn.rtast.libmc.protocol.packet.configuration.clientbound.*
 import cn.rtast.libmc.protocol.packet.configuration.serverbound.*
@@ -23,7 +23,7 @@ import cn.rtast.libmc.protocol.packet.status.serverbound.ServerboundStatusReques
 import cn.rtast.libmc.protocol.protocol.state.ProtocolState
 import cn.rtast.libmc.protocol.protocol.state.ProtocolStateRegistry
 
-internal object GamePacketsProtocolCodec {
+internal object GamePacketsProtocolRegistry {
     val clientboundGameProtocols = ProtocolStateRegistry().apply {
         register(ProtocolState.STATUS) {
             register(0x00, ClientboundStatusResponsePacket)
@@ -78,9 +78,9 @@ internal object GamePacketsProtocolCodec {
             register(0x0F, ClientboundCommandSuggestionsPacket)
             register(0x10, ClientboundCommandsPacket)
             register(0x11, ClientboundContainerClosePacket)
-//            register(0x12, ClientboundContainerSetContentPacket)
+            register(0x12, ClientboundContainerSetContentPacket)
             register(0x13, ClientboundContainerSetDataPacket)
-//            register(0x14, ClientboundContainerSetSlotPacket)
+            register(0x14, ClientboundContainerSetSlotPacket)
             register(0x15, ClientboundCookieRequestPacket)
             register(0x16, ClientboundCooldownPacket)
             register(0x17, ClientboundCustomChatCompletionsPacket)

@@ -18,7 +18,7 @@ public data class ClientboundDeleteChatPacket(val messageId: Int, val signature:
         override fun encode(buffer: BytesBuffer, value: ClientboundDeleteChatPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundDeleteChatPacket {
             val messageId = buffer.readVarInt()
-            val signature = buffer.readOptional { buffer.readBytes(256) }
+            val signature = buffer.readOptional(messageId == 0) { buffer.readBytes(256) }
             return ClientboundDeleteChatPacket(messageId, signature)
         }
     }
@@ -26,12 +26,9 @@ public data class ClientboundDeleteChatPacket(val messageId: Int, val signature:
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class != other::class) return false
-
         other as ClientboundDeleteChatPacket
-
         if (messageId != other.messageId) return false
         if (!signature.contentEquals(other.signature)) return false
-
         return true
     }
 

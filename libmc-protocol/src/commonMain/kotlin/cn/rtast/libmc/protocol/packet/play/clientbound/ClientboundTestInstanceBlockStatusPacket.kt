@@ -7,12 +7,12 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readOptional
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundTestInstanceBlockStatusPacket(
     val status: TextComponent,
@@ -26,9 +26,9 @@ public data class ClientboundTestInstanceBlockStatusPacket(
         override fun decode(buffer: BytesBuffer): ClientboundTestInstanceBlockStatusPacket {
             val status = buffer.readTextComponent()
             val hasSize = buffer.readBoolean()
-            val sizeX = buffer.readOptional { readDouble() }  // ?
-            val sizeY = buffer.readOptional { readDouble() }  // ?
-            val sizeZ = buffer.readOptional { readDouble() }  // ?
+            val sizeX = buffer.readOptional(hasSize) { readDouble() }
+            val sizeY = buffer.readOptional(hasSize) { readDouble() }
+            val sizeZ = buffer.readOptional(hasSize) { readDouble() }
             return ClientboundTestInstanceBlockStatusPacket(status, hasSize, sizeX, sizeY, sizeZ)
         }
     }

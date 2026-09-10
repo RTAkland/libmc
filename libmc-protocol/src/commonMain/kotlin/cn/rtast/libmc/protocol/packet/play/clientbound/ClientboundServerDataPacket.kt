@@ -7,20 +7,20 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.primitives.readOptional
+import cn.rtast.libmc.primitives.readPrefixOptional
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundServerDataPacket(val motd: TextComponent, val icon: ByteArray?) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundServerDataPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundServerDataPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundServerDataPacket {
             val motd = buffer.readTextComponent()
-            val icon = buffer.readOptional { val length = readVarInt(); readBytes(length) }
+            val icon = buffer.readPrefixOptional { val length = readVarInt(); readBytes(length) }
             return ClientboundServerDataPacket(motd, icon)
         }
     }

@@ -34,7 +34,7 @@ public data class ClientboundWaypointPacket(
                 readRight = { readIdentifier() }
             )
             val iconStyle = buffer.readIdentifier()
-            val color = buffer.readOptional {
+            val color = buffer.readPrefixOptional {
                 val red = readUByte()
                 val green = readUByte()
                 val blue = readUByte()

@@ -9,17 +9,8 @@ package cn.rtast.libmc.primitives
 
 import cn.rtast.libmc.network.BytesBuffer
 
-public inline fun <T> BytesBuffer.readOptional(block: BytesBuffer.() -> T): T? {
-    val hasData = this.readBoolean()
-    return if (hasData) block.invoke(this) else null
-}
+public inline fun <T> BytesBuffer.readOptional(condition: Boolean, block: BytesBuffer.() -> T): T? =
+    if (condition) block() else null
 
-/**
- * buffer.writeOptional(value.someValue) { writeBlockPos(it) }
- */
-public inline fun <T> BytesBuffer.writeOptional(value: T?, block: BytesBuffer.(T) -> Unit) {
-    if (value != null) {
-        this.writeBoolean(true)
-        block.invoke(this, value)
-    } else this.writeBoolean(false)
-}
+public inline fun <T> BytesBuffer.writeOptional(value: T?, block: BytesBuffer.(T) -> Unit): Unit =
+    if (value != null) block.invoke(this, value) else Unit

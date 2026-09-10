@@ -30,7 +30,7 @@ public class MinecraftClient internal constructor(
     internal val protocolContext: ProtocolContext,
     public val session: SessionImpl = SessionImpl(),
 ) : PacketEventDispatcher(), CoroutineScope, Session by session {
-    internal val stateMachine = ClientStateMachine()
+    internal val stateMachine = ClientStateMachine(session)
     public val networkChannel: NetworkChannel = NetworkChannel(this)
     private val clientJob = SupervisorJob(parentJob)
     private var listenJob: Job? = null
@@ -52,8 +52,9 @@ public class MinecraftClient internal constructor(
             try {
                 while (isActive) networkChannel.readNextPacket()
             } catch (e: Throwable) {
-                if (e is CancellationException) return@launch
+                e.printStackTrace()
                 println("Network read loop exception: ${e.message}")
+                if (e is CancellationException) return@launch
             } finally {
                 networkChannel.close()
             }

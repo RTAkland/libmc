@@ -14,8 +14,8 @@ import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.protocol.event.PacketEventDispatcher
-import cn.rtast.libmc.protocol.protocol.GamePacketsProtocolCodec.clientboundGameProtocols
-import cn.rtast.libmc.protocol.protocol.GamePacketsProtocolCodec.serverboundGameProtocols
+import cn.rtast.libmc.protocol.registry.GamePacketsProtocolRegistry.clientboundGameProtocols
+import cn.rtast.libmc.protocol.registry.GamePacketsProtocolRegistry.serverboundGameProtocols
 import cn.rtast.libmc.zlibCompress
 import cn.rtast.libmc.zlibDecompress
 import kotlin.concurrent.Volatile

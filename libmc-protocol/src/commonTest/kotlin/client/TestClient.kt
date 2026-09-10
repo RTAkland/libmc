@@ -9,7 +9,10 @@ package client
 
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.client.createMinecraftClient
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundContainerSetContentPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundContainerSetSlotPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundServerDataPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
 import cn.rtast.libmc.protocol.protocol.session.SessionEvent
 import cn.rtast.libmc.protocol.protocol.session.onEvent
@@ -95,13 +98,14 @@ class TestClient {
             login()
 //            disconnect()
         }
-        cli.onEvent<SessionEvent.DisconnectedEvent> {
-            println(it.reason.toJsonString())
+        cli.onEvent<SessionEvent.ChangedState> {
+            println(it)
         }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
-        cli.onPacket<ClientboundStepTickPacket> { println(it) }
-        cli.on { packet, direction -> println("$direction -> $packet") }
+        cli.onPacket<ClientboundContainerSetSlotPacket> { println(it) }
+//        cli.on { packet, direction -> println("$direction -> $packet") }
         cli.connect()
+
 //        awaitCancellation()
         while (true) {
         }

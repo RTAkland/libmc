@@ -19,7 +19,7 @@ public data class SoundEvent(val name: Identifier, val hasFixedRange: Boolean, v
 internal fun BytesBuffer.readSoundEvent(): SoundEvent {
     val name = readIdentifier()
     val hasFixedRange = readBoolean()
-    val fixedRange = readOptional { readFloat() }
+    val fixedRange = readOptional(hasFixedRange) { readFloat() }
     return SoundEvent(name, hasFixedRange, fixedRange)
 }
 

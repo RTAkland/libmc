@@ -43,7 +43,7 @@ public data class ClientboundPlayerInfoUpdatePacket(
                         }
 
                         PlayerUpdateInfoAction.INITIALIZE_CHAT -> {
-                            buffer.readOptional {
+                            buffer.readPrefixOptional {
                                 SinglePlayerAction.InitializeChat(
                                     readUuid(), readLong(),
                                     readBytes(512), readBytes(4096)

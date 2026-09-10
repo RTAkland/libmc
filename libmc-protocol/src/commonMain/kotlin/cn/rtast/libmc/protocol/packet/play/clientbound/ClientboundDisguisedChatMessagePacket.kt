@@ -7,16 +7,16 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.IdOrX
 import cn.rtast.libmc.primitives.readIdOrX
-import cn.rtast.libmc.primitives.readOptional
+import cn.rtast.libmc.primitives.readPrefixOptional
 import cn.rtast.libmc.protocol.protocol.game.chat.InlineChatType
 import cn.rtast.libmc.protocol.protocol.game.chat.TextComponent
 import cn.rtast.libmc.protocol.protocol.game.chat.readInlineChatType
 import cn.rtast.libmc.protocol.protocol.game.chat.readTextComponent
-import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundDisguisedChatMessagePacket(
     val message: TextComponent,
@@ -30,7 +30,7 @@ public data class ClientboundDisguisedChatMessagePacket(
             val message = buffer.readTextComponent()
             val chatType = buffer.readIdOrX { readInlineChatType() }
             val senderName = buffer.readTextComponent()
-            val targetName = buffer.readOptional { readTextComponent() }
+            val targetName = buffer.readPrefixOptional { readTextComponent() }
             return ClientboundDisguisedChatMessagePacket(message, chatType, senderName, targetName)
         }
     }
