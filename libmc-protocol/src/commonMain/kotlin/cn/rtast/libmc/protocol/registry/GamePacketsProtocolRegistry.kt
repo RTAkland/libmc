@@ -287,7 +287,7 @@ internal object GamePacketsProtocolRegistry {
             register(0x35, ServerboundSetCarriedItemPacket)
             register(0x36, ServerboundSetCommandBlockPacket)
             register(0x37, ServerboundSetCommandMinecartPacket)
-//            register(0x38, ServerboundSetCreativeModeSlotPacket)
+            register(0x38, ServerboundSetCreativeModeSlotPacket)
             register(0x39, ServerboundSetGameRulePacket)
             register(0x3A, ServerboundSetJigsawBlockPacket)
             register(0x3B, ServerboundSetStructureBlockPacket)

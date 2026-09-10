@@ -29,7 +29,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [ ] **Explosion Event Decoder**: Knockback vectors and destroyed block offsets array
 - [ ] **Debug Packets Parsing**: Debug subs, block/entity states, and game performance sample events
 - [ ] **Particle Parsing**
-- [ ] **Slot Data Parsing**
+- [x] **Slot Data Codec**
 
 ---
 
@@ -142,9 +142,9 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x0F` Command Suggestions (`ClientboundCommandSuggestionsPacket`)
 - [x] `0x10` Commands (`ClientboundCommandsPacket`)
 - [x] `0x11` Container Close (`ClientboundContainerClosePacket`)
-- [ ] `0x12` Container Set Content (`ClientboundContainerSetContentPacket`)
+- [x] `0x12` Container Set Content (`ClientboundContainerSetContentPacket`)
 - [x] `0x13` Container Set Data (`ClientboundContainerSetDataPacket`)
-- [ ] `0x14` Container Set Slot (`ClientboundContainerSetSlotPacket`)
+- [x] `0x14` Container Set Slot (`ClientboundContainerSetSlotPacket`)
 - [x] `0x15` Cookie Request (`ClientboundCookieRequestPacket`)
 - [x] `0x16` Cooldown (`ClientboundCooldownPacket`)
 - [x] `0x17` Custom Chat Completions (`ClientboundCustomChatCompletionsPacket`)
