@@ -96,7 +96,7 @@ internal object GamePacketsProtocolRegistry {
             register(0x21, ClientboundDisguisedChatMessagePacket)
             register(0x22, ClientboundEntityEventPacket)
             register(0x23, ClientboundTeleportEntityPacket)
-//            register(0x24, ClientboundExplodePacket)
+            register(0x24, ClientboundExplodePacket)
             register(0x25, ClientboundUnloadChunkPacket)
             register(0x26, ClientboundGameEventPacket)
             register(0x27, ClientboundGameRuleValuesPacket)

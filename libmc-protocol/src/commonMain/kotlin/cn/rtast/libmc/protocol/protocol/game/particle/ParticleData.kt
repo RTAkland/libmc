@@ -45,6 +45,8 @@ public sealed interface ParticleData {
     public data class Item(val itemStack: ItemStack) : ParticleData
 }
 
+internal fun BytesBuffer.readParticleData(id: Int): ParticleData = readParticleData(ParticleType.fromID(id))
+
 internal fun BytesBuffer.readParticleData(type: ParticleType): ParticleData {
     return when (type) {
         ParticleType.ANGRY_VILLAGER,

@@ -10,6 +10,7 @@ package client
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.client.createMinecraftClient
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundContainerSetSlotPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundExplodePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLevelParticlePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLightUpdatePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
@@ -102,8 +103,8 @@ class TestClient {
             println(it)
         }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
-        cli.onPacket<ClientboundLightUpdatePacket> { println(it) }
-        cli.on { packet, direction -> println("$direction -> $packet") }
+        cli.onPacket<ClientboundExplodePacket> { println(it) }
+//        cli.on { packet, direction -> println("$direction -> $packet") }
         cli.connect()
 
 //        awaitCancellation()
