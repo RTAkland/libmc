@@ -18,18 +18,14 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 
 # Minecraft Protocol Library Status
 
-## Implementation details
+## Unimplemented
 
-- [x] **Online Mode Authentication & Encryption/Decryption**: See [Embedded cryptography](docs/Embedded-cryptography.md)
-- [x] **Structured `TextComponent` Parser**: TextComponent AST decoder
-- [x] **Command Tree Parser**: Full binary graph decoder for brigadier nodes, argument types, and suggestions
-- [x] **Recipe Book & Recipe Data**
 - [ ] **Chunk & World Data**: Level Chunk Data with Light decoder (Paletted Containers, Direct/Indirect Palettes)
 - [ ] **Light Engine Update**: Sky & Block light nibble array parser
-- [ ] **Explosion Event Decoder**: Knockback vectors and destroyed block offsets array
 - [ ] **Debug Packets Parsing**: Debug subs, block/entity states, and game performance sample events
-- [ ] **Particle Parsing**
-- [x] **Slot Data Codec**
+
+
+> Encryption was implemented
 
 ---
 
@@ -160,7 +156,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x21` Disguised Chat Message (`ClientboundDisguisedChatMessagePacket`)
 - [x] `0x22` Entity Event (`ClientboundEntityEventPacket`)
 - [x] `0x23` Teleport Entity (`ClientboundTeleportEntityPacket`)
-- [ ] `0x24` Explode (`ClientboundExplodePacket`)
+- [x] `0x24` Explode (`ClientboundExplodePacket`)
 - [x] `0x25` Unload Chunk (`ClientboundUnloadChunkPacket`)
 - [x] `0x26` Game Event (`ClientboundGameEventPacket`)
 - [x] `0x27` Game Rule Values (`ClientboundGameRuleValuesPacket`)
@@ -171,12 +167,12 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x2C` Keep Alive (`ClientboundKeepAlivePlayPacket`)
 - [ ] `0x2D` Level Chunk Update With Light (`ClientboundLevelChunkUpdateWithLightPacket`)
 - [x] `0x2E` Level Event (`ClientboundLevelEventPacket`)
-- [x] `0x2F` Particle (`ClientboundLevelParticlePacket`) **NOTE: Slot data are parsed as raw ByteArray**
-- [ ] `0x30` Light Update (`ClientboundLightUpdatePacket`)
+- [x] `0x2F` Particle (`ClientboundLevelParticlePacket`)
+- [x] `0x30` Light Update (`ClientboundLightUpdatePacket`)
 - [x] `0x31` Login Play (`ClientboundLoginPlayPacket`)
 - [x] `0x32` Low Disk Space Warning (`ClientboundLowDiskSpaceWarningPacket`)
 - [x] `0x33` Map Item Data (`ClientboundMapItemDataPacket`)
-- [ ] `0x34` Merchant Offers (`ClientboundMerchantOffersPacket`)
+- [x] `0x34` Merchant Offers (`ClientboundMerchantOffersPacket`)
 - [x] `0x35` Update Entity Position (`ClientboundUpdateEntityPositionPacket`)
 - [x] `0x36` Update Entity Position and Rotation (`ClientboundUpdateEntityPositionAndRotationPacket`)
 - [x] `0x37` Move Minecart Along Track (`ClientboundMoveMinecartAlongTrackPacket`)
@@ -187,7 +183,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x3C` Open Sign Editor (`ClientboundOpenSignEditorPacket`)
 - [x] `0x3D` Ping (`ClientboundPingPacket`)
 - [x] `0x3E` Pong Response (`ClientboundPongResponsePacket`)
-- [ ] `0x3F` Place Ghost Recipe (`ClientboundPlaceGhostRecipePacket`)
+- [x] `0x3F` Place Ghost Recipe (`ClientboundPlaceGhostRecipePacket`)
 - [x] `0x40` Player Abilities (`ClientboundPlayerAbilitiesPacket`)
 - [x] `0x41` Player Chat Message (`ClientboundPlayerChatMessagePacket`)
 - [x] `0x42` Player End Combat (`ClientboundPlayerEndCombatPacket`)
@@ -198,7 +194,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x47` Player Look At (`ClientboundPlayerLookAtPacket`)
 - [x] `0x48` Synchronize Player Position (`ClientboundSynchronizePlayerPositionPacket`)
 - [x] `0x49` Player Rotation (`ClientboundPlayerRotationPacket`)
-- [ ] `0x4A` Recipe Book Add (`ClientboundRecipeBookAddPacket`)
+- [x] `0x4A` Recipe Book Add (`ClientboundRecipeBookAddPacket`)
 - [x] `0x4B` Recipe Book Remove (`ClientboundRecipeBookRemovePacket`)
 - [x] `0x4C` Recipe Book Settings (`ClientboundRecipeBookSettingsPacket`)
 - [x] `0x4D` Remove Entities (`ClientboundRemoveEntitiesPacket`)
@@ -220,20 +216,20 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x5D` Set Camera (`ClientboundSetCameraPacket`)
 - [x] `0x5E` Set Center Chunk (`ClientboundSetCenterChunkPacket`)
 - [x] `0x5F` Set Render Distance (`ClientboundSetRenderDistancePacket`)
-- [ ] `0x60` Set Cursor Item (`ClientboundSetCursorItemPacket`)
+- [x] `0x60` Set Cursor Item (`ClientboundSetCursorItemPacket`)
 - [x] `0x61` Set Default Spawn Position (`ClientboundSetDefaultSpawnPositionPacket`)
 - [x] `0x62` Set Display Objective (`ClientboundSetDisplayObjectivePacket`)
 - [ ] `0x63` Set Entity Metadata (`ClientboundSetEntityMetadataPacket`)
 - [x] `0x64` Link Entities (`ClientboundLinkEntitiesPacket`)
 - [x] `0x65` Set Entity Velocity (`ClientboundSetEntityVelocityPacket`)
-- [ ] `0x66` Set Equipment (`ClientboundSetEquipmentPacket`)
+- [x] `0x66` Set Equipment (`ClientboundSetEquipmentPacket`)
 - [x] `0x67` Set Experience (`ClientboundSetExperiencePacket`)
 - [x] `0x68` Set Health (`ClientboundSetHealthPacket`)
 - [x] `0x69` Set Carried Item (`ClientboundSetCarriedItemPacket`)
 - [x] `0x6A` Update Objective (`ClientboundUpdateObjectivePacket`)
 - [x] `0x6B` Set Passengers (`ClientboundSetPassengersPacket`)
-- [ ] `0x6C` Set Player Inventory Slot (`ClientboundSetPlayerInventorySlotPacket`)
-- [ ] `0x6D` Set Player Team (`ClientboundSetPlayerTeamPacket`)
+- [x] `0x6C` Set Player Inventory Slot (`ClientboundSetPlayerInventorySlotPacket`)
+- [x] `0x6D` Set Player Team (`ClientboundSetPlayerTeamPacket`)
 - [x] `0x6E` Update Score (`ClientboundUpdateScorePacket`)
 - [x] `0x6F` Set Simulation Distance (`ClientboundSetSimulationDistancePacket`)
 - [x] `0x70` Set Subtitle Text (`ClientboundSetSubtitleTextPacket`)
@@ -254,10 +250,10 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [x] `0x7F` Set Ticking State (`ClientboundSetTickingStatePacket`)
 - [x] `0x80` Step Tick (`ClientboundStepTickPacket`)
 - [x] `0x81` Transfer (`ClientboundTransferPacket`)
-- [ ] `0x82` Update Advancements (`ClientboundUpdateAdvancementsPacket`)
+- [x] `0x82` Update Advancements (`ClientboundUpdateAdvancementsPacket`)
 - [x] `0x83` Update Attributes (`ClientboundUpdateAttributesPacket`)
 - [x] `0x84` Entity Effect (`ClientboundEntityEffectPacket`)
-- [ ] `0x85` Update Recipes (`ClientboundUpdateRecipesPacket`)
+- [x] `0x85` Update Recipes (`ClientboundUpdateRecipesPacket`)
 - [x] `0x86` Update Tags (`ClientboundUpdateTagsPacket`)
 - [x] `0x87` Projectile Power (`ClientboundProjectilePowerPacket`)
 - [x] `0x88` Custom Report Details (`ClientboundCustomReportDetailsPacket`)

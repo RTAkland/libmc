@@ -9,13 +9,14 @@ package client
 
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundContainerSetSlotPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundExplodePacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLevelParticlePacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLightUpdatePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAwardStatisticsPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSetCursorItemPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSetHealthPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundUpdateRecipesPacket
+import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundClientCommandPacket
+import cn.rtast.libmc.protocol.packet.status.clientbound.ClientboundStatusResponsePacket
+import cn.rtast.libmc.protocol.protocol.game.registry.ClientAction
 import cn.rtast.libmc.protocol.protocol.session.SessionEvent
 import cn.rtast.libmc.protocol.protocol.session.onEvent
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
@@ -104,7 +105,10 @@ class TestClient {
             println(it)
         }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
-        cli.onPacket<ClientboundUpdateRecipesPacket> { println(it) }
+        cli.onPacket<ClientboundSetHealthPacket> {
+            if (it.health <= 0) sendPacket(ServerboundClientCommandPacket(ClientAction.PerformRespawn))
+        }
+        cli.onPacket<ClientboundSetCursorItemPacket> { println(it) }
 //        cli.on { packet, direction -> println("$direction -> $packet") }
         cli.connect()
 

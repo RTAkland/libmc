@@ -18,7 +18,7 @@ internal object SlotDisplayDataRegistry : ArrayIndexedRegistry<SlotDisplayData>(
         register(SlotDisplayData.OnlyWithComponent)
         register(SlotDisplayData.Item)
         register(SlotDisplayData.ItemStack)
-        register(SlotDisplayData.Tags)
+        register(SlotDisplayData.Tag)
         register(SlotDisplayData.Dyed)
         register(SlotDisplayData.SmithingTrim)
         register(SlotDisplayData.WithRemainder)

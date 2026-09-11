@@ -7,6 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.session
 
+import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.CURRENT_MINECRAFT_PROTOCOL_VERSION
 import cn.rtast.libmc.protocol.protocol.state.HandshakeIntent
 import kotlin.reflect.KClass
@@ -24,6 +25,7 @@ public interface Session {
     public suspend fun status(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION): String
     public suspend fun disconnect()
     public suspend fun init()
+    public suspend fun sendPacket(packet: MinecraftPacket)
 }
 
 public inline fun <reified T : SessionEvent> Session.onEvent(noinline block: suspend Session.(T) -> Unit) {

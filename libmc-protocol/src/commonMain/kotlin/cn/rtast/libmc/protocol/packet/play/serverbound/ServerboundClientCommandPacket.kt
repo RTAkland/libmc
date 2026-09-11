@@ -8,12 +8,12 @@
 package cn.rtast.libmc.protocol.packet.play.serverbound
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.packet.MinecraftPacket
+import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.writeVarInt
-import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerActionStatus
+import cn.rtast.libmc.protocol.protocol.game.registry.ClientAction
 
-public data class ServerboundClientCommandPacket(val action: PlayerActionStatus) : MinecraftPacket {
+public data class ServerboundClientCommandPacket(val action: ClientAction) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ServerboundClientCommandPacket> {
         override fun encode(buffer: BytesBuffer, value: ServerboundClientCommandPacket) {
             buffer.writeVarInt(value.action.id)

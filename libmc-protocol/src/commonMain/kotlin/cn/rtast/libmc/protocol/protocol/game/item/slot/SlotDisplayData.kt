@@ -8,7 +8,6 @@
 package cn.rtast.libmc.protocol.protocol.game.item.slot
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.packet.EmptyPacketCodec
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writePrefixed
@@ -18,8 +17,16 @@ import cn.rtast.libmc.protocol.protocol.game.readIdentifier
 import cn.rtast.libmc.protocol.protocol.game.writeIdentifier
 
 public sealed interface SlotDisplayData {
-    public data object Empty : SlotDisplayData, EmptyPacketCodec<Empty>(Empty)
-    public data object AnyFuel : SlotDisplayData, EmptyPacketCodec<Empty>(Empty)
+    public data object Empty : SlotDisplayData, PacketCodec<Empty> {
+        override fun encode(buffer: BytesBuffer, value: Empty) {}
+        override fun decode(buffer: BytesBuffer): Empty = Empty
+    }
+
+    public data object AnyFuel : SlotDisplayData, PacketCodec<AnyFuel> {
+        override fun encode(buffer: BytesBuffer, value: AnyFuel) {}
+        override fun decode(buffer: BytesBuffer): AnyFuel = AnyFuel
+    }
+
     public data class WithAnyPotion(val base: SlotDisplay) : SlotDisplayData {
         internal companion object Codec : PacketCodec<WithAnyPotion> {
             override fun encode(buffer: BytesBuffer, value: WithAnyPotion) {
@@ -65,13 +72,13 @@ public sealed interface SlotDisplayData {
         }
     }
 
-    public data class Tags(val tag: Identifier) : SlotDisplayData {
-        internal companion object Codec : PacketCodec<Tags> {
-            override fun encode(buffer: BytesBuffer, value: Tags) {
+    public data class Tag(val tag: Identifier) : SlotDisplayData {
+        internal companion object Codec : PacketCodec<Tag> {
+            override fun encode(buffer: BytesBuffer, value: Tag) {
                 buffer.writeIdentifier(value.tag)
             }
 
-            override fun decode(buffer: BytesBuffer): Tags = Tags(buffer.readIdentifier())
+            override fun decode(buffer: BytesBuffer): Tag = Tag(buffer.readIdentifier())
         }
     }
 
@@ -79,6 +86,7 @@ public sealed interface SlotDisplayData {
         internal companion object Codec : PacketCodec<Dyed> {
             override fun encode(buffer: BytesBuffer, value: Dyed) {
                 buffer.writeSlotDisplay(value.dye)
+                buffer.writeSlotDisplay(value.target)
             }
 
             override fun decode(buffer: BytesBuffer): Dyed {

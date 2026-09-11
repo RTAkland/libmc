@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.registry
 
-public enum class ClientAction(public val actionID: Int) {
+public enum class ClientAction(public val id: Int) {
     /**
      * Sent when the client is ready to respawn after death.
      */
@@ -24,6 +24,6 @@ public enum class ClientAction(public val actionID: Int) {
     RequestGameRuleValues(2);
 
     public companion object {
-        public fun fromID(id: Int): ClientAction = entries.first { it.actionID == id }
+        public fun fromID(id: Int): ClientAction = entries.first { it.id == id }
     }
 }

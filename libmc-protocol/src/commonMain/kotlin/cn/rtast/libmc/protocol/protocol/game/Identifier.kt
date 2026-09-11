@@ -23,9 +23,9 @@ public value class Identifier internal constructor(public val raw: String) {
 
     override fun toString(): String = "$namespace:$path"
 
-    internal companion object Codec : PacketCodec<Identifier> {
-        fun of(namespace: String, path: String): Identifier = Identifier("$namespace:$path")
-        fun of(full: String): Identifier = Identifier(full)
+    public companion object Codec : PacketCodec<Identifier> {
+        public fun of(namespace: String, path: String): Identifier = Identifier("$namespace:$path")
+        public fun of(full: String): Identifier = Identifier(full)
 
         override fun encode(buffer: BytesBuffer, value: Identifier) {
             buffer.writeMcString(value.toString())

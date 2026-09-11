@@ -1,5 +1,6 @@
 package cn.rtast.libmc.protocol.protocol.session
 
+import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.crypto.minecraftServerIdHash
 import cn.rtast.libmc.protocol.crypto.rsaEncrypt
@@ -75,6 +76,8 @@ public class SessionImpl internal constructor() : Session {
             networkChannel.sendPacket(ServerboundSelectKnownPacksPacket(emptyList()))
         }
     }
+
+    public override suspend fun sendPacket(packet: MinecraftPacket): Unit = client.networkChannel.sendPacket(packet)
 
     override fun <T : SessionEvent> _onEvent(clazz: KClass<T>, block: suspend Session.(T) -> Unit) {
         @Suppress("UNCHECKED_CAST")

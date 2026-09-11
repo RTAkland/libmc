@@ -4,7 +4,7 @@ import os
 path = "./registries.json"
 
 with open(path, "r") as f:
-    data = json.loads(f.read())["minecraft:particle_type"]
+    data = json.loads(f.read())["minecraft:recipe_display"]
 
 sorted_entries = sorted(
     data.get('entries', {}).items(),
