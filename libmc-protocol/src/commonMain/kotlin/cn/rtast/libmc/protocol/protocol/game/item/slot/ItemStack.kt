@@ -14,9 +14,7 @@ import cn.rtast.libmc.protocol.protocol.game.data.component.DataComponent
 import cn.rtast.libmc.protocol.registry.readDataComponent
 import cn.rtast.libmc.protocol.registry.writeDataComponent
 
-public typealias ItemStack = Slot
-
-public data class Slot(
+public data class ItemStack(
     val count: Int,
     val itemId: Int?,
     val componentsToAdd: List<DataComponent>,
@@ -25,13 +23,13 @@ public data class Slot(
     val isEmpty: Boolean get() = count <= 0
 
     public companion object {
-        public val EMPTY: Slot = Slot(0, null, emptyList(), emptyList())
+        public val EMPTY: ItemStack = ItemStack(0, null, emptyList(), emptyList())
     }
 }
 
-internal fun BytesBuffer.readSlot(): Slot {
+internal fun BytesBuffer.readItemStack(): ItemStack {
     val count = readVarInt()
-    if (count <= 0) return Slot.EMPTY
+    if (count <= 0) return ItemStack.EMPTY
     val itemId = readVarInt()
     val addCount = readVarInt()
     val removeCount = readVarInt()
@@ -42,18 +40,18 @@ internal fun BytesBuffer.readSlot(): Slot {
     }
     val componentsToRemove = ArrayList<Int>(removeCount)
     repeat(removeCount) { componentsToRemove.add(readVarInt()) }
-    return Slot(count, itemId, componentsToAdd, componentsToRemove)
+    return ItemStack(count, itemId, componentsToAdd, componentsToRemove)
 }
 
-internal fun BytesBuffer.writeSlot(slot: Slot) {
-    if (slot.isEmpty || slot.itemId == null) {
+internal fun BytesBuffer.writeItemStack(itemStack: ItemStack) {
+    if (itemStack.isEmpty || itemStack.itemId == null) {
         writeVarInt(0)
         return
     }
-    writeVarInt(slot.count)
-    writeVarInt(slot.itemId)
-    writeVarInt(slot.componentsToAdd.size)
-    writeVarInt(slot.componentsToRemove.size)
-    for (component in slot.componentsToAdd) writeDataComponent(component)
-    for (typeId in slot.componentsToRemove) writeVarInt(typeId)
+    writeVarInt(itemStack.count)
+    writeVarInt(itemStack.itemId)
+    writeVarInt(itemStack.componentsToAdd.size)
+    writeVarInt(itemStack.componentsToRemove.size)
+    for (component in itemStack.componentsToAdd) writeDataComponent(component)
+    for (typeId in itemStack.componentsToRemove) writeVarInt(typeId)
 }

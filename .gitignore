@@ -52,3 +52,4 @@ bin/
 /libmc-protocol-context/src/commonTest/resources/accessToken.txt
 /libmc-protocol/src/commonTest/resources/accessToken.txt
 /libmc-protocol/src/cinterop/generated_defs/
+/scritps/registries.json

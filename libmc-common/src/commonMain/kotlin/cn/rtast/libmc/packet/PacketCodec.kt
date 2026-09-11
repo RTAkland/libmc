@@ -19,6 +19,11 @@ public interface Decoder<out T> {
 
 public interface PacketCodec<T> : Encoder<T>, Decoder<T>
 
+public abstract class EmptyPacketCodec<T>(private val instance: T) : PacketCodec<T> {
+    override fun encode(buffer: BytesBuffer, value: T) {}
+    override fun decode(buffer: BytesBuffer): T = instance
+}
+
 public fun BytesBuffer.writeBuffer(source: BytesBuffer, length: Int = source.size) {
     if (length <= 0) return
     val bytes = source.readBytes(length)

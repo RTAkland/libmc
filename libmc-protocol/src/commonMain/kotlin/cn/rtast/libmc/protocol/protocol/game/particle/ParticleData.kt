@@ -13,6 +13,8 @@ import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.readBlockPos
 import cn.rtast.libmc.protocol.protocol.game.color.Color24
 import cn.rtast.libmc.protocol.protocol.game.color.readColor24
+import cn.rtast.libmc.protocol.protocol.game.item.slot.ItemStack
+import cn.rtast.libmc.protocol.protocol.game.item.slot.readItemStack
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readVec3d
 
@@ -40,18 +42,7 @@ public sealed interface ParticleData {
 
     public data class Trail(val position: Vec3d, val color: Color24, val durationTicks: Int) : ParticleData
     public data class Shriek(val delay: Int) : ParticleData
-    public data class Item(val slot: ByteArray) : ParticleData {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other == null || this::class != other::class) return false
-            other as Item
-            return slot.contentEquals(other.slot)
-        }
-
-        override fun hashCode(): Int {
-            return slot.contentHashCode()
-        }
-    }
+    public data class Item(val itemStack: ItemStack) : ParticleData
 }
 
 internal fun BytesBuffer.readParticleData(type: ParticleType): ParticleData {
@@ -151,14 +142,14 @@ internal fun BytesBuffer.readParticleData(type: ParticleType): ParticleData {
         ParticleType.SCRAPE,
         ParticleType.EGG_CRACK,
         ParticleType.DUST_PLUME,
-        ParticleType.TRIAL_SPAWNER_DETECTED_PLAYER,
-        ParticleType.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS,
         ParticleType.VAULT_CONNECTION,
         ParticleType.OMINOUS_SPAWNING,
         ParticleType.RAID_OMEN,
         ParticleType.TRIAL_OMEN,
         ParticleType.FIREFLY,
         ParticleType.SULFUR_CUBE_GOO,
+        ParticleType.TRIAL_SPAWNER_DETECTION,
+        ParticleType.TRIAL_SPAWNER_DETECTION_OMINOUS,
             -> ParticleData.Empty
 
         ParticleType.BLOCK,
@@ -191,8 +182,7 @@ internal fun BytesBuffer.readParticleData(type: ParticleType): ParticleData {
         ParticleType.INSTANT_EFFECT,
             -> ParticleData.Effect(this.readColor24(), this.readFloat())
 
-        // slot parsed as raw bytearray
-        ParticleType.ITEM -> ParticleData.Item(this.toByteArray())
+        ParticleType.ITEM -> ParticleData.Item(readItemStack())
         ParticleType.VIBRATION -> {
             val source = when (val sourceTypeId = this.readVarInt()) {
                 0 -> ParticleData.Vibration.VibrationSource.Block(this.readBlockPos())

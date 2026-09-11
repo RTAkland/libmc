@@ -25,9 +25,9 @@ import cn.rtast.libmc.protocol.protocol.game.entity.*
 import cn.rtast.libmc.protocol.protocol.game.item.ItemUseAnimation
 import cn.rtast.libmc.protocol.protocol.game.item.PaintingVariantType
 import cn.rtast.libmc.protocol.protocol.game.item.readPaintingVariantType
-import cn.rtast.libmc.protocol.protocol.game.item.slot.Slot
-import cn.rtast.libmc.protocol.protocol.game.item.slot.readSlot
-import cn.rtast.libmc.protocol.protocol.game.item.slot.writeSlot
+import cn.rtast.libmc.protocol.protocol.game.item.slot.ItemStack
+import cn.rtast.libmc.protocol.protocol.game.item.slot.readItemStack
+import cn.rtast.libmc.protocol.protocol.game.item.slot.writeItemStack
 import cn.rtast.libmc.protocol.protocol.game.item.writePaintingVariantType
 import cn.rtast.libmc.protocol.protocol.game.potion.*
 import cn.rtast.libmc.protocol.protocol.game.readIdentifier
@@ -335,14 +335,14 @@ public sealed interface DataComponent {
         }
     }
 
-    public data class UseRemainderComponent(val remainder: Slot) : DataComponent {
+    public data class UseRemainderComponent(val remainder: ItemStack) : DataComponent {
         internal companion object Codec : PacketCodec<UseRemainderComponent> {
             override fun encode(buffer: BytesBuffer, value: UseRemainderComponent) {
-                buffer.writeSlot(value.remainder)
+                buffer.writeItemStack(value.remainder)
             }
 
             override fun decode(buffer: BytesBuffer): UseRemainderComponent =
-                UseRemainderComponent(buffer.readSlot())
+                UseRemainderComponent(buffer.readItemStack())
         }
     }
 
@@ -722,25 +722,25 @@ public sealed interface DataComponent {
         }
     }
 
-    public data class ChargedProjectilesComponent(val projectiles: List<Slot>) : DataComponent {
+    public data class ChargedProjectilesComponent(val projectiles: List<ItemStack>) : DataComponent {
         internal companion object Codec : PacketCodec<ChargedProjectilesComponent> {
             override fun encode(buffer: BytesBuffer, value: ChargedProjectilesComponent) {
-                buffer.writePrefixed(value.projectiles) { writeSlot(it) }
+                buffer.writePrefixed(value.projectiles) { writeItemStack(it) }
             }
 
             override fun decode(buffer: BytesBuffer): ChargedProjectilesComponent =
-                ChargedProjectilesComponent(buffer.readPrefixed { readSlot() })
+                ChargedProjectilesComponent(buffer.readPrefixed { readItemStack() })
         }
     }
 
-    public data class BundleContentsComponent(val items: List<Slot>) : DataComponent {
+    public data class BundleContentsComponent(val items: List<ItemStack>) : DataComponent {
         internal companion object Codec : PacketCodec<BundleContentsComponent> {
             override fun encode(buffer: BytesBuffer, value: BundleContentsComponent) {
-                buffer.writePrefixed(value.items) { writeSlot(it) }
+                buffer.writePrefixed(value.items) { writeItemStack(it) }
             }
 
             override fun decode(buffer: BytesBuffer): BundleContentsComponent =
-                BundleContentsComponent(buffer.readPrefixed { readSlot() })
+                BundleContentsComponent(buffer.readPrefixed { readItemStack() })
         }
     }
 
@@ -1257,14 +1257,14 @@ public sealed interface DataComponent {
         }
     }
 
-    public data class ContainerComponent(val items: List<Slot>) : DataComponent {
+    public data class ContainerComponent(val items: List<ItemStack>) : DataComponent {
         internal companion object Codec : PacketCodec<ContainerComponent> {
             override fun encode(buffer: BytesBuffer, value: ContainerComponent) {
-                buffer.writePrefixed(value.items) { writeSlot(it) }
+                buffer.writePrefixed(value.items) { writeItemStack(it) }
             }
 
             override fun decode(buffer: BytesBuffer): ContainerComponent {
-                return ContainerComponent(buffer.readPrefixed { readSlot() })
+                return ContainerComponent(buffer.readPrefixed { readItemStack() })
             }
         }
     }
@@ -1341,14 +1341,14 @@ public sealed interface DataComponent {
         }
     }
 
-    public data class SulfurCubeContentComponent(val content: Slot) : DataComponent {
+    public data class SulfurCubeContentComponent(val content: ItemStack) : DataComponent {
         internal companion object Codec : PacketCodec<SulfurCubeContentComponent> {
             override fun encode(buffer: BytesBuffer, value: SulfurCubeContentComponent) {
-                buffer.writeSlot(value.content)
+                buffer.writeItemStack(value.content)
             }
 
             override fun decode(buffer: BytesBuffer): SulfurCubeContentComponent =
-                SulfurCubeContentComponent(buffer.readSlot())
+                SulfurCubeContentComponent(buffer.readItemStack())
         }
     }
 
