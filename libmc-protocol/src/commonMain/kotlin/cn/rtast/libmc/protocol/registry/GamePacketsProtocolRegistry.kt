@@ -108,7 +108,7 @@ internal object GamePacketsProtocolRegistry {
 //            register(0x2D, ClientboundLevelChunkUpdateWithLightPacket)
             register(0x2E, ClientboundLevelEventPacket)
             register(0x2F, ClientboundLevelParticlePacket)
-//            register(0x30, ClientboundLightUpdatePacket)
+            register(0x30, ClientboundLightUpdatePacket)
             register(0x31, ClientboundLoginPlayPacket)
             register(0x32, ClientboundLowDiskSpaceWarningPacket)
             register(0x33, ClientboundMapItemDataPacket)
