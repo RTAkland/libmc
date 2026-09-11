@@ -18,7 +18,6 @@ internal class ClientStateMachine(private val session: Session) {
         private set
 
     suspend fun transitionTo(newState: ProtocolState) {
-        println("Changing State $currentState to $newState")
         currentState = newState
         session.emitEvent(
             when (newState) {

@@ -78,7 +78,7 @@ internal object GamePacketsProtocolRegistry {
             register(0x0F, ClientboundCommandSuggestionsPacket)
             register(0x10, ClientboundCommandsPacket)
             register(0x11, ClientboundContainerClosePacket)
-            register(0x12, ClientboundContainerSetContentPacket)
+//            register(0x12, ClientboundContainerSetContentPacket)  // TODO FIX ME
             register(0x13, ClientboundContainerSetDataPacket)
             register(0x14, ClientboundContainerSetSlotPacket)
             register(0x15, ClientboundCookieRequestPacket)
@@ -193,7 +193,7 @@ internal object GamePacketsProtocolRegistry {
 //            register(0x82, ClientboundUpdateAdvancementsPacket)
             register(0x83, ClientboundUpdateAttributesPacket)
             register(0x84, ClientboundEntityEffectPacket)
-//            register(0x85, ClientboundUpdateRecipesPacket)
+            register(0x85, ClientboundUpdateRecipesPacket)
             register(0x86, ClientboundUpdateTagsPacket)
             register(0x87, ClientboundProjectilePowerPacket)
             register(0x88, ClientboundCustomReportDetailsPacket)

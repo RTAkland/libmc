@@ -15,6 +15,7 @@ import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLevelParticleP
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundLightUpdatePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
+import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundUpdateRecipesPacket
 import cn.rtast.libmc.protocol.protocol.session.SessionEvent
 import cn.rtast.libmc.protocol.protocol.session.onEvent
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
@@ -75,8 +76,8 @@ class TestClient {
     @Test
     fun `test client offline mode`() = runTest {
         val cli = createMinecraftClient(
-            "127.0.0.1", 25566, "11",
-            generateOfflineUuid("11"), null,
+            "127.0.0.1", 25566, "222",
+            generateOfflineUuid("222"), null,
             context = {
                 socketEngine = KtorNetworkEngine()
             }
@@ -103,7 +104,7 @@ class TestClient {
             println(it)
         }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
-        cli.onPacket<ClientboundExplodePacket> { println(it) }
+        cli.onPacket<ClientboundUpdateRecipesPacket> { println(it) }
 //        cli.on { packet, direction -> println("$direction -> $packet") }
         cli.connect()
 

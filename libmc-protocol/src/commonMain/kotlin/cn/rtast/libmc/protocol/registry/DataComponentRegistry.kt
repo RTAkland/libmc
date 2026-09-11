@@ -7,45 +7,9 @@
 package cn.rtast.libmc.protocol.registry
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.data.component.DataComponent
-import kotlin.reflect.KClass
 
-internal object DataComponentRegistry {
-    private val codecMap = mutableMapOf<Int, PacketCodec<out DataComponent>>()
-    private val classToIdMap = mutableMapOf<KClass<out DataComponent>, Int>()
-    private lateinit var codecArray: Array<PacketCodec<DataComponent>>
-
-    private fun <T : DataComponent> register(kClass: KClass<T>, codec: PacketCodec<T>) {
-        val id = codecMap.size
-        codecMap[id] = codec
-        classToIdMap[kClass] = id
-    }
-
-    inline fun <reified T : DataComponent> register(codec: PacketCodec<T>) = register(T::class, codec)
-
-    fun freeze() {
-        val maxId = codecMap.keys.maxOrNull() ?: -1
-        codecArray = Array(maxId + 1) { index ->
-            @Suppress("UNCHECKED_CAST")
-            codecMap[index] as? PacketCodec<DataComponent> ?: error("Missing component codec for $index")
-        }
-        codecMap.clear()
-    }
-
-    internal fun read(typeId: Int, buffer: BytesBuffer): DataComponent {
-        val codec = codecArray.getOrNull(typeId) ?: error("Unknown DataComponent ID: $typeId")
-        return codec.decode(buffer)
-    }
-
-    internal fun write(buffer: BytesBuffer, component: DataComponent) {
-        val typeId = classToIdMap[component::class] ?: error("Unregistered DataComponent class: ${component::class}")
-        val codec = codecArray[typeId]
-        buffer.writeVarInt(typeId)
-        codec.encode(buffer, component)
-    }
-
+internal object DataComponentRegistry : ArrayIndexedRegistry<DataComponent>("DataComponentRegistry") {
     init {
         register(DataComponent.CustomDataComponent)
         register(DataComponent.MaxStackSizeComponent)

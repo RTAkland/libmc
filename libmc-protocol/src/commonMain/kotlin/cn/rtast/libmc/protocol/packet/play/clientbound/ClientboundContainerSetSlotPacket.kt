@@ -11,14 +11,14 @@ import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.protocol.protocol.game.item.slot.ItemStack
-import cn.rtast.libmc.protocol.protocol.game.item.slot.readItemStack
+import cn.rtast.libmc.protocol.protocol.game.item.slot.Slot
+import cn.rtast.libmc.protocol.protocol.game.item.slot.readSlot
 
 public data class ClientboundContainerSetSlotPacket(
     val windowId: Int,
     val stateId: Int,
     val slot: Short,
-    val itemStackData: ItemStack,
+    val slotData: Slot,
 ) : MinecraftPacket {
     internal companion object Codec : PacketCodec<ClientboundContainerSetSlotPacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundContainerSetSlotPacket) {}
@@ -26,7 +26,7 @@ public data class ClientboundContainerSetSlotPacket(
             val windowId = buffer.readVarInt()
             val stateId = buffer.readVarInt()
             val slot = buffer.readShort()
-            val slotData = buffer.readItemStack()
+            val slotData = buffer.readSlot()
             return ClientboundContainerSetSlotPacket(windowId, stateId, slot, slotData)
         }
     }

@@ -13,8 +13,8 @@ import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.readBlockPos
 import cn.rtast.libmc.protocol.protocol.game.color.Color24
 import cn.rtast.libmc.protocol.protocol.game.color.readColor24
-import cn.rtast.libmc.protocol.protocol.game.item.slot.ItemStack
-import cn.rtast.libmc.protocol.protocol.game.item.slot.readItemStack
+import cn.rtast.libmc.protocol.protocol.game.item.slot.Slot
+import cn.rtast.libmc.protocol.protocol.game.item.slot.readSlot
 import cn.rtast.libmc.protocol.protocol.game.math.Vec3d
 import cn.rtast.libmc.protocol.protocol.game.math.readVec3d
 
@@ -42,7 +42,7 @@ public sealed interface ParticleData {
 
     public data class Trail(val position: Vec3d, val color: Color24, val durationTicks: Int) : ParticleData
     public data class Shriek(val delay: Int) : ParticleData
-    public data class Item(val itemStack: ItemStack) : ParticleData
+    public data class Item(val slot: Slot) : ParticleData
 }
 
 internal fun BytesBuffer.readParticleData(id: Int): ParticleData = readParticleData(ParticleType.fromID(id))
@@ -184,7 +184,7 @@ internal fun BytesBuffer.readParticleData(type: ParticleType): ParticleData {
         ParticleType.INSTANT_EFFECT,
             -> ParticleData.Effect(this.readColor24(), this.readFloat())
 
-        ParticleType.ITEM -> ParticleData.Item(readItemStack())
+        ParticleType.ITEM -> ParticleData.Item(readSlot())
         ParticleType.VIBRATION -> {
             val source = when (val sourceTypeId = this.readVarInt()) {
                 0 -> ParticleData.Vibration.VibrationSource.Block(this.readBlockPos())
