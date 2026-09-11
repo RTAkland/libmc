@@ -5,11 +5,7 @@ plugins {
 
 allprojects {
     group = "cn.rtast.libmc"
-    val libVersion = getProperty("libVersion")
-    version = when (name) {
-        "protocol" -> getProperty("protocolVersion") + "-" + libVersion
-        else -> libVersion
-    }
+    version = getProperty("libVersion")
 
     repositories {
         mavenCentral()
@@ -20,7 +16,6 @@ subprojects {
     pluginManager.apply("org.jetbrains.kotlin.multiplatform")
     pluginManager.apply("maven-publish")
 
-    if (project.path.startsWith(":example")) return@subprojects
     publishing {
         repositories {
             maven("https://repo.rtast.cn/packages") {
