@@ -12,6 +12,12 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 |             | Linux ARM64           | **Not Tested**       |
 | **macOS**   | macOS ARM64 (Silicon) | **Not Tested**       |
 
+# Features
+
+- Lightweight: When using libmc on the JVM platform, only `kotlin-stdlib` (~ 1.5 MB) is required; on the
+  Native platform, `kotlinx-io` (~ 700 KB) is needed. libmc itself is ~1.9 MB in size.
+- Embedded crypto lib and tcp socket(General purpose separation module), written in pure kotlin.
+
 # Get started
 
 [LibMC Document](docs/README.md)
@@ -23,8 +29,8 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [ ] **Chunk & World Data**: Level Chunk Data with Light decoder (Paletted Containers, Direct/Indirect Palettes)
 - [ ] **Light Engine Update**: Sky & Block light nibble array parser
 - [ ] **Debug Packets Parsing**: Debug subs, block/entity states, and game performance sample events
-- [ ] **Sign message & verify message signature**
-
+- [ ] **Sign Message & Verify Message Signature**
+- [ ] **Text Component Serializer**: `Raw JSON text component to TextComponent`
 
 > Encryption was implemented
 

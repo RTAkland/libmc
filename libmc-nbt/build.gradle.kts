@@ -15,10 +15,7 @@ kotlin {
             api(project(":common"))
         }
 
-        jvmMain.dependencies {
-
-        }
-
+        jvmMain.dependencies {}
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)

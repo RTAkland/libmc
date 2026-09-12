@@ -76,6 +76,7 @@ public data class ClientboundPlayerChatMessagePacket(
     internal companion object Codec : PacketCodec<ClientboundPlayerChatMessagePacket> {
         override fun encode(buffer: BytesBuffer, value: ClientboundPlayerChatMessagePacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundPlayerChatMessagePacket {
+            println(buffer.peek().toHexString())
             val globalIndex = buffer.readVarInt()
             val sender = buffer.readUuid()
             val index = buffer.readVarInt()

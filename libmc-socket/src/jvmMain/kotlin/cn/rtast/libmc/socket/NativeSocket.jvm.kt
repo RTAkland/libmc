@@ -18,27 +18,32 @@ public actual class NativeSocket actual constructor(private val host: String, pr
 
     public actual fun connect() {
         val s = Socket(host, port)
+        s.tcpNoDelay = true
         this.socket = s
         this.inputStream = s.getInputStream()
         this.outputStream = s.getOutputStream()
     }
 
-    public actual fun send(data: ByteArray): Int {
+    public actual fun send(data: ByteArray): Int = send(data, 0, data.size)
+
+    public actual fun send(data: ByteArray, offset: Int, length: Int): Int {
         val out = outputStream ?: error("Socket is not connected")
-        out.write(data)
+        out.write(data, offset, length)
         out.flush()
-        return data.size
+        return length
     }
 
-    public actual fun receive(data: ByteArray): Int {
+    public actual fun receive(data: ByteArray): Int = receive(data, 0, data.size)
+
+    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int {
         val input = inputStream ?: error("Socket is not connected")
-        return input.read(data)
+        return input.read(data, offset, length)
     }
 
     public actual override fun close() {
+        runCatching { socket?.close() }
         runCatching { inputStream?.close() }
         runCatching { outputStream?.close() }
-        runCatching { socket?.close() }
         inputStream = null
         outputStream = null
         socket = null

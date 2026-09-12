@@ -14,20 +14,20 @@ import kotlin.reflect.KClass
 
 public interface Session {
     @Suppress("FunctionName")
-    public fun <T : SessionEvent> _onEvent(clazz: KClass<T>, block: suspend Session.(T) -> Unit)
-    public suspend fun emitEvent(event: SessionEvent): Unit?
-    public suspend fun login(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION)
-    public suspend fun handshake(
+    public fun <T : SessionEvent> _onEvent(clazz: KClass<T>, block: Session.(T) -> Unit)
+    public fun emitEvent(event: SessionEvent): Unit?
+    public fun login(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION)
+    public fun handshake(
         protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION,
         intent: HandshakeIntent = HandshakeIntent.LOGIN,
     )
 
-    public suspend fun status(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION): String
-    public suspend fun disconnect()
-    public suspend fun init()
-    public suspend fun sendPacket(packet: MinecraftPacket)
+    public fun status(protocolVersion: Int = CURRENT_MINECRAFT_PROTOCOL_VERSION): String
+    public fun disconnect()
+    public fun init()
+    public fun sendPacket(packet: MinecraftPacket)
 }
 
-public inline fun <reified T : SessionEvent> Session.onEvent(noinline block: suspend Session.(T) -> Unit) {
+public inline fun <reified T : SessionEvent> Session.onEvent(noinline block: Session.(T) -> Unit) {
     _onEvent(T::class, block)
 }

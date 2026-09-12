@@ -8,5 +8,5 @@
 package cn.rtast.libmc.protocol.protocol.event
 
 public fun interface ListenerRegistration {
-    public suspend fun unregister()
+    public fun unregister()
 }

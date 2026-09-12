@@ -17,7 +17,7 @@ internal class ClientStateMachine(private val session: Session) {
     var currentState: ProtocolState = ProtocolState.HANDSHAKE
         private set
 
-    suspend fun transitionTo(newState: ProtocolState) {
+    fun transitionTo(newState: ProtocolState) {
         currentState = newState
         session.emitEvent(
             when (newState) {

@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.crypto
 
-import cn.rtast.libmc.crypto.NetworkChannelCipher
+import cn.rtast.libmc.context.NetworkChannelCipher
 
 internal actual class Aes128Cfb8ChannelCipher internal actual constructor(sharedKey: ByteArray) : NetworkChannelCipher {
     private val encryptor = Aes128Cfb8(sharedKey, sharedKey)

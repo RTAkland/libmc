@@ -10,7 +10,9 @@ package cn.rtast.libmc.socket
 public expect class NativeSocket public constructor(host: String, port: Int) : AutoCloseable {
     public fun connect()
     public fun send(data: ByteArray): Int
+    public fun send(data: ByteArray, offset: Int, length: Int): Int
     public fun receive(data: ByteArray): Int
+    public fun receive(data: ByteArray, offset: Int, length: Int): Int
     public override fun close()
 }
 

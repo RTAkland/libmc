@@ -4,7 +4,6 @@
  * Date: 2026/1/25
  */
 
-
 package cn.rtast.libmc.nbt
 
 public fun NBTInput.readStringTag(): String {
@@ -26,7 +25,7 @@ public fun NBTInput.readCompoundTag(): NBTTag.CompoundTag {
     val map = LinkedHashMap<String, NBTTag>()
     while (true) {
         val typeId = readByte().toInt() and 0xFF
-        if (typeId == 0) break // TAG_End
+        if (typeId == 0) break // TAG_End (0x00)
         val name = readStringTag()
         val type = NBTType.fromID(typeId)
         val payload = readTagPayload(type)
@@ -49,38 +48,28 @@ public fun NBTInput.readTagPayload(type: NBTType): NBTTag =
         NBTType.LongArray -> NBTTag.LongArrayTag(LongArray(readInt()) { readLong() })
         NBTType.List -> readListTag()
         NBTType.Compound -> readCompoundTag()
-        NBTType.End -> error("TAG_End no payload")
+        NBTType.End -> error("TAG_End has no payload")
     }
 
-public fun NBTInput.readCompound(): NBTTag {
-    val map = LinkedHashMap<String, NBTTag>()
-    while (true) {
-        val typeId = readByte().toInt()
-        val type = NBTType.fromID(typeId)
-        if (type == NBTType.End) break
-        val nameLen = readShort().toInt() and 0xFFFF
-        val nameBytes = readBytes(nameLen)
-        val name = nameBytes.decodeToString()
-        val value = readTagPayload(type)
-        map[name] = value
-    }
-    return NBTTag.ListTag(NBTType.Compound, map.values.toMutableList())
+public fun NBTInput.readCompound(): NBTTag.CompoundTag {
+    return readCompoundTag()
 }
 
 public fun NBTInput.readNBTRootCompound(): NBTCompound {
-    val rootType = NBTType.fromID(readByte().toInt())
-    require(rootType == NBTType.Compound) { "Root tag must be TAG_Compound" }
-    val nameLen = readShort().toInt() and 0xFFFF
-    val name = readBytes(nameLen).decodeToString()
-    val root = readCompound()
+    val rootTypeId = readByte().toInt() and 0xFF
+    val rootType = NBTType.fromID(rootTypeId)
+    require(rootType == NBTType.Compound) { "Root tag must be TAG_Compound (0x0A), got: 0x${rootTypeId.toString(16).uppercase()}" }
+    val name = readStringTag()
+    val root = readCompoundTag()
     return NBTCompound(name, root)
 }
 
 public fun NBTInput.readNetworkCompound(): NBTCompound {
-    return when (val type = NBTType.fromID(readByte().toInt() and 0xFF)) {
+    val typeId = readByte().toInt() and 0xFF
+    return when (NBTType.fromID(typeId)) {
         NBTType.Compound -> NBTCompound("", readCompoundTag())
         NBTType.String -> NBTCompound("", NBTTag.CompoundTag(linkedMapOf("text" to NBTTag.StringTag(readStringTag()))))
         NBTType.End -> NBTCompound("", NBTTag.CompoundTag(linkedMapOf()))
-        else -> throw UnsupportedOperationException("Unsupported network nbt tag 0x${type.id.toString(16).uppercase()}")
+        else -> throw UnsupportedOperationException("Unsupported network NBT tag 0x${typeId.toString(16).uppercase()}")
     }
 }

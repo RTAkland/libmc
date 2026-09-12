@@ -11,10 +11,7 @@ kotlin {
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {
-        commonMain.dependencies {
-            api(libs.kotlinx.coroutines)
-        }
-
+        commonMain.dependencies {}
         jvmMain.dependencies {}
 
         nativeMain.dependencies {
@@ -24,10 +21,6 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
-        }
-
-        jvmTest.dependencies {
-
         }
     }
 

@@ -37,18 +37,21 @@ public class ReadChannel(private val socket: NativeSocket, bufferSize: Int = 819
             } else {
                 val remainingNeeded = end - current
                 if (remainingNeeded >= buffer.size) {
-                    val bytesRead = socket.receive(out)
+                    // 修复点 1：使用带有 offset 和 length 的 receive 重载，确保数据写入 out[current...] 处
+                    val bytesRead = socket.receive(out, current, remainingNeeded)
                     if (bytesRead <= 0) error("Socket closed or EOF reached")
                     transformer?.transform(out, current, bytesRead)
                     current += bytesRead
-                } else fillBuffer()
+                } else {
+                    fillBuffer()
+                }
             }
         }
     }
 
     private fun fillBuffer() {
         head = 0
-        val bytesRead = socket.receive(buffer)
+        val bytesRead = socket.receive(buffer, 0, buffer.size)
         if (bytesRead <= 0) {
             tail = 0
             throw IllegalStateException("Socket closed or EOF reached")

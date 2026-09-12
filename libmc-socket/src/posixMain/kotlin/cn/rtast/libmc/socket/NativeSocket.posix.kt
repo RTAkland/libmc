@@ -42,7 +42,7 @@ public actual class NativeSocket actual constructor(private val host: String, pr
     }
 
     public actual fun send(data: ByteArray): Int = memScoped {
-        if (socketFd < 0) throw IllegalStateException("Socket is not connected")
+        if (socketFd < 0) error("Socket is not connected")
         if (data.isEmpty()) return 0
         val pinned = data.pin()
         val bytesSent = send(socketFd, pinned.addressOf(0), data.size.toULong(), 0)
@@ -52,10 +52,30 @@ public actual class NativeSocket actual constructor(private val host: String, pr
     }
 
     public actual fun receive(data: ByteArray): Int = memScoped {
-        if (socketFd < 0) throw IllegalStateException("Socket is not connected")
+        if (socketFd < 0) error("Socket is not connected")
         if (data.isEmpty()) return 0
         val pinned = data.pin()
         val bytesRead = recv(socketFd, pinned.addressOf(0), data.size.toULong(), 0)
+        pinned.unpin()
+        if (bytesRead < 0) error("Socket receive failed: errno = $errno")
+        return bytesRead.toInt()
+    }
+
+    public actual fun send(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+        if (socketFd < 0) error("Socket is not connected")
+        if (data.isEmpty() || length <= 0) return 0
+        val pinned = data.pin()
+        val bytesSent = send(socketFd, pinned.addressOf(offset), length.toULong(), 0)
+        pinned.unpin()
+        if (bytesSent < 0) error("Socket send failed: errno = $errno")
+        return bytesSent.toInt()
+    }
+
+    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+        if (socketFd < 0) error("Socket is not connected")
+        if (data.isEmpty() || length <= 0) return 0
+        val pinned = data.pin()
+        val bytesRead = recv(socketFd, pinned.addressOf(offset), length.toULong(), 0)
         pinned.unpin()
         if (bytesRead < 0) error("Socket receive failed: errno = $errno")
         return bytesRead.toInt()

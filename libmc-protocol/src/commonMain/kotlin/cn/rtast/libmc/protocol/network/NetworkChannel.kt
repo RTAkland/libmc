@@ -26,7 +26,7 @@ public class NetworkChannel internal constructor(private val client: MinecraftCl
     @Volatile
     private var threshold = -1
 
-    public suspend fun connect(): Unit = networkSession.connect()
+    public fun connect(): Unit = networkSession.connect()
     public fun setCompression(threshold: Int): Unit = run { this.threshold = threshold }
 
     /**
@@ -34,7 +34,7 @@ public class NetworkChannel internal constructor(private val client: MinecraftCl
      * See [PacketEventDispatcher.dispatchReceive],
      * Use [PacketEventDispatcher.onPacket] to get packet event
      */
-    public suspend fun readNextPacket(): MinecraftPacket {
+    public fun readNextPacket(): MinecraftPacket {
         val packetLength = networkSession.readVarInt()
         val frameBuf = networkSession.readBytes(packetLength).wrap()
         val payloadBuf = if (threshold < 0) frameBuf else {
@@ -56,7 +56,7 @@ public class NetworkChannel internal constructor(private val client: MinecraftCl
      * See [PacketEventDispatcher.dispatchSent],
      * Use [PacketEventDispatcher.onSent] to get packet event
      */
-    public suspend fun sendPacket(packet: MinecraftPacket) {
+    public fun sendPacket(packet: MinecraftPacket) {
         val uncompressedBodyBuf = BytesBuffer()
         serverboundGameProtocols.getRegistry(client.stateMachine.currentState).encodePacket(uncompressedBodyBuf, packet)
         val uncompressedData = uncompressedBodyBuf.toByteArray()

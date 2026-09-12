@@ -18,7 +18,6 @@ import platform.windows.getaddrinfo
 import platform.windows.sockaddr_in6
 import kotlin.AutoCloseable
 import kotlin.ByteArray
-import kotlin.IllegalStateException
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -59,7 +58,7 @@ public actual class NativeSocket actual constructor(private val host: String, pr
     }
 
     public actual fun send(data: ByteArray): Int = memScoped {
-        if (socketFd == INVALID_SOCKET) throw IllegalStateException("Socket is not connected")
+        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
         if (data.isEmpty()) return 0
         val pinned = data.pin()
         val bytesSent = send(socketFd, pinned.addressOf(0).reinterpret(), data.size, 0)
@@ -69,7 +68,7 @@ public actual class NativeSocket actual constructor(private val host: String, pr
     }
 
     public actual fun receive(data: ByteArray): Int = memScoped {
-        if (socketFd == INVALID_SOCKET) throw IllegalStateException("Socket is not connected")
+        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
         if (data.isEmpty()) return 0
         val pinned = data.pin()
         val bytesRead = recv(socketFd, pinned.addressOf(0).reinterpret(), data.size, 0)
@@ -89,6 +88,26 @@ public actual class NativeSocket actual constructor(private val host: String, pr
         val wsaData = alloc<WSADATA>()
         val result = WSAStartup(0x0202.toUShort(), wsaData.ptr)
         if (result != 0) error("WSAStartup failed with error code: $result")
+    }
+
+    public actual fun send(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
+        if (data.isEmpty() || length <= 0) return 0
+        val pinned = data.pin()
+        val bytesSent = send(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
+        pinned.unpin()
+        if (bytesSent < 0) error("Socket send failed with WinSock error: ${WSAGetLastError()}")
+        return bytesSent
+    }
+
+    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
+        if (data.isEmpty() || length <= 0) return 0
+        val pinned = data.pin()
+        val bytesRead = recv(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
+        pinned.unpin()
+        if (bytesRead < 0) error("Socket receive failed with WinSock error: ${WSAGetLastError()}")
+        return bytesRead
     }
 }
 

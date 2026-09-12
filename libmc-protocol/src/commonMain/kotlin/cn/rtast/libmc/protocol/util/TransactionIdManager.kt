@@ -7,8 +7,8 @@
 
 package cn.rtast.libmc.protocol.util
 
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import cn.rtast.libmc.protocol.threads.coroutines.Lock
+import cn.rtast.libmc.protocol.threads.coroutines.withLock
 
 /**
  * Client-side managed transaction id manager,
@@ -18,11 +18,11 @@ public class TransactionIdManager internal constructor() {
     private var queryTransactionCounter: Int = 1
     private var commandSuggestionTransactionCounter: Int = 1
     private var queryEntityTagCounter: Int = 1
-    private val mutex = Mutex()
+    private val lock = Lock()
 
-    public suspend fun nextQueryId(): Int = mutex.withLock { queryTransactionCounter++ }
-    public suspend fun nextCommandSuggestionId(): Int =
-        mutex.withLock { commandSuggestionTransactionCounter++ }
+    public fun nextQueryId(): Int = lock.withLock { queryTransactionCounter++ }
+    public fun nextCommandSuggestionId(): Int =
+        lock.withLock { commandSuggestionTransactionCounter++ }
 
-    public suspend fun nextQueryEntityTagId(): Int = mutex.withLock { queryEntityTagCounter++ }
+    public fun nextQueryEntityTagId(): Int = lock.withLock { queryEntityTagCounter++ }
 }

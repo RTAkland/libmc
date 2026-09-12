@@ -6,17 +6,16 @@
 
 package cn.rtast.libmc.protocol.client
 
-import cn.rtast.libmc.crypto.ProtocolContext
-import cn.rtast.libmc.crypto.ProtocolContextBuilder
+import cn.rtast.libmc.context.ProtocolContext
+import cn.rtast.libmc.context.ProtocolContextBuilder
 import cn.rtast.libmc.protocol.network.NetworkChannel
 import cn.rtast.libmc.protocol.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.protocol.session.Session
 import cn.rtast.libmc.protocol.protocol.session.SessionEvent
 import cn.rtast.libmc.protocol.protocol.session.SessionImpl
+import cn.rtast.libmc.protocol.threads.createFixedThreadPool
 import cn.rtast.libmc.protocol.util.TransactionIdManager
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
-import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 
 public class MinecraftClient internal constructor(
@@ -25,22 +24,19 @@ public class MinecraftClient internal constructor(
     internal val username: String,
     internal val uuid: Uuid,
     internal val accessToken: String?,
-    parentJob: Job?,
-    private val ioDispatcher: CoroutineDispatcher,
     internal val protocolContext: ProtocolContext,
     public val session: SessionImpl = SessionImpl(),
-) : PacketEventDispatcher(), CoroutineScope, Session by session {
+) : PacketEventDispatcher(), Session by session {
     internal val stateMachine = ClientStateMachine(session)
     public val networkChannel: NetworkChannel = NetworkChannel(this)
-    private val clientJob = SupervisorJob(parentJob)
-    private var listenJob: Job? = null
     public val transactionManager: TransactionIdManager = TransactionIdManager()
+    internal val executor = createFixedThreadPool(4)
 
     init {
         session.attachClient(this)
     }
 
-    public suspend fun connect() {
+    public fun connect() {
         networkChannel.connect()
         startListening()
         session.init()
@@ -48,13 +44,12 @@ public class MinecraftClient internal constructor(
     }
 
     private fun startListening() {
-        listenJob = launch {
+        executor.submit {
             try {
                 while (isActive) networkChannel.readNextPacket()
             } catch (e: Throwable) {
                 e.printStackTrace()
                 println("Network read loop exception: ${e.message}")
-                if (e is CancellationException) return@launch
             } finally {
                 networkChannel.close()
             }
@@ -63,13 +58,8 @@ public class MinecraftClient internal constructor(
 
     public fun close() {
         networkChannel.close()
-        listenJob?.cancel()
-        clientJob.cancel()
-        cancel()
+        executor.shutdown()
     }
-
-    public override val coroutineContext: CoroutineContext
-        get() = clientJob + ioDispatcher + CoroutineName("LibMC-MinecraftClient-$username")
 }
 
 public fun createMinecraftClient(
@@ -77,9 +67,7 @@ public fun createMinecraftClient(
     port: Int = 25565,
     username: String,
     uuid: Uuid = generateOfflineUuid(username),
-    accessToken: String?,
-    parentJob: Job? = null,
-    ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    accessToken: String? = null,
     context: ProtocolContextBuilder.() -> Unit,
 ): MinecraftClient {
     val context = ProtocolContextBuilder(accessToken != null).apply(context).build()
@@ -89,8 +77,6 @@ public fun createMinecraftClient(
         username = username,
         uuid = uuid,
         accessToken = accessToken,
-        parentJob = parentJob,
-        ioDispatcher = ioDispatcher,
         protocolContext = context
     )
 }

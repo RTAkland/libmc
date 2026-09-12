@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.crypto
 
-import cn.rtast.libmc.crypto.NetworkChannelCipher
+import cn.rtast.libmc.context.NetworkChannelCipher
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec

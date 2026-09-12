@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.crypto
 
-import cn.rtast.libmc.crypto.NetworkChannelCipher
+import cn.rtast.libmc.context.NetworkChannelCipher
 
 internal expect class Aes128Cfb8ChannelCipher internal constructor(sharedKey: ByteArray) : NetworkChannelCipher {
     override fun encrypt(buffer: ByteArray, offset: Int, length: Int)

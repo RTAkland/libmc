@@ -5,7 +5,7 @@
  */
 
 
-package cn.rtast.libmc.crypto
+package cn.rtast.libmc.context
 
 public interface NetworkChannelCipher {
     public fun encrypt(buffer: ByteArray, offset: Int, length: Int)

@@ -7,6 +7,7 @@
 
 package cn.rtast.libmc.protocol.packet.play.clientbound
 
+import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.*
@@ -15,7 +16,6 @@ import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerInfoUpdateEntry
 import cn.rtast.libmc.protocol.protocol.game.player.action.PlayerUpdateInfoAction
 import cn.rtast.libmc.protocol.protocol.game.player.action.SinglePlayerAction
 import cn.rtast.libmc.protocol.protocol.game.session.GameProfile
-import cn.rtast.libmc.network.BytesBuffer
 
 public data class ClientboundPlayerInfoUpdatePacket(
     val actions: Set<PlayerUpdateInfoAction>,
@@ -44,9 +44,12 @@ public data class ClientboundPlayerInfoUpdatePacket(
 
                         PlayerUpdateInfoAction.INITIALIZE_CHAT -> {
                             buffer.readPrefixOptional {
+                                val uuid = readUuid()
+                                val publicKeyExpireTime = readLong()
+                                val encodedPublicKey = readPrefixedByteArray()
+                                val publicKeySignature = readPrefixedByteArray()
                                 SinglePlayerAction.InitializeChat(
-                                    readUuid(), readLong(),
-                                    readBytes(512), readBytes(4096)
+                                    uuid, publicKeyExpireTime, encodedPublicKey, publicKeySignature
                                 )
                             } ?: SinglePlayerAction.InitializeChat(null, null, null, null)
                         }

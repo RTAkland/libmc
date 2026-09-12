@@ -9,10 +9,13 @@ kotlin {
 
     applyDefaultHierarchyTemplate {
         common {
-            group("posix") {
-                withLinuxX64()
-                withLinuxArm64()
-                withApple()
+            group("native") {
+                withMingwX64()
+                group("posix") {
+                    withLinuxX64()
+                    withLinuxArm64()
+                    withApple()
+                }
             }
         }
     }

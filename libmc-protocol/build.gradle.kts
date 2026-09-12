@@ -1,6 +1,22 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 kotlin {
+    applyDefaultHierarchyTemplate {
+        common {
+            group("native") {
+                withMingwX64()
+                group("posix") {
+                    withLinuxX64()
+                    withLinuxArm64()
+                    withApple()
+                }
+            }
+        }
+    }
+
     explicitApi()
     withSourcesJar()
 

@@ -7,7 +7,7 @@
 
 package client
 
-import cn.rtast.libmc.crypto.AuthenticationProvider
+import cn.rtast.libmc.context.HttpClientProvider
 import cn.rtast.libmc.protocol.client.createMinecraftClient
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSetCursorItemPacket
@@ -20,8 +20,7 @@ import cn.rtast.libmc.protocol.protocol.session.onEvent
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.statement.bodyAsText
 import io.ktor.utils.io.*
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.buffered
@@ -44,12 +43,14 @@ class TestClient {
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
             accessToken,
             context = {
-                authProvider = AuthenticationProvider { url, accessToken, uuid, serverIdHash ->
-                    val status = httpClient.post(url) {
-                        headers { header("Content-Type", "application/json") }
-                        setBody("{\"accessToken\":\"$accessToken\", \"selectedProfile\":\"$uuid\", \"serverId\":\"$serverIdHash\"}")
+                httpClientProvider = HttpClientProvider { url, body, headers ->
+                    httpClient.post(url) {
+                        headers {
+                            headers.forEach { header(it.key, it.value) }
+                            header("Content-Type", "application/json")
+                        }
+                        setBody(body)
                     }
-                    require(status.status == HttpStatusCode.NoContent) { status.bodyAsText() }
                 }
             }
         )
@@ -63,7 +64,7 @@ class TestClient {
         }
         cli.onPacket<ClientboundPlayerChatMessagePacket> { chatTracker.onReceivePlayerChat(it.messageSignature) }
         cli.onPacket<ClientboundStepTickPacket> { println(it) }
-        cli.on { packet, direction -> println("$direction -> $packet") }
+//        cli.on { packet, direction -> println("$direction -> $packet") }
         cli.connect()
 //        awaitCancellation()
         while (true) {
@@ -74,7 +75,7 @@ class TestClient {
     fun `test client offline mode`() = runTest {
         val cli = createMinecraftClient(
             "127.0.0.1", 25566, "222",
-            generateOfflineUuid("222"), null,
+            generateOfflineUuid("222"),
             context = {}
         )
 //        cli.onPacket<ClientboundUnknownPacket> {
