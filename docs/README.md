@@ -11,7 +11,7 @@ module relies on the following dependencies:
 
 | Module Name | Required    | Notes                                                                                                                                                 |
 |:------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
-| HTTP Client | Conditional | Required only when logging into an `online-mode` server to send join request to mojang's session server. [Implement HTTP Client](Impl-http-client.md) |
+| HTTP Client | Conditional | Required only when logging into an `online-mode` server to send join request to mojang's session server. [Implement HTTP Client](Impl-HTTP-Client.md) |
 
 # Get started
 

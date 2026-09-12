@@ -14,18 +14,18 @@ public class ReadChannel(private val socket: NativeSocket, bufferSize: Int = 819
     private var tail = 0
     public var transformer: DataTransformer? = null
 
-    public suspend fun readByte(): Byte {
+    public fun readByte(): Byte {
         if (tail - head < 1) fillBuffer()
         return buffer[head++]
     }
 
-    public suspend fun readBytes(length: Int): ByteArray {
+    public fun readBytes(length: Int): ByteArray {
         val array = ByteArray(length)
         readFully(array, 0, length)
         return array
     }
 
-    public suspend fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size) {
+    public fun readFully(out: ByteArray, start: Int = 0, end: Int = out.size) {
         var current = start
         while (current < end) {
             val bufferedAvailable = tail - head
@@ -46,7 +46,7 @@ public class ReadChannel(private val socket: NativeSocket, bufferSize: Int = 819
         }
     }
 
-    private suspend fun fillBuffer() {
+    private fun fillBuffer() {
         head = 0
         val bytesRead = socket.receive(buffer)
         if (bytesRead <= 0) {

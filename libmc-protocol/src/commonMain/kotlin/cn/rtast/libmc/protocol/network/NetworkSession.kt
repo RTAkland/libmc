@@ -39,8 +39,8 @@ public class NetworkSession internal constructor(private val client: MinecraftCl
         }
     }
 
-    internal suspend fun readBytes(length: Int): ByteArray = requireNotNull(readChannel).readBytes(length)
-    internal suspend fun readVarInt(): Int {
+    internal fun readBytes(length: Int): ByteArray = requireNotNull(readChannel).readBytes(length)
+    internal fun readVarInt(): Int {
         var numRead = 0
         var result = 0
         var read: Byte
