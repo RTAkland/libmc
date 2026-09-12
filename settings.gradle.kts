@@ -14,6 +14,7 @@ rootProject.name = "libmc"
 includeSubModule("common")
 includeSubModule("protocol")
 includeSubModule("nbt")
+includeSubModule("socket")
 
 fun includeSubModule(name: String, path: String? = null) {
     include(":$name")

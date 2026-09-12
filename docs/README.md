@@ -4,14 +4,13 @@ A lightweight, modern Minecraft client protocol library designed for Kotlin Nati
 module relies on the following dependencies:
 
 - Standard Library (`kotlin-stdlib`)
-- I/O (`kotlinx-io`) - Efficiently wraps each packet into a Buffer
+- I/O (`kotlinx-io`, Only needed on native platform) - Efficiently wraps each packet into a Buffer
 - Coroutines (`kotlinx-coroutines`) - Enables high-performance asynchronous operations
 
 ## Required APIs
 
 | Module Name | Required    | Notes                                                                                                                                                 |
 |:------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
-| TCP Socket  | Yes         | The `protocol` module does not have a built-in TCP Socket implementation. [Implement TCP Socket](Impl-tcp-socket.md)                                  |
 | HTTP Client | Conditional | Required only when logging into an `online-mode` server to send join request to mojang's session server. [Implement HTTP Client](Impl-http-client.md) |
 
 # Get started

@@ -7,41 +7,36 @@
 
 package cn.rtast.libmc.network
 
-import kotlinx.io.*
 
-
-public class BytesBuffer {
-    private val _buffer = Buffer()
-
+public expect class BytesBuffer {
     public constructor()
-    public constructor(bytes: ByteArray) {
-        this._buffer.write(bytes)
-    }
+    public constructor(capacity: Int)
+    public constructor(bytes: ByteArray)
+    public constructor(bytes: ByteArray, capacity: Int)
 
-    public fun writeByte(value: Byte): Unit = _buffer.writeByte(value)
-    public fun writeShort(value: Short): Unit = _buffer.writeShort(value)
-    public fun writeInt(value: Int): Unit = _buffer.writeInt(value)
-    public fun writeLong(value: Long): Unit = _buffer.writeLong(value)
-    public fun writeDouble(value: Double): Unit = _buffer.writeDouble(value)
-    public fun writeFloat(value: Float): Unit = _buffer.writeFloat(value)
-    public fun writeBytes(bytes: ByteArray): Unit = _buffer.write(bytes)
-    public fun writeBoolean(value: Boolean): Unit = _buffer.writeByte(if (value) 0x01 else 0x00)
+    public fun writeByte(value: Byte)
+    public fun writeShort(value: Short)
+    public fun writeInt(value: Int)
+    public fun writeLong(value: Long)
+    public fun writeDouble(value: Double)
+    public fun writeFloat(value: Float)
+    public fun writeBytes(bytes: ByteArray)
+    public fun writeBoolean(value: Boolean)
 
-    public fun readByte(): Byte = _buffer.readByte()
-    public fun readUByte(): UByte = _buffer.readUByte()
-    public fun readShort(): Short = _buffer.readShort()
-    public fun readInt(): Int = _buffer.readInt()
-    public fun readLong(): Long = _buffer.readLong()
-    public fun readDouble(): Double = _buffer.readDouble()
-    public fun readFloat(): Float = _buffer.readFloat()
-    public fun readBytes(length: Int): ByteArray = _buffer.readByteArray(length)
-    public fun readBoolean(): Boolean = _buffer.readByte() != 0x00.toByte()
-    public fun toByteArray(): ByteArray = _buffer.readByteArray()
-    public fun peek(): ByteArray = _buffer.peek().readByteArray()
-    public fun close(): Unit = _buffer.close()
-
-    public val size: Int get() = _buffer.size.toInt()
+    public fun readByte(): Byte
+    public fun readUByte(): UByte
+    public fun readShort(): Short
+    public fun readInt(): Int
+    public fun readLong(): Long
+    public fun readDouble(): Double
+    public fun readFloat(): Float
+    public fun readBytes(length: Int): ByteArray
+    public fun readBoolean(): Boolean
+    public fun toByteArray(): ByteArray
+    public fun peek(): ByteArray
+    public fun close()
+    public val size: Int
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun ByteArray.wrap(): BytesBuffer = BytesBuffer(this)
+public inline fun ByteArray.wrap(capacity: Int = this.size): BytesBuffer = BytesBuffer(this, capacity)

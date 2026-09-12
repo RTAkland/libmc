@@ -14,6 +14,7 @@ kotlin {
         commonMain.dependencies {
             api(project(":common"))
             api(project(":nbt"))
+            implementation(project(":socket"))
         }
 
         jvmMain.dependencies {}
@@ -21,7 +22,6 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.ktor.network)
             implementation(libs.ktor.client.core)
         }
 

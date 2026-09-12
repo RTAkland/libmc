@@ -23,6 +23,7 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 - [ ] **Chunk & World Data**: Level Chunk Data with Light decoder (Paletted Containers, Direct/Indirect Palettes)
 - [ ] **Light Engine Update**: Sky & Block light nibble array parser
 - [ ] **Debug Packets Parsing**: Debug subs, block/entity states, and game performance sample events
+- [ ] **Sign message & verify message signature**
 
 
 > Encryption was implemented

@@ -6,23 +6,20 @@
 
 package cn.rtast.libmc.protocol.network
 
-import cn.rtast.libmc.network.RawSocket
-import cn.rtast.libmc.network.ReadChannel
-import cn.rtast.libmc.network.WriteChannel
-import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.protocol.client.MinecraftClient
 import cn.rtast.libmc.protocol.crypto.Aes128Cfb8ChannelCipher
+import cn.rtast.libmc.socket.*
 
 public class NetworkSession internal constructor(private val client: MinecraftClient) {
-    private var socket: RawSocket? = null
+    private var socket: NativeSocket? = null
     public var readChannel: ReadChannel? = null
         private set
 
     public var writeChannel: WriteChannel? = null
         private set
 
-    public suspend fun connect() {
-        val sk = client.protocolContext.createSocket(client.host, client.port)
+    public fun connect() {
+        val sk = NativeSocket(client.host, client.port)
         sk.connect()
         this.socket = sk
         this.readChannel = sk.openReadChannel()
@@ -32,16 +29,32 @@ public class NetworkSession internal constructor(private val client: MinecraftCl
     public fun enableEncryption(sharedKey: ByteArray) {
         val currentRead = requireNotNull(readChannel)
         val currentWrite = requireNotNull(writeChannel)
-        val cipher = Aes128Cfb8ChannelCipher(sharedKey)
-        this.readChannel = CipherReadChannel(currentRead, cipher)
-        this.writeChannel = CipherWriteChannel(currentWrite, cipher)
+        val decryptCipher = Aes128Cfb8ChannelCipher(sharedKey)
+        val encryptCipher = Aes128Cfb8ChannelCipher(sharedKey)
+        currentRead.transformer = DataTransformer { buffer, offset, length ->
+            decryptCipher.decrypt(buffer, offset, length)
+        }
+        currentWrite.transformer = DataTransformer { buffer, offset, length ->
+            encryptCipher.encrypt(buffer, offset, length)
+        }
     }
 
     internal suspend fun readBytes(length: Int): ByteArray = requireNotNull(readChannel).readBytes(length)
+    internal suspend fun readVarInt(): Int {
+        var numRead = 0
+        var result = 0
+        var read: Byte
+        do {
+            read = requireNotNull(readChannel).readByte()
+            val value = (read.toInt() and 0x7F)
+            result = result or (value shl (7 * numRead))
+            numRead++
+            if (numRead > 5) error("VarInt is too big")
+        } while ((read.toInt() and 0x80) != 0)
+        return result
+    }
 
-    internal suspend fun readVarInt(): Int = requireNotNull(readChannel).readVarInt()
-
-    internal suspend fun writeFully(data: ByteArray) {
+    internal fun writeFully(data: ByteArray) {
         val channel = requireNotNull(writeChannel)
         channel.writeFully(data, 0, data.size)
         channel.flush()

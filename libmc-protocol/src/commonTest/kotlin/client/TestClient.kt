@@ -9,13 +9,11 @@ package client
 
 import cn.rtast.libmc.crypto.AuthenticationProvider
 import cn.rtast.libmc.protocol.client.createMinecraftClient
-import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundAwardStatisticsPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundPlayerChatMessagePacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSetCursorItemPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundSetHealthPacket
 import cn.rtast.libmc.protocol.packet.play.clientbound.ClientboundStepTickPacket
 import cn.rtast.libmc.protocol.packet.play.serverbound.ServerboundClientCommandPacket
-import cn.rtast.libmc.protocol.packet.status.clientbound.ClientboundStatusResponsePacket
 import cn.rtast.libmc.protocol.protocol.game.registry.ClientAction
 import cn.rtast.libmc.protocol.protocol.session.SessionEvent
 import cn.rtast.libmc.protocol.protocol.session.onEvent
@@ -29,7 +27,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.io.buffered
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
-import test.KtorNetworkEngine
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -47,7 +44,6 @@ class TestClient {
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
             accessToken,
             context = {
-                socketEngine = KtorNetworkEngine()
                 authProvider = AuthenticationProvider { url, accessToken, uuid, serverIdHash ->
                     val status = httpClient.post(url) {
                         headers { header("Content-Type", "application/json") }
@@ -79,9 +75,7 @@ class TestClient {
         val cli = createMinecraftClient(
             "127.0.0.1", 25566, "222",
             generateOfflineUuid("222"), null,
-            context = {
-                socketEngine = KtorNetworkEngine()
-            }
+            context = {}
         )
 //        cli.onPacket<ClientboundUnknownPacket> {
 //            println(it)

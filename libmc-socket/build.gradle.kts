@@ -1,8 +1,21 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 kotlin {
     explicitApi()
     withSourcesJar()
+
+    applyDefaultHierarchyTemplate {
+        common {
+            group("posix") {
+                withLinuxX64()
+                withLinuxArm64()
+                withApple()
+            }
+        }
+    }
 
     linuxX64()
     linuxArm64()
@@ -11,23 +24,9 @@ kotlin {
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {
-        commonMain.dependencies {
-            api(libs.kotlinx.coroutines)
-        }
-
-        jvmMain.dependencies {}
-
-        nativeMain.dependencies {
-            implementation(libs.kotlinx.io)
-        }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
-        }
-
-        jvmTest.dependencies {
-
         }
     }
 

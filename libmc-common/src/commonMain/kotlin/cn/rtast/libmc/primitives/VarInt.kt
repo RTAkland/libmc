@@ -9,7 +9,6 @@ package cn.rtast.libmc.primitives
 
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.network.ReadChannel
 
 public object VarIntCodec : PacketCodec<Int> {
     override fun encode(buffer: BytesBuffer, value: Int) {
@@ -44,17 +43,3 @@ public fun BytesBuffer.readVarInt(): Int = VarIntCodec.decode(this)
 
 public fun BytesBuffer.writeVarLong(value: Long): Unit = VarLongCodec.encode(this, value)
 public fun BytesBuffer.readVarLong(): Long = VarLongCodec.decode(this)
-
-public suspend fun ReadChannel.readVarInt(): Int {
-    var numRead = 0
-    var result = 0
-    var read: Byte
-    do {
-        read = readByte()
-        val value = (read.toInt() and 0x7F)
-        result = result or (value shl (7 * numRead))
-        numRead++
-        if (numRead > 5) throw IllegalArgumentException("VarInt is too big")
-    } while ((read.toInt() and 0x80) != 0)
-    return result
-}

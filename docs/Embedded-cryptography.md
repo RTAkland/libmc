@@ -1,5 +1,5 @@
 Starting with version `0.2.0` (`26.2-0.2.0`), `libmc` includes a built-in cryptography implementation.
-It uses the JDK's built-in cryptographic APIs on the JVM platform and a pure-Kotlin implementation 
+It uses the JDK's built-in cryptographic APIs on the JVM platform and a pure-Kotlin implementation
 on `kotlin-native` platforms. However, due to a lack of low-level optimizations, performance results
 in encoding and decoding tests are significantly slower than JDK's built-in implementations
 
@@ -26,7 +26,8 @@ A simplified table below shows the benchmark results:
 > - **OS:** Windows 11 64-bit
 > - **Runtime:** Microsoft Build of OpenJDK 17.0.8, Kotlin 2.4.10 (MingwX64 & JVM)
 
-**Fortunately**, except for `AES-128-CFB8` (which requires continuous stream encryption/decryption during networking),
-the other operations (RSA & SHA-1) are only executed once during the initial server authentication phase
+**Fortunately**, except for `AES-128-CFB8` (which requires continuous stream encryption/decryption during networking,
+this only works if connected to a online-mode server), the other operations (RSA & SHA-1) are only executed once during
+the initial server authentication phase
 
 If you have optimized native algorithm implementations (via `cinterop` or other approaches), PRs are welcome
