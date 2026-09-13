@@ -13,7 +13,3 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-core" }
 ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor-core" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-core" }
-
-[plugins]
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-maven-publish = { id = "maven-publish" }

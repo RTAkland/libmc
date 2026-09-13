@@ -1,0 +1,24 @@
+settings:
+  kotlin:
+    version: 2.4.20
+    freeCompilerArgs:
+      - -Xexpect-actual-classes
+
+  jvm:
+    release: 8
+  publishing:
+    enabled: true
+    version: 26.2-0.2.0
+    publishSources: true
+    pom:
+      developers:
+        - name: RTAkland
+      licenses:
+        - name: The Apache License, Version 2.0
+          url: https://www.apache.org/licenses/LICENSE-2.0
+
+repositories:
+  - url: https://repo.rtast.cn/packages
+    publish: true
+  - url: mavenLocal
+    publish: true

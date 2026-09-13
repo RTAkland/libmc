@@ -1,0 +1,19 @@
+apply:
+  - //configure.module-template.yaml
+
+product:
+  type: kmp/lib
+  platforms:
+    - jvm
+    - mingwX64
+    - linuxX64
+    - linuxArm64
+    - macosArm64
+
+aliases:
+  - posix: [ linuxArm64, linuxX64, macosArm64 ]
+
+
+test-dependencies:
+  - $kotlin.test
+  - $libs.kotlinx.coroutines.test

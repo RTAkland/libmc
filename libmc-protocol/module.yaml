@@ -1,0 +1,31 @@
+apply:
+  - //configure.module-template.yaml
+
+product:
+  type: kmp/lib
+  platforms:
+    - jvm
+    - mingwX64
+    - linuxX64
+    - linuxArm64
+    - macosArm64
+
+aliases:
+  - posix: [ linuxArm64, linuxX64, macosArm64 ]
+
+dependencies:
+  - //libmc-common
+  - //libmc-socket
+  - //libmc-nbt
+
+test-dependencies:
+  - $kotlin.test
+  - $libs.kotlinx.coroutines.test
+  - $libs.ktor.client.core
+
+test-dependencies@jvm:
+  - $libs.ktor.client.okhttp
+
+test-dependencies@native:
+  - $libs.ktor.client.curl
+
