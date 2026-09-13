@@ -8,7 +8,7 @@
 package cn.rtast.libmc.network
 
 
-public expect class BytesBuffer {
+public expect class BytesBuffer : AutoCloseable {
     public constructor()
     public constructor(capacity: Int)
     public constructor(bytes: ByteArray)
@@ -31,10 +31,10 @@ public expect class BytesBuffer {
     public fun readDouble(): Double
     public fun readFloat(): Float
     public fun readBytes(length: Int): ByteArray
+    public fun readBytes(): ByteArray
     public fun readBoolean(): Boolean
-    public fun toByteArray(): ByteArray
     public fun peek(): ByteArray
-    public fun close()
+    public override fun close()
     public val size: Int
 }
 

@@ -24,7 +24,7 @@ public data class ClientboundCustomQueryPacket(
         override fun decode(buffer: BytesBuffer): ClientboundCustomQueryPacket {
             val messageId = buffer.readVarInt()
             val channel = buffer.readIdentifier()
-            val data = buffer.toByteArray()
+            val data = buffer.readBytes()
             return ClientboundCustomQueryPacket(messageId, channel, data)
         }
     }

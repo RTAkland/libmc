@@ -18,7 +18,7 @@ public class BytesBufferNBTOutput(
 ) : NBTOutput {
     override fun writeByte(value: Byte): Unit = buffer.writeByte(value)
     override fun writeBytes(value: ByteArray): Unit = buffer.writeBytes(value)
-    override fun toByteArray(): ByteArray = buffer.toByteArray()
+    override fun toByteArray(): ByteArray = buffer.readBytes()
 }
 
 public fun BytesBuffer.toNBTOutput(

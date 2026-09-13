@@ -21,7 +21,7 @@ public data class ClientboundCustomPayloadPacket(
         override fun encode(buffer: BytesBuffer, value: ClientboundCustomPayloadPacket) {}
         override fun decode(buffer: BytesBuffer): ClientboundCustomPayloadPacket {
             val channel = buffer.readIdentifier()
-            val data = buffer.toByteArray()
+            val data = buffer.readBytes()
             return ClientboundCustomPayloadPacket(channel, data)
         }
     }

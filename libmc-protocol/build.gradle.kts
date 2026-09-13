@@ -39,6 +39,7 @@ kotlin {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.core)
+            implementation(libs.kotlinx.io)
         }
 
         jvmTest.dependencies {

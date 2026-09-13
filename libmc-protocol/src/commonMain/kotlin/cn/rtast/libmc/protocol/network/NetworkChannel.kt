@@ -13,7 +13,6 @@ import cn.rtast.libmc.packet.writeBuffer
 import cn.rtast.libmc.primitives.readVarInt
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.client.MinecraftClient
-import cn.rtast.libmc.protocol.protocol.event.PacketEventDispatcher
 import cn.rtast.libmc.protocol.registry.GamePacketsProtocolRegistry.clientboundGameProtocols
 import cn.rtast.libmc.protocol.registry.GamePacketsProtocolRegistry.serverboundGameProtocols
 import cn.rtast.libmc.zlibCompress
@@ -29,55 +28,55 @@ public class NetworkChannel internal constructor(private val client: MinecraftCl
     public fun connect(): Unit = networkSession.connect()
     public fun setCompression(threshold: Int): Unit = run { this.threshold = threshold }
 
-    /**
-     * This function receive all inbound packets, and dispatch as a packet event
-     * See [PacketEventDispatcher.dispatchReceive],
-     * Use [PacketEventDispatcher.onPacket] to get packet event
-     */
     public fun readNextPacket(): MinecraftPacket {
         val packetLength = networkSession.readVarInt()
-        val frameBuf = networkSession.readBytes(packetLength).wrap()
-        val payloadBuf = if (threshold < 0) frameBuf else {
-            val dataLength = frameBuf.readVarInt()
-            if (dataLength == 0) frameBuf else {
-                val compressedBytes = frameBuf.toByteArray()
-                compressedBytes.zlibDecompress(dataLength).wrap()
+        return networkSession.readBytes(packetLength).wrap().use { frameBuf ->
+            val isCompressed = threshold >= 0
+            if (!isCompressed) decodeAndDispatch(frameBuf) else {
+                val dataLength = frameBuf.readVarInt()
+                if (dataLength == 0) decodeAndDispatch(frameBuf) else {
+                    val compressedBytes = frameBuf.readBytes()
+                    compressedBytes.zlibDecompress(dataLength).wrap().use { payloadBuf ->
+                        decodeAndDispatch(payloadBuf)
+                    }
+                }
             }
         }
+    }
+
+    private fun decodeAndDispatch(buf: BytesBuffer): MinecraftPacket {
         val currentState = client.stateMachine.currentState
-        val packetId = payloadBuf.readVarInt()
-        val packet = clientboundGameProtocols.getRegistry(currentState).decodePacket(packetId, payloadBuf)
+        val packetId = buf.readVarInt()
+        val packet = clientboundGameProtocols.getRegistry(currentState).decodePacket(packetId, buf)
         client.dispatchReceive(packet, client.session)
         return packet
     }
 
-    /**
-     * This function will dispatch a packet event when packet was sent.
-     * See [PacketEventDispatcher.dispatchSent],
-     * Use [PacketEventDispatcher.onSent] to get packet event
-     */
     public fun sendPacket(packet: MinecraftPacket) {
-        val uncompressedBodyBuf = BytesBuffer()
-        serverboundGameProtocols.getRegistry(client.stateMachine.currentState).encodePacket(uncompressedBodyBuf, packet)
-        val uncompressedData = uncompressedBodyBuf.toByteArray()
-        val frameBuffer = BytesBuffer()
-        if (threshold < 0) {
-            frameBuffer.writeVarInt(uncompressedData.size)
-            frameBuffer.writeBytes(uncompressedData)
-        } else {
-            val contentBuf = BytesBuffer()
-            if (uncompressedData.size < threshold) {
-                contentBuf.writeVarInt(0)
-                contentBuf.writeBytes(uncompressedData)
-            } else {
-                val compressedData = uncompressedData.zlibCompress()
-                contentBuf.writeVarInt(uncompressedData.size)
-                contentBuf.writeBytes(compressedData)
+        BytesBuffer().use { uncompressedBodyBuf ->
+            serverboundGameProtocols.getRegistry(client.stateMachine.currentState)
+                .encodePacket(uncompressedBodyBuf, packet)
+            BytesBuffer().use { frameBuffer ->
+                if (threshold < 0) {
+                    frameBuffer.writeVarInt(uncompressedBodyBuf.size)
+                    frameBuffer.writeBuffer(uncompressedBodyBuf)
+                } else {
+                    BytesBuffer().use { contentBuf ->
+                        if (uncompressedBodyBuf.size < threshold) {
+                            contentBuf.writeVarInt(0)
+                            contentBuf.writeBuffer(uncompressedBodyBuf)
+                        } else {
+                            val compressedData = uncompressedBodyBuf.peek().zlibCompress()
+                            contentBuf.writeVarInt(uncompressedBodyBuf.size)
+                            contentBuf.writeBytes(compressedData)
+                        }
+                        frameBuffer.writeVarInt(contentBuf.size)
+                        frameBuffer.writeBuffer(contentBuf)
+                    }
+                }
+                networkSession.writeFully(frameBuffer.readBytes())
             }
-            frameBuffer.writeVarInt(contentBuf.size)
-            frameBuffer.writeBuffer(contentBuf)
         }
-        networkSession.writeFully(frameBuffer.toByteArray())
         client.dispatchSent(packet, client.session)
     }
 

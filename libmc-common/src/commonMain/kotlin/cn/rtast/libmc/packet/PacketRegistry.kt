@@ -27,7 +27,7 @@ public class PacketRegistry {
     }
 
     public fun decodePacket(packetId: Int, buffer: BytesBuffer): MinecraftPacket =
-        idToCodec[packetId]?.decode(buffer) ?: ClientboundUnknownPacket(packetId, buffer.toByteArray())
+        idToCodec[packetId]?.decode(buffer) ?: ClientboundUnknownPacket(packetId, buffer.readBytes())
 
     public fun <T : MinecraftPacket> encodePacket(buffer: BytesBuffer, packet: T) {
         @Suppress("UNCHECKED_CAST")

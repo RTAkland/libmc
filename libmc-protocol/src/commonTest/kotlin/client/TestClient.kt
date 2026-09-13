@@ -20,7 +20,6 @@ import cn.rtast.libmc.protocol.protocol.session.onEvent
 import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.bodyAsText
 import io.ktor.utils.io.*
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.buffered
@@ -31,13 +30,14 @@ import kotlin.uuid.Uuid
 
 
 class TestClient {
-    val accessToken = SystemFileSystem.source(Path("src/commonTest/resources/accessToken.txt"))
-        .buffered().use { it.readText() }
+
     private val chatTracker = ClientChatTracker()
     private val httpClient = HttpClient()
 
     @Test
     fun `test client`() = runTest {
+        val accessToken = SystemFileSystem.source(Path("src/commonTest/resources/accessToken.txt"))
+            .buffered().use { it.readText() }
         val cli = createMinecraftClient(
             "127.0.0.1", 25565, "RTAkland",
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
