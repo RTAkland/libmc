@@ -14,9 +14,9 @@ A lightweight minecraft client-side protocol library for Kotlin Native and JVM
 
 # Features
 
-- Lightweight: When using libmc on the JVM platform, only `kotlin-stdlib` (~ 1.5 MB) is required; on the
-  Native platform, `kotlinx-io` (~ 700 KB) is needed. libmc itself is ~1.9 MB in size.
-- Embedded crypto lib and tcp socket(General purpose separation module), written in pure kotlin.
+- Lightweight: `kotlin-stdlib` is all dependencies you need.
+- Low memory usage
+- Embedded crypto lib and tcp socket, written in pure kotlin, based on platform API
 
 # Get started
 
