@@ -32,8 +32,7 @@ public class WriteChannel(private val socket: NativeSocket, bufferSize: Int = 81
         transformer?.transform(buffer, 0, position)
         var current = 0
         while (current < position) {
-            val chunk = buffer.copyOfRange(current, position)
-            val written = socket.send(chunk)
+            val written = socket.send(buffer, current, position - current)
             if (written <= 0) error("Failed to write to socket, connection closed")
             current += written
         }

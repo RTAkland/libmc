@@ -16,21 +16,23 @@ import platform.windows.addrinfo
 import platform.windows.freeaddrinfo
 import platform.windows.getaddrinfo
 import platform.windows.sockaddr_in6
-import kotlin.AutoCloseable
-import kotlin.ByteArray
-import kotlin.Int
-import kotlin.OptIn
-import kotlin.String
-import kotlin.Unit
-import kotlin.error
-import kotlin.toULong
-import kotlin.toUShort
+
+private object WinsockManager {
+    val isInitialized: Boolean by lazy {
+        memScoped {
+            val wsaData = alloc<WSADATA>()
+            val result = WSAStartup(0x0202.toUShort(), wsaData.ptr)
+            if (result != 0) error("WSAStartup failed with error code: $result")
+            true
+        }
+    }
+}
 
 public actual class NativeSocket actual constructor(private val host: String, private val port: Int) : AutoCloseable {
     private var socketFd: SOCKET = INVALID_SOCKET
 
     public actual fun connect(): Unit = memScoped {
-        initWinSock()
+        check(WinsockManager.isInitialized)
         val hints = alloc<addrinfo>()
         memset(hints.ptr, 0, sizeOf<addrinfo>().toULong())
         hints.ai_family = AF_UNSPEC
@@ -46,6 +48,7 @@ public actual class NativeSocket actual constructor(private val host: String, pr
             if (socketFd != INVALID_SOCKET) {
                 if (connect(socketFd, ai.ai_addr, ai.ai_addrlen.toInt()) == 0) {
                     connected = true
+                    setsockopt(socketFd, IPPROTO_TCP, TCP_NODELAY, "\u0001", 1)  // why there is string required?
                     break
                 }
                 closesocket(socketFd)
@@ -54,27 +57,29 @@ public actual class NativeSocket actual constructor(private val host: String, pr
             ptr = ai.ai_next
         }
         if (res.value != null) freeaddrinfo(res.value)
-        if (!connected || socketFd == INVALID_SOCKET) error("Could not connect to $host:$port via IPv4 or IPv6")
+        if (!connected || socketFd == INVALID_SOCKET) error("Could not connect to $host:$port")
     }
 
-    public actual fun send(data: ByteArray): Int = memScoped {
+    public actual fun send(data: ByteArray): Int = send(data, 0, data.size)
+    public actual fun receive(data: ByteArray): Int = receive(data, 0, data.size)
+    public actual fun send(data: ByteArray, offset: Int, length: Int): Int {
         if (socketFd == INVALID_SOCKET) error("Socket is not connected")
-        if (data.isEmpty()) return 0
-        val pinned = data.pin()
-        val bytesSent = send(socketFd, pinned.addressOf(0).reinterpret(), data.size, 0)
-        pinned.unpin()
-        if (bytesSent < 0) error("Socket send failed with WinSock error: ${WSAGetLastError()}")
-        return bytesSent
+        if (data.isEmpty() || length <= 0) return 0
+        return data.usePinned { pinned ->
+            val bytesSent = send(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
+            if (bytesSent < 0) error("Socket send failed with WinSock error: ${WSAGetLastError()}")
+            bytesSent
+        }
     }
 
-    public actual fun receive(data: ByteArray): Int = memScoped {
+    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int {
         if (socketFd == INVALID_SOCKET) error("Socket is not connected")
-        if (data.isEmpty()) return 0
-        val pinned = data.pin()
-        val bytesRead = recv(socketFd, pinned.addressOf(0).reinterpret(), data.size, 0)
-        pinned.unpin()
-        if (bytesRead < 0) error("Socket receive failed with WinSock error: ${WSAGetLastError()}")
-        return bytesRead
+        if (data.isEmpty() || length <= 0) return 0
+        return data.usePinned { pinned ->
+            val bytesRead = recv(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
+            if (bytesRead < 0) error("Socket receive failed with WinSock error: ${WSAGetLastError()}")
+            bytesRead
+        }
     }
 
     public actual override fun close() {
@@ -83,37 +88,10 @@ public actual class NativeSocket actual constructor(private val host: String, pr
             socketFd = INVALID_SOCKET
         }
     }
-
-    private fun initWinSock() = memScoped {
-        val wsaData = alloc<WSADATA>()
-        val result = WSAStartup(0x0202.toUShort(), wsaData.ptr)
-        if (result != 0) error("WSAStartup failed with error code: $result")
-    }
-
-    public actual fun send(data: ByteArray, offset: Int, length: Int): Int = memScoped {
-        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
-        if (data.isEmpty() || length <= 0) return 0
-        val pinned = data.pin()
-        val bytesSent = send(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
-        pinned.unpin()
-        if (bytesSent < 0) error("Socket send failed with WinSock error: ${WSAGetLastError()}")
-        return bytesSent
-    }
-
-    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int = memScoped {
-        if (socketFd == INVALID_SOCKET) error("Socket is not connected")
-        if (data.isEmpty() || length <= 0) return 0
-        val pinned = data.pin()
-        val bytesRead = recv(socketFd, pinned.addressOf(offset).reinterpret(), length, 0)
-        pinned.unpin()
-        if (bytesRead < 0) error("Socket receive failed with WinSock error: ${WSAGetLastError()}")
-        return bytesRead
-    }
 }
 
 internal actual fun resolveHostToIp(host: String): List<String> = memScoped {
-    val wsaData = alloc<WSADATA>()
-    if (WSAStartup(0x0202.toUShort(), wsaData.ptr) != 0) error("WSAStartup failed")
+    check(WinsockManager.isInitialized)
     val ips = mutableListOf<String>()
     val hints = alloc<addrinfo>()
     memset(hints.ptr, 0, sizeOf<addrinfo>().toULong())
@@ -123,27 +101,34 @@ internal actual fun resolveHostToIp(host: String): List<String> = memScoped {
     if (getaddrinfo(host, null, hints.ptr, resultPtr.ptr) != 0) error("Failed to resolve host '$host'")
     var current = resultPtr.value
     val ipBuffer = allocArray<ByteVar>(INET6_ADDRSTRLEN)
+    val inetNtop = InetNtopA
     while (current != null) {
         val addr = current.pointed
         val family = addr.ai_family
-        if (family == AF_INET) {
-            val sockaddrIn = addr.ai_addr?.reinterpret<sockaddr_in>()
-            if (sockaddrIn != null) if (InetNtopA?.invoke(
-                    AF_INET,
-                    sockaddrIn.pointed.sin_addr.ptr,
-                    ipBuffer,
-                    INET6_ADDRSTRLEN.toULong()
-                ) != null
-            ) ips.add(ipBuffer.toKString())
-        } else if (family == AF_INET6) {
-            val sockaddrIn6 = addr.ai_addr?.reinterpret<sockaddr_in6>()
-            if (sockaddrIn6 != null) if (InetNtopA?.invoke(
-                    AF_INET6,
-                    sockaddrIn6.pointed.sin6_addr.ptr,
-                    ipBuffer,
-                    INET6_ADDRSTRLEN.toULong()
-                ) != null
-            ) ips.add(ipBuffer.toKString())
+        if (inetNtop != null) {
+            if (family == AF_INET) {
+                val sockaddrIn = addr.ai_addr?.reinterpret<sockaddr_in>()
+                if (sockaddrIn != null) {
+                    if (inetNtop.invoke(
+                            AF_INET,
+                            sockaddrIn.pointed.sin_addr.ptr,
+                            ipBuffer,
+                            INET6_ADDRSTRLEN.toULong()
+                        ) != null
+                    ) ips.add(ipBuffer.toKString())
+                }
+            } else if (family == AF_INET6) {
+                val sockaddrIn6 = addr.ai_addr?.reinterpret<sockaddr_in6>()
+                if (sockaddrIn6 != null) {
+                    if (inetNtop.invoke(
+                            AF_INET6,
+                            sockaddrIn6.pointed.sin6_addr.ptr,
+                            ipBuffer,
+                            INET6_ADDRSTRLEN.toULong()
+                        ) != null
+                    ) ips.add(ipBuffer.toKString())
+                }
+            }
         }
         current = addr.ai_next
     }

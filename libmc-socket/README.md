@@ -7,6 +7,11 @@ It supports resolve `host`, `ipv4` and `ipv6`. Also provided a `DataTransformer`
 it means you can inject a transformer to modify the bytes before send and after receive.
 This used for encrypt/decrypt data from/to an online-mode Minecraft server.
 
+
+## Unimplemented
+
+- [ ] SRV record resolve
+
 ```kotlin
 fun main() {
     val socket = NativeSocket("127.0.0.1", 25565)

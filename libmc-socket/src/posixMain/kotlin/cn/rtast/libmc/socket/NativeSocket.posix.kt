@@ -30,6 +30,8 @@ public actual class NativeSocket actual constructor(private val host: String, pr
             if (socketFd >= 0) {
                 if (connect(socketFd, ai.ai_addr, ai.ai_addrlen) == 0) {
                     connected = true
+                    val flag = alloc<IntVar>().apply { value = 1 }
+                    setsockopt(socketFd, IPPROTO_TCP, TCP_NODELAY, flag.ptr, sizeOf<IntVar>().toUInt())
                     break
                 }
                 close(socketFd)
@@ -38,47 +40,29 @@ public actual class NativeSocket actual constructor(private val host: String, pr
             ptr = ai.ai_next
         }
         if (res.value != null) freeaddrinfo(res.value)
-        if (!connected || socketFd < 0) error("Could not connect to $host:$port via IPv4 or IPv6")
+        if (!connected || socketFd < 0) error("Could not connect to $host:$port")
     }
 
-    public actual fun send(data: ByteArray): Int = memScoped {
-        if (socketFd < 0) error("Socket is not connected")
-        if (data.isEmpty()) return 0
-        val pinned = data.pin()
-        val bytesSent = send(socketFd, pinned.addressOf(0), data.size.toULong(), 0)
-        pinned.unpin()
-        if (bytesSent < 0) error("Socket send failed: errno = $errno")
-        return bytesSent.toInt()
-    }
-
-    public actual fun receive(data: ByteArray): Int = memScoped {
-        if (socketFd < 0) error("Socket is not connected")
-        if (data.isEmpty()) return 0
-        val pinned = data.pin()
-        val bytesRead = recv(socketFd, pinned.addressOf(0), data.size.toULong(), 0)
-        pinned.unpin()
-        if (bytesRead < 0) error("Socket receive failed: errno = $errno")
-        return bytesRead.toInt()
-    }
-
-    public actual fun send(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+    public actual fun send(data: ByteArray): Int = send(data, 0, data.size)
+    public actual fun receive(data: ByteArray): Int = receive(data, 0, data.size)
+    public actual fun send(data: ByteArray, offset: Int, length: Int): Int {
         if (socketFd < 0) error("Socket is not connected")
         if (data.isEmpty() || length <= 0) return 0
-        val pinned = data.pin()
-        val bytesSent = send(socketFd, pinned.addressOf(offset), length.toULong(), 0)
-        pinned.unpin()
-        if (bytesSent < 0) error("Socket send failed: errno = $errno")
-        return bytesSent.toInt()
+        return data.usePinned { pinned ->
+            val bytesSent = send(socketFd, pinned.addressOf(offset), length.toULong(), 0)
+            if (bytesSent < 0) error("Socket send failed: errno = $errno")
+            bytesSent.toInt()
+        }
     }
 
-    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int = memScoped {
+    public actual fun receive(data: ByteArray, offset: Int, length: Int): Int {
         if (socketFd < 0) error("Socket is not connected")
         if (data.isEmpty() || length <= 0) return 0
-        val pinned = data.pin()
-        val bytesRead = recv(socketFd, pinned.addressOf(offset), length.toULong(), 0)
-        pinned.unpin()
-        if (bytesRead < 0) error("Socket receive failed: errno = $errno")
-        return bytesRead.toInt()
+        return data.usePinned { pinned ->
+            val bytesRead = recv(socketFd, pinned.addressOf(offset), length.toULong(), 0)
+            if (bytesRead < 0) error("Socket receive failed: errno = $errno")
+            bytesRead.toInt()
+        }
     }
 
     public actual override fun close() {
@@ -106,8 +90,7 @@ internal actual fun resolveHostToIp(host: String): List<String> = memScoped {
             if (sockaddrIn != null) formatSockAddrToIp(AF_INET, sockaddrIn.pointed.sin_addr.ptr)?.let { ips.add(it) }
         } else if (family == AF_INET6) {
             val sockaddrIn6 = addr.ai_addr?.reinterpret<sockaddr_in6>()
-            if (sockaddrIn6 != null) formatSockAddrToIp(AF_INET6, sockaddrIn6.pointed.sin6_addr.ptr)
-                ?.let { ips.add(it) }
+            if (sockaddrIn6 != null) formatSockAddrToIp(AF_INET6, sockaddrIn6.pointed.sin6_addr.ptr)?.let { ips.add(it) }
         }
         current = addr.ai_next
     }

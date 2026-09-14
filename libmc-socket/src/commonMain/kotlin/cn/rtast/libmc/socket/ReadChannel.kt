@@ -6,8 +6,6 @@
 
 package cn.rtast.libmc.socket
 
-import kotlin.math.min
-
 public class ReadChannel(private val socket: NativeSocket, bufferSize: Int = 8192) {
     private val buffer = ByteArray(bufferSize)
     private var head = 0
@@ -30,21 +28,20 @@ public class ReadChannel(private val socket: NativeSocket, bufferSize: Int = 819
         while (current < end) {
             val bufferedAvailable = tail - head
             if (bufferedAvailable > 0) {
-                val toCopy = min(bufferedAvailable, end - current)
+                val toCopy = minOf(bufferedAvailable, end - current)
                 buffer.copyInto(out, current, head, head + toCopy)
                 head += toCopy
                 current += toCopy
             } else {
+                head = 0
+                tail = 0
                 val remainingNeeded = end - current
                 if (remainingNeeded >= buffer.size) {
-                    // 修复点 1：使用带有 offset 和 length 的 receive 重载，确保数据写入 out[current...] 处
                     val bytesRead = socket.receive(out, current, remainingNeeded)
                     if (bytesRead <= 0) error("Socket closed or EOF reached")
                     transformer?.transform(out, current, bytesRead)
                     current += bytesRead
-                } else {
-                    fillBuffer()
-                }
+                } else fillBuffer()
             }
         }
     }

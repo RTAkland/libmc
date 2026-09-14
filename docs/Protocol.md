@@ -6,9 +6,7 @@ public fun main() = runBlocking {
         "127.0.0.1", 25566, "MyBot",
         generateOfflineUuid("MyBot"),
         accessToken = null,
-        context = {
-            socketEngine = KtorNetworkEngine()
-        }
+        context = {} // no context required for offline bot
     )
     client.launch { client.connect() }
     while (true) {
@@ -16,14 +14,6 @@ public fun main() = runBlocking {
     }
 }
 ```
-
-> In the example code above, a `MinecraftClient` is created. This client will connect to an offline server at
-> `127.0.0.1:25565` using `MyBot` as the player name, and replaces the underlying TCP Socket
-> implementation with a `ktor-network` based TCP Socket. (For details on how to create a SocketEngine, please refer
-> to [Implementing TCP Socket](Impl-tcp-socket.md). For details on how to
-> create a Context, please refer to [Required APIs](README.md#required-apis))
-> MinecraftClient implements CoroutineScope, and calling `client.connect()` will execute the connection on a background
-> thread. Blocking thread to prevent the application from exiting
 
 ## Connecting to an Online-Mode Server
 
@@ -37,6 +27,9 @@ public fun main() = runBlocking {
         uuid = Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
         accessToken = accessToken,
         // Other parameters
+        context = {
+            httpClientProvider = ...  // required for online bot
+        }
     )
 }
 ```
