@@ -1,0 +1,5 @@
+*.py linguist-vendored=true
+[Mm]akefile linguist-vendored=true
+*.mk linguist-vendored=true
+CMakeLists.txt linguist-vendored=true
+*.cmake linguist-vendored=true
