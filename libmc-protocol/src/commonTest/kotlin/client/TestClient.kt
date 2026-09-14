@@ -39,7 +39,7 @@ class TestClient {
         val accessToken = SystemFileSystem.source(Path("src/commonTest/resources/accessToken.txt"))
             .buffered().use { it.readText() }
         val cli = createMinecraftClient(
-            "127.0.0.1", 25565, "RTAkland",
+            "hypixel.net", 25565, "RTAkland",
             Uuid.parse("bb033844-e68e-4909-a636-1a5d1821ddc4"),
             accessToken,
             context = {

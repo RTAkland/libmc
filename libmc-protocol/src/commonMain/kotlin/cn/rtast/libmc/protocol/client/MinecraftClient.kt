@@ -19,7 +19,7 @@ import cn.rtast.libmc.protocol.util.generateOfflineUuid
 import kotlin.uuid.Uuid
 
 public class MinecraftClient internal constructor(
-    internal val host: String,
+    internal val address: String,
     internal val port: Int,
     internal val username: String,
     internal val uuid: Uuid,
@@ -43,16 +43,14 @@ public class MinecraftClient internal constructor(
         session.emitEvent(SessionEvent.ConnectedEvent)
     }
 
-    private fun startListening() {
-        executor.submit {
-            try {
-                while (isActive) networkChannel.readNextPacket()
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                println("Network read loop exception: ${e.message}")
-            } finally {
-                networkChannel.close()
-            }
+    private fun startListening() = executor.submit {
+        try {
+            while (isActive) networkChannel.readNextPacket()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            println("Network read loop exception: ${e.message}")
+        } finally {
+            networkChannel.close()
         }
     }
 
@@ -62,8 +60,11 @@ public class MinecraftClient internal constructor(
     }
 }
 
+/**
+ * Build a Minecraft protocol client
+ */
 public fun createMinecraftClient(
-    host: String,
+    address: String,
     port: Int = 25565,
     username: String,
     uuid: Uuid = generateOfflineUuid(username),
@@ -71,14 +72,7 @@ public fun createMinecraftClient(
     context: ProtocolContextBuilder.() -> Unit,
 ): MinecraftClient {
     val context = ProtocolContextBuilder(accessToken != null).apply(context).build()
-    return MinecraftClient(
-        host = host,
-        port = port,
-        username = username,
-        uuid = uuid,
-        accessToken = accessToken,
-        protocolContext = context
-    )
+    return MinecraftClient(address, port, username, uuid, accessToken, context)
 }
 
-internal const val CURRENT_MINECRAFT_PROTOCOL_VERSION: Int = 776
+internal const val PROTOCOL_VERSION = 776

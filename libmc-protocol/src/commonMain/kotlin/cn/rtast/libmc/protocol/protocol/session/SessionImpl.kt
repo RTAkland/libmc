@@ -93,7 +93,7 @@ public class SessionImpl internal constructor() : Session {
     override fun handshake(protocolVersion: Int, intent: HandshakeIntent) {
         ensureState(ProtocolState.HANDSHAKE)
         client.networkChannel.sendPacket(
-            ServerboundHandshakePacket(protocolVersion, client.host, client.port.toUShort(), intent)
+            ServerboundHandshakePacket(protocolVersion, client.address, client.port.toUShort(), intent)
         )
         val targetState = if (intent == HandshakeIntent.LOGIN) ProtocolState.LOGIN else {
             if (intent == HandshakeIntent.TRANSFER) ProtocolState.HANDSHAKE else ProtocolState.STATUS

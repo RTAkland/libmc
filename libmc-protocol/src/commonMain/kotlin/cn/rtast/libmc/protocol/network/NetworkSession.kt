@@ -19,7 +19,7 @@ public class NetworkSession internal constructor(private val client: MinecraftCl
         private set
 
     public fun connect() {
-        val sk = NativeSocket(client.host, client.port)
+        val sk = NativeSocket(client.address, client.port)
         sk.connect()
         this.socket = sk
         this.readChannel = sk.openReadChannel()

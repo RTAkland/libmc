@@ -1,0 +1,8 @@
+package = cn.rtast.dns.srv
+headers = srv.h
+staticLibraries = libsrv.a
+
+compilerOpts.linux = -D_DEFAULT_SOURCE
+
+linkerOpts.linux = -lresolv
+linkerOpts.mingw = -ldnsapi
