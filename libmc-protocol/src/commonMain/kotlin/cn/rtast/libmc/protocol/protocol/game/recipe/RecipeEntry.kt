@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.recipe
 
-import cn.rtast.libmc.primitives.IdSet
+import cn.rtast.libmc.protocol.primitives.IdSet
 
 public data class RecipeEntry(
     val recipeId: Int,

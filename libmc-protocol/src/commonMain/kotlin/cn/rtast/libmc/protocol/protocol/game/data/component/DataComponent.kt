@@ -11,6 +11,9 @@ import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.PacketCodec
 import cn.rtast.libmc.primitives.*
+import cn.rtast.libmc.protocol.primitives.IdSet
+import cn.rtast.libmc.protocol.primitives.readIdSet
+import cn.rtast.libmc.protocol.primitives.writeIdSet
 import cn.rtast.libmc.protocol.protocol.game.Identifier
 import cn.rtast.libmc.protocol.protocol.game.block.BlockPos
 import cn.rtast.libmc.protocol.protocol.game.block.BlockStateProperty

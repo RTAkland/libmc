@@ -10,7 +10,7 @@ package cn.rtast.libmc.protocol.packet.play.clientbound
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.packet.MinecraftPacket
 import cn.rtast.libmc.packet.PacketCodec
-import cn.rtast.libmc.primitives.readIdSet
+import cn.rtast.libmc.protocol.primitives.readIdSet
 import cn.rtast.libmc.primitives.readPrefixOptional
 import cn.rtast.libmc.primitives.readPrefixed
 import cn.rtast.libmc.primitives.readVarInt

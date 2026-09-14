@@ -7,7 +7,7 @@
 
 package cn.rtast.libmc.protocol.protocol.game.data.component.attributes
 
-import cn.rtast.libmc.primitives.IdSet
+import cn.rtast.libmc.protocol.primitives.IdSet
 
 public data class ToolRule(
     val blocks: IdSet,

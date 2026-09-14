@@ -10,6 +10,9 @@ package cn.rtast.libmc.protocol.protocol.game.data.component.attributes
 import cn.rtast.libmc.nbt.NBTCompound
 import cn.rtast.libmc.network.BytesBuffer
 import cn.rtast.libmc.primitives.*
+import cn.rtast.libmc.protocol.primitives.IdSet
+import cn.rtast.libmc.protocol.primitives.readIdSet
+import cn.rtast.libmc.protocol.primitives.writeIdSet
 import cn.rtast.libmc.protocol.protocol.game.data.component.DataComponent
 import cn.rtast.libmc.protocol.protocol.util.readNetworkNBTCompound
 import cn.rtast.libmc.protocol.protocol.util.writeNetworkNBTCompound

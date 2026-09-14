@@ -8,11 +8,11 @@
 package cn.rtast.libmc.protocol.protocol.game.potion
 
 import cn.rtast.libmc.network.BytesBuffer
-import cn.rtast.libmc.primitives.IdSet
-import cn.rtast.libmc.primitives.readIdSet
+import cn.rtast.libmc.protocol.primitives.IdSet
+import cn.rtast.libmc.protocol.primitives.readIdSet
 import cn.rtast.libmc.primitives.readPrefixed
 import cn.rtast.libmc.primitives.readVarInt
-import cn.rtast.libmc.primitives.writeIdSet
+import cn.rtast.libmc.protocol.primitives.writeIdSet
 import cn.rtast.libmc.primitives.writePrefixed
 import cn.rtast.libmc.primitives.writeVarInt
 import cn.rtast.libmc.protocol.protocol.game.sound.SoundEvent
