@@ -20,10 +20,20 @@ kotlin {
     explicitApi()
     withSourcesJar()
 
-    linuxX64()
-    linuxArm64()
+    listOf(
+        linuxX64(),
+        linuxArm64(),
+        mingwX64()
+    ).forEach {
+        it.compilations["main"].cinterops {
+            create("aes") {
+                definitionFile.set(file("src/cinterop/aes.def"))
+                extraOpts("-libraryPath", file("src/cinterop/libs/${it.name}").absolutePath)
+                includeDirs(layout.projectDirectory.dir("csrc/aes"))
+            }
+        }
+    }
     macosArm64()
-    mingwX64()
     jvm { compilerOptions.jvmTarget = JvmTarget.JVM_1_8 }
 
     sourceSets {

@@ -55,3 +55,4 @@ bin/
 /scritps/registries.json
 /libmc-socket/csrc/srv/libs/
 /libmc-socket/csrc/srv/test_srv
+/libmc-protocol/csrc/aes/libs/
