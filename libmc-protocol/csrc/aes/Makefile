@@ -1,4 +1,19 @@
-ARCH ?= x86_64
+UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
+
+ifeq ($(UNAME_S), Darwin)
+    ifeq ($(UNAME_M), arm64)
+        ARCH ?= macos_arm64
+    else
+        ARCH ?= macos_x64
+    endif
+else
+    ifeq ($(UNAME_M), aarch64)
+        ARCH ?= arm64
+    else
+        ARCH ?= x86_64
+    endif
+endif
 
 OUT_DIR = ./libs
 
@@ -11,6 +26,12 @@ else ifeq ($(ARCH), win64)
 else ifeq ($(ARCH), x86_64)
     CROSS_COMPILE ?=
     TARGET_DIR    = $(OUT_DIR)/linuxX64
+else ifeq ($(ARCH), macos_arm64)
+    CROSS_COMPILE ?= aarch64-apple-darwin20.4-
+    TARGET_DIR    = $(OUT_DIR)/macosArm64
+else ifeq ($(ARCH), macos_x64)
+    CROSS_COMPILE ?= x86_64-apple-darwin20.4-
+    TARGET_DIR    = $(OUT_DIR)/macosX64
 else
     CROSS_COMPILE ?=
     TARGET_DIR    = $(OUT_DIR)/$(ARCH)
@@ -38,17 +59,21 @@ SPLINT       = splint aes.c -I$(INCLUDE_PATH) +charindex -unrecog
 default: lib
 
 .SILENT:
-.PHONY:  lint clean lib all
+.PHONY: lint clean lib all
 
 all:
-	@echo "[ALL] Building for linuxX64..."
+	@echo "Building for linuxX64..."
 	$(MAKE) clean && $(MAKE) ARCH=x86_64
-	@echo "[ALL] Building for linuxArm64..."
+	@echo "Building for linuxArm64..."
 	$(MAKE) clean && $(MAKE) ARCH=arm64
-	@echo "[ALL] Building for mingwX64..."
+	@echo "Building for mingwX64..."
 	$(MAKE) clean && $(MAKE) ARCH=win64
+	@echo "Building for macosArm64..."
+	$(MAKE) clean && $(MAKE) ARCH=macos_arm64
+	@echo "Building for macosX64..."
+	$(MAKE) clean && $(MAKE) ARCH=macos_x64
 	$(MAKE) clean
-	@echo "[ALL] All platform binaries have been updated in $(OUT_DIR)/"
+	@echo "All platform binaries in $(OUT_DIR)/"
 
 aes.o : aes.c aes.h
 	echo [CC] $@ $(CFLAGS)

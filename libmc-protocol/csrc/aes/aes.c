@@ -178,8 +178,6 @@ void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv) {
 }
 #endif
 
-#if defined(CFB8) && (CFB8 == 1)
-
 void AES_CFB8_encrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length) {
     uint8_t stream[AES_BLOCKLEN];
     for (size_t i = 0; i < length; ++i) {
@@ -204,5 +202,3 @@ void AES_CFB8_decrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length) {
         ctx->Iv[AES_BLOCKLEN - 1] = ciphertext;
     }
 }
-
-#endif
