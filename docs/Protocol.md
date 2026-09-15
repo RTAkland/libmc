@@ -1,3 +1,27 @@
+# Install dependencies
+
+> For KMP project
+
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("cn.rtast.libmc:protocol:26.2-0.2.1")
+        }
+    }
+}
+```
+
+> For JVM project
+
+```kotlin
+dependencies {
+    implementation("cn.rtast.libmc:protocol:26.2-0.2.1")
+}
+```
+
+> Latest version can be found at https://repo.rtast.cn/packages/-/cn.rtast.libmc:protocol
+
 # Creating a Client
 
 ```kotlin

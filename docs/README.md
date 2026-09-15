@@ -15,6 +15,14 @@ module relies on the following dependencies:
 
 # Get started
 
+Setup maven repository
+
+```kotlin
+repositories {
+    maven("https://repo.rtast.cn/packages")
+}
+```
+
 # Protocol
 
 [Protocol](Protocol.md)
